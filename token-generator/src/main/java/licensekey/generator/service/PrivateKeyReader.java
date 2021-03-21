@@ -26,8 +26,8 @@ public class PrivateKeyReader {
 
     /**
      * @return Private key
-     * @throws PrivateKeyGenerationException which capture no file found exception, invalid algorithm exception and
-     *                                       invalid key spec exception
+     * @throws PrivateKeyGenerationException which capture no file found user.management.exception, invalid algorithm user.management.exception and
+     *                                       invalid key spec user.management.exception
      */
     public static PrivateKey getPrivateKey(String keyFileLocation) throws Exception {
         RSAPublicKey publicKey = null;
