@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Entered the build phase...
+      - mvn clean install
+  post_build:
+    commands:
+      - echo Build completed successfully
+artifacts:
+  files:
+    - target/key-validator-lambda-1.0-SNAPSHOT.jar
+  discard-paths: yes

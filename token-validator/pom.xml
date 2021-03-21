@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <artifactId>cloud-cs5242</artifactId>
+    <groupId>msc.cloud.mora</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>token-validator</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>token-validate-lambda</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.lcip.xyz</url>
+
+  <repositories>
+    <repository>
+      <id>central2</id>
+      <url>https://maven.wso2.org/nexus/content/repositories/releases/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-lambda-java-core</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-lambda-java-events</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>${com.auth0.version}</version>
+  </dependency>
+    <dependency>
+      <groupId>org.json.wso2</groupId>
+      <artifactId>json</artifactId>
+      <version>${org.wso2.json.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>13.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${org.slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.27</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>${compile.version}</source>
+          <target>${compile.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.plugin.version}</version>
+        <configuration>
+          <!-- get all project dependencies -->
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifestEntries>
+              <Premain-Class>org.uom.idp.ValidatorLambda</Premain-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <systemPropertyVariables>
+            <parent.directory>${project.basedir}</parent.directory>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
+
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven.enforcer.plugin.verion}</version>
+        <executions>
+          <execution>
+            <id>enforce-public-cert</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireFilesExist>
+                  <files>
+                    <file>${project.build.sourceDirectory}/../resources/certs/public_key.der</file>
+                  </files>
+                </requireFilesExist>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+
+              <transformers>
+                <transformer
+                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.uom.idp.ValidatorLambda</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <properties>
+    <junit.version>4.12</junit.version>
+    <powermock.version>2.0.2</powermock.version>
+    <com.auth0.version>3.8.1</com.auth0.version>
+    <maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+    <compile.version>1.8</compile.version>
+    <maven.enforcer.plugin.verion>1.4.1</maven.enforcer.plugin.verion>
+    <compile.version>1.8</compile.version>
+    <maven.assembly.plugin.version>2.4.1</maven.assembly.plugin.version>
+    <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+    <org.wso2.msf4j.version>2.6.2</org.wso2.msf4j.version>
+    <org.wso2.json.version>3.0.0.wso2v1</org.wso2.json.version>
+    <hiernate.c3p0.version>5.2.1.Final</hiernate.c3p0.version>
+    <hibernate.version>5.2.1.Final</hibernate.version>
+    <mysql.connector.version>5.1.36</mysql.connector.version>
+    <org.codehaus.jackson.core.version>1.9.13</org.codehaus.jackson.core.version>
+    <org.codehaus.jackson.mapper.version>1.9.13</org.codehaus.jackson.mapper.version>
+    <org.slf4j.version>1.7.26</org.slf4j.version>
+    <org.wso2.msf4j.version>2.6.2</org.wso2.msf4j.version>
+
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+</project>

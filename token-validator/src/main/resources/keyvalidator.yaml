@@ -1,0 +1,5 @@
+microserviceConnection:
+  credentials:
+    username: abc
+    password: abc
+    
