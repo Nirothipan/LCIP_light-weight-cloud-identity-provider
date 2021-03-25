@@ -48,6 +48,33 @@ public class UserManager {
         return createOutput(true, null);
     }
 
+    public JsonObject deletUser(String  name, int id) throws DBException, Exception {
+
+        removeFromDB(name, id);
+        return createOutput(true, null);
+    }
+
+    private synchronized void removeFromDB(String name, int id) throws DBException {
+
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                updateDB.removeEntity(name, id);
+                return;
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+    }
+
+
     private synchronized void persistToDB(UserDataEntity userData) throws DBException {
 
         int numAttempts = 0;

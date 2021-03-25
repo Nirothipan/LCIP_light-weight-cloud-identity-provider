@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 import user.management.exception.DBException;
+import user.management.model.UserData;
+import user.management.model.entity.UserDataEntity;
 import user.management.utils.Constants;
 
 import java.util.Random;
@@ -78,6 +80,41 @@ public class UpdateDB {
             try {
                 entityManager.getTransaction().begin();
                 entityManager.persist(entity);
+                entityManager.getTransaction().commit();
+                entityManager.close();
+                return;
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if (cause != null) {
+                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+                        continue;
+                    }
+                    Throwable nestedCause = cause.getCause();
+                    if (nestedCause instanceof ConstraintViolationException) {
+                        return;
+                    }
+                    throw new DBException("Exception occurred while connecting to the database: ", e);
+                }
+            } finally {
+                closeEntityManager(entityManager);
+            }
+        } while (numAttempts <= maxRetries);
+        throw new DBException("Connection failed. QueryTimeoutException occurred.");
+    }
+
+    public void removeEntity(String name, int id) throws DBException {
+
+        int numAttempts = 0;
+        EntityManager entityManager = getEntityManager();
+        do {
+            numAttempts++;
+            try {
+                entityManager.getTransaction().begin();
+                UserDataEntity userDataEntity = new UserDataEntity();
+                userDataEntity.setId(id);
+                userDataEntity.setUsername(name);
+                UserDataEntity data =  entityManager.find(UserDataEntity.class,  userDataEntity);
+                entityManager.remove(data);
                 entityManager.getTransaction().commit();
                 entityManager.close();
                 return;

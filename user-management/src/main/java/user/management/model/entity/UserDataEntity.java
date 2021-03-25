@@ -32,10 +32,12 @@ public class UserDataEntity implements Serializable {
 
     private static final long serialVersionUID = -4997964964871690908L;
 
-    @Id
-    @Column(name = "id")
-    private int id;
 
+    @Id
+    @Column(name = "tenantId")
+    private int tenantId;
+
+    @Id
     @Column(name = "username")
     private String username;
 
@@ -67,11 +69,11 @@ public class UserDataEntity implements Serializable {
     }
 
     public int getId() {
-        return id;
+        return tenantId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.tenantId = id;
     }
 
     public String getPassword() {

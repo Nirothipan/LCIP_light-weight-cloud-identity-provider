@@ -53,13 +53,34 @@ public class UserRegistrationLambda implements RequestHandler<UserDataEntity, Ob
 
     public static void main(String[] args) {
 
+        addUser();
+        removeUser("niro" , 1234);
+    }
+
+    private static void addUser(){
         UserDataEntity  userData = new UserDataEntity ();
+        userData.setId(1234);
         userData.setUsername("niro");
         userData.setUserEmail("niro@wso2.com");
         userData.setPassword("122121");
         JsonObject response = new JsonObject();
         try {
             response = userManager.addUser(userData);
+        } catch (Exception e) {
+            System.out.println("Exception :: " + e);
+            e.printStackTrace();
+        }
+        System.out.println("Data added :" + response.toString());
+    }
+
+    private static void removeUser(String name, int id){
+        UserDataEntity  userData = new UserDataEntity ();
+        userData.setUsername("niro");
+        userData.setUserEmail("niro@wso2.com");
+        userData.setPassword("122121");
+        JsonObject response = new JsonObject();
+        try {
+            response = userManager.deletUser(name, id);
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();
