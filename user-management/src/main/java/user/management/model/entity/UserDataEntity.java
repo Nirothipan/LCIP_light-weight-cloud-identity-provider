@@ -45,7 +45,7 @@ public class UserDataEntity implements Serializable {
 
 
     @Column(name = "password")
-    private long password;
+    private String password;
 
     public UserDataEntity() {
     }
@@ -74,11 +74,11 @@ public class UserDataEntity implements Serializable {
         this.id = id;
     }
 
-    public long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

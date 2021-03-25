@@ -7,6 +7,7 @@ import user.management.dao.UpdateDB;
 import user.management.exception.DBException;
 import user.management.model.UserData;
 import user.management.model.config.Configuration;
+import user.management.model.entity.UserDataEntity;
 
 import javax.persistence.PersistenceException;
 
@@ -36,7 +37,7 @@ public class UserManager {
         return output;
     }
 
-    public JsonObject addUser(UserData userData) throws DBException, Exception {
+    public JsonObject addUser(UserDataEntity userData) throws DBException, Exception {
         // Avoid creating duplicate keys
         String username = userData.getUsername();
 
@@ -47,7 +48,7 @@ public class UserManager {
         return createOutput(true, null);
     }
 
-    private synchronized void persistToDB(UserData userData) throws DBException {
+    private synchronized void persistToDB(UserDataEntity userData) throws DBException {
 
         int numAttempts = 0;
         do {
