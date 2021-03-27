@@ -117,7 +117,6 @@ public class UpdateDB {
                 entityManager.remove(data);
                 entityManager.getTransaction().commit();
                 entityManager.close();
-                return;
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
