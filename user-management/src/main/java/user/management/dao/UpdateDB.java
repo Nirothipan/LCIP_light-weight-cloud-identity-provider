@@ -116,6 +116,7 @@ public class UpdateDB {
                 entityManager.remove(data);
                 entityManager.getTransaction().commit();
                 entityManager.close();
+                return;
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
@@ -146,9 +147,7 @@ public class UpdateDB {
                 UserDataEntity userDataEntity = new UserDataEntity();
                 userDataEntity.setTenantId(id);
                 userDataEntity.setUserName(name);
-                UserDataEntity data = entityManager.find(UserDataEntity.class, userDataEntity);
-                return data;
-
+                return entityManager.find(UserDataEntity.class, userDataEntity);
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
@@ -170,7 +169,6 @@ public class UpdateDB {
         throw new DBException("Connection failed. QueryTimeoutException occurred.");
     }
 
-
     public List<UserDataEntity> getAllUsers() throws DBException {
 
         int numAttempts = 0;
@@ -181,9 +179,9 @@ public class UpdateDB {
             try {
                 Session session = (Session) entityManager.getDelegate();
                 session.setDefaultReadOnly(true);
-                TypedQuery<UserDataEntity> query = entityManager
-                        .createNamedQuery(Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
-                                          UserDataEntity.class);
+                TypedQuery<UserDataEntity> query = entityManager.createNamedQuery(
+                        Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
+                        UserDataEntity.class);
                 if (query.getResultList().size() > 0) {
                     return query.getResultList();
                 }
