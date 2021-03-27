@@ -145,6 +145,7 @@ public class KeyGenManager {
        
             RSAPrivateKey privateKey = (RSAPrivateKey) PrivateKeyReader.getPrivateKey(
                 config.getKeyFileInfo().getLocation());
+        System.out.println(privateKey.getEncoded());
             return Algorithm.RSA384(null, privateKey);
         
     }
