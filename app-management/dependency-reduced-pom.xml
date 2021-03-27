@@ -36,7 +36,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>app.management.ApplicationRegistrationLambda</mainClass>
+                  <mainClass>app.management.lambda.Registration</mainClass>
                 </transformer>
               </transformers>
             </configuration>
