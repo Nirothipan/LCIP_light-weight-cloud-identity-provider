@@ -4,18 +4,14 @@ import app.management.dao.UpdateDB;
 import app.management.manager.ApplicationManager;
 import app.management.model.entity.ApplicationDataEntity;
 import app.management.utils.Constants;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.apache.commons.codec.binary.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  * Main user.management.Application class.
@@ -61,10 +57,15 @@ public class ApplicationManagement {
         return output;
     }
 
-    protected static boolean checkApplication(String applicationName, String tenantID) throws Exception {
-        List<ApplicationDataEntity> applicationList = applicationManager.listTenantApplication();
-        Optional<ApplicationDataEntity> resultList = applicationList.stream().parallel()
-                .filter(app -> app.getTenantId().equals(tenantID) && app.getAppName().equals(applicationName)).findFirst();
+    protected static boolean checkApplication(String applicationName, String tenantID) {
+        List<ApplicationDataEntity> applicationList = null;
+        try {
+            applicationList = applicationManager.listTenantApplication();
+        } catch (Exception e) {
+            return false;
+        }
+        Optional<ApplicationDataEntity> resultList = applicationList.stream().parallel().filter(
+                app -> app.getTenantId().equals(tenantID) && app.getAppName().equals(applicationName)).findFirst();
         return resultList.isPresent();
     }
 }

@@ -1,5 +1,6 @@
 package licensekey.generator.lambda;
 
+import app.management.ApplicationManagement;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
@@ -74,7 +75,7 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
         boolean isUserValid = userApi.validate(userDataEntity);
 
         if (isUserValid) {
-            isUserValid = true;            // call kumar's api
+            isUserValid = ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId());
         }
 
         LicensekeyGeneratorEntity existingToken = getToken(token);
