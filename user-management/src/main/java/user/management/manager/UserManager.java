@@ -53,11 +53,12 @@ public class UserManager {
 
         UserDataEntity userDataEntity = getFromDB(name, id);
 
-        JsonObject output = new JsonObject();
-        output.addProperty("tentnatId", userDataEntity.getTenantId());
-        output.addProperty("name", userDataEntity.getUserName());
-        output.addProperty("email", userDataEntity.getUserEmail());
-        return output;
+        JsonObject user = new JsonObject();
+        user.addProperty("Tenant Name", userDataEntity.getTenantId());
+        user.addProperty("User Name", userDataEntity.getUserName());
+        user.addProperty("Email", userDataEntity.getUserEmail());
+
+        return user;
 
     }
 

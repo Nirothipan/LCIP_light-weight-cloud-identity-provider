@@ -9,7 +9,7 @@ public class UserDeletionLambda extends UserManagement implements RequestHandler
 
     @Override
     public Object handleRequest(UserDataEntity userData, Context context) {
-        return removeUser("niro", "1234");
+        return removeUser(userData.getUserName(), userData.getTenantId());
     }
 
     public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class UserDeletionLambda extends UserManagement implements RequestHandler
             e.printStackTrace();
         }
         System.out.println("Data added :" + response.toString());
-        return response;
+        return response.toString();
     }
 
 }

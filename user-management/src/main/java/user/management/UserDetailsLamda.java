@@ -10,11 +10,11 @@ public class UserDetailsLamda extends UserManagement implements RequestHandler<U
 
     @Override
     public Object handleRequest(UserDataEntity userDataEntity, com.amazonaws.services.lambda.runtime.Context context) {
-        return null;
+        return getUser(userDataEntity.getUserName(), userDataEntity.getTenantId());
     }
 
     public static void main(String[] args) {
-        getUser("niro","12212");
+        getUser("niro", "12212");
     }
 
     private static Object getUser(String name, String id) {
@@ -27,7 +27,7 @@ public class UserDetailsLamda extends UserManagement implements RequestHandler<U
             e.printStackTrace();
         }
         System.out.println("Data added :" + response.toString());
-        return response;
+        return response.toString();
     }
 
 }

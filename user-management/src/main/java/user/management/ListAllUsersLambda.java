@@ -11,25 +11,25 @@ public class ListAllUsersLambda extends UserManagement implements RequestHandler
 
     @Override
     public Object handleRequest(UserDataEntity userDataEntity, com.amazonaws.services.lambda.runtime.Context context) {
-        return null;
+        return getUser(userDataEntity.getTenantId());
     }
 
     public static void main(String[] args) {
-        getUser("niro", 1234);
+        //  getUser("niro", 1234);
     }
 
-    private static Object getUser(String name, int id) {
+    private static Object getUser(String tenantId) {
 
         JsonArray response = null;//= new JsonObject();
         try {
             List<UserDataEntity> userDataEntityList = userManager.getTenantUser();
-            response = createOutput(userDataEntityList, "1234");
+            response = createOutput(userDataEntityList, tenantId);
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();
         }
         System.out.println("Data added :" + response.toString());
-        return response;
+        return response.toString();
     }
 
     private static JsonArray createOutput(List<UserDataEntity> userDataEntityList, String tenantId) {
@@ -40,9 +40,9 @@ public class ListAllUsersLambda extends UserManagement implements RequestHandler
 
             JsonObject user = new JsonObject();
 
-            user.addProperty("tenantName", userDataEntity.getTenantId());
-            user.addProperty("name", userDataEntity.getUserName());
-            user.addProperty("email", userDataEntity.getUserEmail());
+            user.addProperty("Tenant Name", userDataEntity.getTenantId());
+            user.addProperty("User Name", userDataEntity.getUserName());
+            user.addProperty("Email", userDataEntity.getUserEmail());
 
             if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getTenantId())) {
                 allUsers.add(user);
