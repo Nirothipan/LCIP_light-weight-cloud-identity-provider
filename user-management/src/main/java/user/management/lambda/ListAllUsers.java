@@ -24,10 +24,10 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
         try {
             List<UserDataEntity> userDataEntityList = userManager.getTenantUser();
             JsonArray response = createOutput(userDataEntityList, tenantId);
-            return response.toString();
+            return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return getErrorOutput(e.getMessage()).toString();
+            return toJson(getErrorOutput(e.getMessage()));
         }
     }
 

@@ -1,5 +1,7 @@
 package user.management;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import user.management.dao.UpdateDB;
 import user.management.manager.UserManager;
@@ -47,6 +49,11 @@ public class UserManagement {
         output.addProperty("Status", "Internal Server Error");
         output.addProperty("Message", message);
         return output;
+    }
+
+    protected static String toJson(Object json) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(json);
     }
 
 }

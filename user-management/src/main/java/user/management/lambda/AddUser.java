@@ -15,7 +15,7 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
 
     public static void main(String[] args) {
         //addUser(userData, context);
-          addUser();
+        addUser();
     }
 
     private static Object addUser(UserDataEntity data) {
@@ -28,28 +28,28 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
         JsonObject response;
         try {
             response = userManager.addUser(userData);
-            return response;
+            return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return getErrorOutput(e.getMessage());
+            return toJson(getErrorOutput(e.getMessage()));
         }
     }
 
-        private static Object addUser() {
-            UserDataEntity userData = new UserDataEntity();
-            userData.setTenantId("del2");
-            userData.setUserName("ram");
-            userData.setUserEmail("niro@wso2.com");
-            userData.setPassword("122121");
-            JsonObject response = new JsonObject();
-            try {
-                response = userManager.addUser(userData);
-            } catch (Exception e) {
-                System.out.println("Exception :: " + e);
-                e.printStackTrace();
-            }
-            System.out.println("Data added :" + response.toString());
-            return response;
+    private static Object addUser() {
+        UserDataEntity userData = new UserDataEntity();
+        userData.setTenantId("del");
+        userData.setUserName("ram");
+        userData.setUserEmail("niro@wso2.com");
+        userData.setPassword("122121");
+        JsonObject response = new JsonObject();
+        try {
+            response = userManager.addUser(userData);
+        } catch (Exception e) {
+            System.out.println("Exception :: " + e);
+            e.printStackTrace();
         }
+        System.out.println("Data added :" + response.toString());
+        return response;
+    }
 
 }

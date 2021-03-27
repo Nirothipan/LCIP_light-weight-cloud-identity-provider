@@ -20,10 +20,10 @@ public class GetUserDetails extends UserManagement implements RequestHandler<Use
 
         try {
             JsonObject response = userManager.getUser(name, id);
-            return response.toString();
+            return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return getErrorOutput(e.getMessage()).toString();
+            return toJson(getErrorOutput(e.getMessage()));
         }
     }
 

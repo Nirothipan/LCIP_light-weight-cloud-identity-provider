@@ -21,10 +21,10 @@ public class DeleteUser extends UserManagement implements RequestHandler<UserDat
 
         try {
             JsonObject response = userManager.deletUser(name, id);
-            return response.toString();
+            return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return getErrorOutput(e.getMessage()).toString();
+            return toJson(getErrorOutput(e.getMessage()));
         }
     }
 
