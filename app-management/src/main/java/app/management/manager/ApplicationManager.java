@@ -1,13 +1,17 @@
 package app.management.manager;
 
+import app.management.model.entity.ApplicationIdDataEntity;
 import com.google.gson.JsonObject;
 
 import app.management.dao.UpdateDB;
 import app.management.exception.DBException;
 import app.management.model.config.Configuration;
 import app.management.model.entity.ApplicationDataEntity;
+//import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import org.hibernate.exception.JDBCConnectionException;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 import java.util.UUID;
 
 public class ApplicationManager {
@@ -74,6 +78,37 @@ public class ApplicationManager {
         return createOutput(false, "Application Name is empty");
     }
 
+    public JsonObject getApplication(String name, String id) throws DBException, Exception {
+
+        ApplicationDataEntity userDataEntity = findApplication(name, id);
+
+        JsonObject output = new JsonObject();
+        output.addProperty("tenantName", userDataEntity.getId());
+        output.addProperty("clientID", userDataEntity.getClientId());
+        output.addProperty("applicationName", userDataEntity.getAppName());
+        output.addProperty("callbackURL", userDataEntity.getCallBackUrl());
+        return output;
+
+    }
+
+    public JsonObject getApplicationWithID(String appID) throws DBException, Exception {
+
+        ApplicationIdDataEntity userDataEntity = findApplicationWithID(appID);
+
+        JsonObject output = new JsonObject();
+        if (userDataEntity != null) {
+            output.addProperty("tenantName", userDataEntity.getId());
+            output.addProperty("clientID", userDataEntity.getClientId());
+            output.addProperty("applicationName", userDataEntity.getAppName());
+            output.addProperty("callbackURL", userDataEntity.getCallBackUrl());
+            return output;
+        }
+        output.addProperty("Error", "Could not get Application with given ID: " + appID);
+        return output;
+
+
+    }
+
     public JsonObject deleteApplication(String  appName, String tenantID) throws DBException, Exception {
 
         if (appName != null && !appName.isEmpty() && tenantID != null && !tenantID.isEmpty()) {
@@ -103,6 +138,67 @@ public class ApplicationManager {
         } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
     }
 
+    public List<ApplicationDataEntity> listTenantApplication() throws DBException, Exception {
+
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                return updateDB.getAllApplication();
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if ((cause instanceof JDBCConnectionException)) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        return null;
+
+    }
+
+    private synchronized ApplicationDataEntity findApplication(String name, String id) throws DBException {
+
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                return updateDB.findEntity(name, id);
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if (cause instanceof JDBCConnectionException) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        return null;
+    }
+
+    private synchronized ApplicationIdDataEntity findApplicationWithID(String appID) throws DBException {
+
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                return updateDB.findEntityWithID(appID);
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if (cause instanceof JDBCConnectionException) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        return null;
+    }
+
 
     private synchronized void persistToDB(ApplicationDataEntity userData) throws DBException {
 
@@ -123,6 +219,5 @@ public class ApplicationManager {
             }
         } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
     }
-
 
 }

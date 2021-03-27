@@ -1,32 +1,30 @@
-package app.remove.mgt.model.entity;
+package app.management.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "APPLICATION_INFO")
-public class ApplicationDataEntity implements Serializable {
+public class ApplicationIdDataEntity implements Serializable {
 
     private static final long serialVersionUID = -4997964964871690908L;
 
-    @Id
     @Column(name = "tenant_id")
     private String tenantId;
 
-    @Id
     @Column(name = "application_name")
     private String appName;
+
 
     @Column(name = "callBackUrl")
     private String callBackUrl;
 
+    @Id
     @Column(name = "client_id")
     private String clientId;
 
-    public ApplicationDataEntity() {
+    public ApplicationIdDataEntity() {
     }
 
     public String getCallBackUrl() {
