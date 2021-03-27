@@ -75,7 +75,11 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
         boolean isUserValid = userApi.validate(userDataEntity);
 
         if (isUserValid) {
-            isUserValid = ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId());
+            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+                return getErrorOutput("Application Not Valid");
+            }
+        } else {
+            return getErrorOutput("Invalid User");
         }
 
         LicensekeyGeneratorEntity existingToken = getToken(token);
