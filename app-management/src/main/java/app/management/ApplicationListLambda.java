@@ -1,22 +1,23 @@
 package app.management;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
 import app.management.dao.UpdateDB;
 import app.management.manager.ApplicationManager;
 import app.management.model.config.Configuration;
 import app.management.model.entity.ApplicationDataEntity;
 import app.management.utils.Constants;
 import app.management.utils.Utils;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ApplicationRegistrationLambda implements RequestHandler<ApplicationDataEntity, Object> {
+public class ApplicationListLambda implements RequestHandler<ApplicationDataEntity, Object> {
 
     private static Configuration config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML,
                                                            Configuration.class);
@@ -47,55 +48,47 @@ public class ApplicationRegistrationLambda implements RequestHandler<Application
 
     @Override
     public Object handleRequest(ApplicationDataEntity userData, Context context) {
-        return addApplication(userData, context);
+        return getApplicationList(userData.getId());
     }
 
     public static void main(String[] args) {
 
-      addApplication();
+        getApplicationList("1234");
     }
 
-    private static void addApplication(){
+    private static Object getApplicationList(String tenantId) {
 
-        ApplicationDataEntity userData = new ApplicationDataEntity();
-        userData.setAppName("AppNew3");
-        userData.setCallBackUrl("https://google.com");
-        JsonObject response = new JsonObject();
+        JsonArray response = new JsonArray();
         try {
-            response = applicationManager.addApplication(userData);
+            List<ApplicationDataEntity> applicationList = applicationManager.listTenantApplication();
+            response = createOutput(applicationList, tenantId);
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();
         }
         System.out.println("Data added :" + response.toString());
+        return response;
     }
 
-    private static void removeApplication(String name, String id){
-        JsonObject response = new JsonObject();
-        try {
-            response = applicationManager.deleteApplication(name, id);
-        } catch (Exception e) {
-            System.out.println("Exception :: " + e);
-            e.printStackTrace();
+    private static JsonArray createOutput(List<ApplicationDataEntity> userDataEntityList, String tenantId) {
+
+        JsonArray allApps = new JsonArray();
+
+        for (ApplicationDataEntity userDataEntity : userDataEntityList) {
+
+            JsonObject app = new JsonObject();
+
+            app.addProperty("tenantName", userDataEntity.getId());
+            app.addProperty("clientID", userDataEntity.getClientId());
+            app.addProperty("applicationName", userDataEntity.getAppName());
+            app.addProperty("callbackURL", userDataEntity.getCallBackUrl());
+
+            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getId())) {
+                allApps.add(app);
+            }
         }
-        System.out.println("Data added :" + response.toString());
+
+        return allApps;
     }
-
-    private Object addApplication(ApplicationDataEntity userData, Context context) {
-        LambdaLogger logger = context.getLogger();
-        logger.log("initializing handler ");
-
-         config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML, Configuration.class);
-
-        JsonObject response = new JsonObject();
-        try {
-            response = applicationManager.addApplication(userData);
-        } catch (Exception e) {
-            logger.log("Exception :: " + e);
-            e.printStackTrace();
-        }
-        return response.toString();
-    }
-
 
 }

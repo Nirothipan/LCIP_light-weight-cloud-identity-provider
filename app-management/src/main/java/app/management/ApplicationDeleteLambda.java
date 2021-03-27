@@ -1,22 +1,21 @@
-package app.remove.mgt;
+package app.management;
 
+import app.management.dao.UpdateDB;
+import app.management.manager.ApplicationManager;
+import app.management.model.config.Configuration;
+import app.management.model.entity.ApplicationDataEntity;
+import app.management.utils.Constants;
+import app.management.utils.Utils;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.JsonObject;
-import app.remove.mgt.dao.UpdateDB;
-import app.remove.mgt.manager.ApplicationManager;
-import app.remove.mgt.model.config.Configuration;
-import app.remove.mgt.model.entity.ApplicationDataEntity;
-import app.remove.mgt.utils.Constants;
-import app.remove.mgt.utils.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ApplicationRegistrationLambda implements RequestHandler<ApplicationDataEntity, Object> {
+public class ApplicationDeleteLambda implements RequestHandler<ApplicationDataEntity, Object> {
 
     private static Configuration config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML,
                                                            Configuration.class);
@@ -47,32 +46,18 @@ public class ApplicationRegistrationLambda implements RequestHandler<Application
 
     @Override
     public Object handleRequest(ApplicationDataEntity appData, Context context) {
+
         return removeApplication(appData.getAppName(),appData.getId());
     }
 
     public static void main(String[] args) {
 
-//        addApplication();
-//        removeApplication();
-    }
-
-    private static void addApplication(){
-        ApplicationDataEntity userData = new ApplicationDataEntity();
-        userData.setAppName("App123");
-        userData.setCallBackUrl("https://google.com");
-        JsonObject response = new JsonObject();
-        try {
-            response = applicationManager.addApplication(userData);
-        } catch (Exception e) {
-            System.out.println("Exception :: " + e);
-            e.printStackTrace();
-        }
-        System.out.println("Data added :" + response.toString());
+        removeApplication();
     }
 
     private static void removeApplication(){
         ApplicationDataEntity userData = new ApplicationDataEntity();
-        userData.setAppName("App123");
+        userData.setAppName("AppNew3");
         JsonObject response = new JsonObject();
         try {
             response = applicationManager.deleteApplication(userData.getAppName(), "1234");
@@ -93,24 +78,4 @@ public class ApplicationRegistrationLambda implements RequestHandler<Application
         }
         return response.toString();
     }
-
-    private Object addApplication(ApplicationDataEntity userData, Context context) {
-        LambdaLogger logger = context.getLogger();
-        String okResult = "200 OK";
-        // log execution details
-        logger.log("initializing handler ");
-
-         config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML, Configuration.class);
-
-        JsonObject response = new JsonObject();
-        try {
-            response = applicationManager.addApplication(userData);
-        } catch (Exception e) {
-            logger.log("Exception :: " + e);
-            e.printStackTrace();
-        }
-        // logger.log("Response : " + response.toString());
-        return response.toString();
-    }
-
 }
