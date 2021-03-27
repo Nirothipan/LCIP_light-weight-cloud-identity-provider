@@ -5,28 +5,24 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.JsonObject;
 import user.management.model.entity.UserDataEntity;
 
-public class UserRegistrationLambda extends UserManagement implements RequestHandler<UserDataEntity, Object> {
-
+public class UserDeletionLambda extends UserManagement implements RequestHandler<UserDataEntity, Object> {
 
     @Override
     public Object handleRequest(UserDataEntity userData, Context context) {
-        return addUser();
+        return removeUser("niro", 1234);
     }
 
     public static void main(String[] args) {
         //addUser(userData, context);
-        addUser();
+        //addUser();
+        removeUser("niro", 1234);
     }
 
-    private static Object addUser(){
-        UserDataEntity  userData = new UserDataEntity ();
-        userData.setId(1234);
-        userData.setUsername("niro12212");
-        userData.setUserEmail("niro@wso2.com");
-        userData.setPassword("122121");
+    private static Object removeUser(String name, int id) {
+
         JsonObject response = new JsonObject();
         try {
-            response = userManager.addUser(userData);
+            response = userManager.deletUser(name, id);
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();
@@ -34,6 +30,5 @@ public class UserRegistrationLambda extends UserManagement implements RequestHan
         System.out.println("Data added :" + response.toString());
         return response;
     }
-
 
 }

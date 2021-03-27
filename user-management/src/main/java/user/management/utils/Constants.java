@@ -38,9 +38,9 @@ public class Constants {
          */
         public static class Queries {
 
-            public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME = "findLicenseKeyByUsername";
+            public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME = "getAllUser";
             public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER =
-                    "SELECT * FROM KEY_GEN_INFO WHERE username = :user_name";
+                    "SELECT * FROM USER_INFO";
         }
 
         /**

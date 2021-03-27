@@ -9,6 +9,7 @@ import user.management.model.UserData;
 import user.management.model.config.Configuration;
 import user.management.model.entity.UserDataEntity;
 
+import java.util.List;
 import javax.persistence.PersistenceException;
 
 public class UserManager {
@@ -48,10 +49,63 @@ public class UserManager {
         return createOutput(true, null);
     }
 
-    public JsonObject deletUser(String  name, int id) throws DBException, Exception {
+    public JsonObject deletUser(String name, int id) throws DBException, Exception {
 
         removeFromDB(name, id);
         return createOutput(true, null);
+    }
+
+    public JsonObject getUser(String name, int id) throws DBException, Exception {
+
+        UserDataEntity userDataEntity = getFromDB(name, id);
+
+        JsonObject output = new JsonObject();
+        output.addProperty("tentnatId", userDataEntity.getId());
+        output.addProperty("name", userDataEntity.getUsername());
+        output.addProperty("email", userDataEntity.getUserEmail());
+        return output;
+
+    }
+
+    public List<UserDataEntity> getTenantUser() throws DBException, Exception {
+
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                return updateDB.getAllUsers();
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        return null;
+
+    }
+
+    private synchronized UserDataEntity getFromDB(String name, int id) throws DBException {
+
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                return updateDB.findEntity(name, id);
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        return null;
     }
 
     private synchronized void removeFromDB(String name, int id) throws DBException {
@@ -74,7 +128,6 @@ public class UserManager {
         } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
     }
 
-
     private synchronized void persistToDB(UserDataEntity userData) throws DBException {
 
         int numAttempts = 0;
@@ -94,6 +147,5 @@ public class UserManager {
             }
         } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
     }
-
 
 }

@@ -9,10 +9,12 @@ import user.management.model.UserData;
 import user.management.model.entity.UserDataEntity;
 import user.management.utils.Constants;
 
+import java.util.List;
 import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 
 /**
  * This class updates/retrieve information from the database.
@@ -38,8 +40,6 @@ public class UpdateDB {
         this.maxRetries = maxRetries;
         this.retryInterval = retryInterval;
     }
-
-
 
     /**
      * Helper method to get a new {@link EntityManager} object.
@@ -113,7 +113,7 @@ public class UpdateDB {
                 UserDataEntity userDataEntity = new UserDataEntity();
                 userDataEntity.setId(id);
                 userDataEntity.setUsername(name);
-                UserDataEntity data =  entityManager.find(UserDataEntity.class,  userDataEntity);
+                UserDataEntity data = entityManager.find(UserDataEntity.class, userDataEntity);
                 entityManager.remove(data);
                 entityManager.getTransaction().commit();
                 entityManager.close();
@@ -134,6 +134,68 @@ public class UpdateDB {
             }
         } while (numAttempts <= maxRetries);
         throw new DBException("Connection failed. QueryTimeoutException occurred.");
+    }
+
+    public UserDataEntity findEntity(String name, int id) throws DBException {
+
+        int numAttempts = 0;
+        EntityManager entityManager = getEntityManager();
+        do {
+            numAttempts++;
+            try {
+                entityManager.getTransaction().begin();
+                UserDataEntity userDataEntity = new UserDataEntity();
+                userDataEntity.setId(id);
+                userDataEntity.setUsername(name);
+                UserDataEntity data = entityManager.find(UserDataEntity.class, userDataEntity);
+                return data;
+
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if (cause != null) {
+                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+                        continue;
+                    }
+                    Throwable nestedCause = cause.getCause();
+                    if (nestedCause instanceof ConstraintViolationException) {
+                        return null;
+                    }
+                    throw new DBException("Exception occurred while connecting to the database: ", e);
+                }
+            } finally {
+                entityManager.getTransaction().commit();
+                entityManager.close();
+                closeEntityManager(entityManager);
+            }
+        } while (numAttempts <= maxRetries);
+        throw new DBException("Connection failed. QueryTimeoutException occurred.");
+    }
+
+
+    public List<UserDataEntity> getAllUsers() throws DBException {
+
+        int numAttempts = 0;
+        do {
+            numAttempts++;
+            EntityManager entityManager = getEntityManager();
+
+            try {
+                Session session = (Session) entityManager.getDelegate();
+                session.setDefaultReadOnly(true);
+                TypedQuery<UserDataEntity> query = entityManager
+                        .createNamedQuery(Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
+                                          UserDataEntity.class);
+                if (query.getResultList().size() > 0) {
+                    return query.getResultList();
+                }
+            } catch (PersistenceException e) {
+                validatePersistenceException(e);
+            } finally {
+                closeEntityManager(entityManager);
+            }
+        } while (numAttempts <= maxRetries);
+        throw new DBException("Connection failed. QueryTimeoutException occurred.");
+
     }
 
     /**
