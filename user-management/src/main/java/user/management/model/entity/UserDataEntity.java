@@ -25,10 +25,12 @@ import javax.persistence.NamedNativeQuery;
 public class UserDataEntity implements Serializable {
 
     @Id
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "tenant_id")
     private String tenantId;
 
-    @Id
     @Column(name = "user_name")
     private String userName;
 
@@ -71,5 +73,13 @@ public class UserDataEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
