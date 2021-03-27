@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import app.management.exception.DBException;
 import app.management.model.entity.ApplicationDataEntity;
-import org.hibernate.exception.JDBCConnectionException;
 
 import java.util.List;
 import java.util.Random;
@@ -110,7 +109,7 @@ public class UpdateDB {
             try {
                 entityManager.getTransaction().begin();
                 ApplicationDataEntity applicationDataEntity = new ApplicationDataEntity();
-                applicationDataEntity.setId(id);
+                applicationDataEntity.setTenantId(id);
                 applicationDataEntity.setAppName(name);
                 ApplicationDataEntity data =  entityManager.find(ApplicationDataEntity.class, applicationDataEntity);
                 entityManager.remove(data);
@@ -145,7 +144,7 @@ public class UpdateDB {
             try {
                 entityManager.getTransaction().begin();
                 ApplicationDataEntity appDataEntity = new ApplicationDataEntity();
-                appDataEntity.setId(id);
+                appDataEntity.setTenantId(id);
                 appDataEntity.setAppName(name);
                 ApplicationDataEntity data = entityManager.find(ApplicationDataEntity.class, appDataEntity);
                 return data;

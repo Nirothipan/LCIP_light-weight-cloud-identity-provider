@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 
 import app.management.dao.UpdateDB;
 import app.management.exception.DBException;
-import app.management.model.config.Configuration;
 import app.management.model.entity.ApplicationDataEntity;
 //import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import org.hibernate.exception.JDBCConnectionException;
@@ -73,7 +72,6 @@ public class ApplicationManager {
 
             ApplicationDataEntity applicationManagement = appData;
             applicationManagement.setClientId(clientID);
-            applicationManagement.setId("1234");
             persistToDB(applicationManagement);
             return createOutput(clientID, appName,0, null);
         }
@@ -85,7 +83,7 @@ public class ApplicationManager {
         ApplicationDataEntity userDataEntity = findApplication(name, id);
 
         JsonObject output = new JsonObject();
-        output.addProperty("tenantName", userDataEntity.getId());
+        output.addProperty("tenantName", userDataEntity.getTenantId());
         output.addProperty("clientID", userDataEntity.getClientId());
         output.addProperty("applicationName", userDataEntity.getAppName());
         output.addProperty("callbackURL", userDataEntity.getCallBackUrl());

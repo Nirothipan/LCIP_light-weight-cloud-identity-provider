@@ -51,11 +51,11 @@ public class ApplicationDataEntity implements Serializable {
         this.appName = appName;
     }
 
-    public String getId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setId(String id) {
+    public void setTenantId(String id) {
         this.tenantId = id;
     }
 
