@@ -16,7 +16,7 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
     }
 
     public static void main(String[] args) {
-        //  getUser("niro", 1234);
+        getUser(null);
     }
 
     private static Object getUser(String tenantId) {
@@ -40,8 +40,10 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
             user.addProperty("Tenant Name", userDataEntity.getTenantId());
             user.addProperty("User Name", userDataEntity.getUserName());
             user.addProperty("Email", userDataEntity.getUserEmail());
-            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getTenantId())) {
-                allUsers.add(user);
+            if (tenantId != null && !tenantId.isEmpty()) {
+                if (tenantId.equals(userDataEntity.getTenantId())) {
+                    allUsers.add(user);
+                }
             } else {
                 allUsers.add(user);
             }

@@ -37,7 +37,7 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
 
         private static Object addUser() {
             UserDataEntity userData = new UserDataEntity();
-            userData.setTenantId("del");
+            userData.setTenantId("del2");
             userData.setUserName("ram");
             userData.setUserEmail("niro@wso2.com");
             userData.setPassword("122121");
