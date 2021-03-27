@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 import user.management.exception.DBException;
-import user.management.model.UserData;
 import user.management.model.entity.UserDataEntity;
 import user.management.utils.Constants;
 
@@ -111,8 +110,8 @@ public class UpdateDB {
             try {
                 entityManager.getTransaction().begin();
                 UserDataEntity userDataEntity = new UserDataEntity();
-                userDataEntity.setId(id);
-                userDataEntity.setUsername(name);
+                userDataEntity.setTenantId(id);
+                userDataEntity.setUserName(name);
                 UserDataEntity data = entityManager.find(UserDataEntity.class, userDataEntity);
                 entityManager.remove(data);
                 entityManager.getTransaction().commit();
@@ -145,8 +144,8 @@ public class UpdateDB {
             try {
                 entityManager.getTransaction().begin();
                 UserDataEntity userDataEntity = new UserDataEntity();
-                userDataEntity.setId(id);
-                userDataEntity.setUsername(name);
+                userDataEntity.setTenantId(id);
+                userDataEntity.setUserName(name);
                 UserDataEntity data = entityManager.find(UserDataEntity.class, userDataEntity);
                 return data;
 

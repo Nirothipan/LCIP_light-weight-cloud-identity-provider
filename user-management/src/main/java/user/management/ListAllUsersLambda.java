@@ -40,11 +40,11 @@ public class ListAllUsersLambda extends UserManagement implements RequestHandler
 
             JsonObject user = new JsonObject();
 
-            user.addProperty("tenantName", userDataEntity.getId());
-            user.addProperty("name", userDataEntity.getUsername());
+            user.addProperty("tenantName", userDataEntity.getTenantId());
+            user.addProperty("name", userDataEntity.getUserName());
             user.addProperty("email", userDataEntity.getUserEmail());
 
-            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getId())) {
+            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getTenantId())) {
                 allUsers.add(user);
             } else {
                 allUsers.add(user);

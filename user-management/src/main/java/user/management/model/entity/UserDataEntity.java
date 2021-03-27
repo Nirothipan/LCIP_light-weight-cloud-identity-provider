@@ -5,13 +5,10 @@ import user.management.utils.Constants;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
 
 /**
  * Database Entity.
@@ -19,32 +16,24 @@ import javax.persistence.Table;
  * @since 1.0.0
  */
 @NamedNativeQueries({
-        @NamedNativeQuery(
-                name = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
+        @NamedNativeQuery(name = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
                 query = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER,
-                resultClass = UserDataEntity.class
-        )
-})
+                resultClass = UserDataEntity.class) })
 
 @Entity
 @Table(name = "USER_INFO")
 public class UserDataEntity implements Serializable {
-
-    private static final long serialVersionUID = -4997964964871690908L;
-
 
     @Id
     @Column(name = "tenantId")
     private String tenantId;
 
     @Id
-    @Column(name = "username")
-    private String username;
+    @Column(name = "userName")
+    private String userName;
 
-    @Column(name = "user_email")
+    @Column(name = "userEmail")
     private String userEmail;
-
-
 
     @Column(name = "password")
     private String password;
@@ -60,19 +49,19 @@ public class UserDataEntity implements Serializable {
         this.userEmail = userEmail;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setId(String id) {
+    public void setTenantId(String id) {
         this.tenantId = id;
     }
 

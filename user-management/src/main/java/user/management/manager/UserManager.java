@@ -5,8 +5,6 @@ import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import org.hibernate.exception.JDBCConnectionException;
 import user.management.dao.UpdateDB;
 import user.management.exception.DBException;
-import user.management.model.UserData;
-import user.management.model.config.Configuration;
 import user.management.model.entity.UserDataEntity;
 
 import java.util.List;
@@ -36,7 +34,7 @@ public class UserManager {
 
     public JsonObject addUser(UserDataEntity userData) throws DBException, Exception {
         // Avoid creating duplicate keys
-        String username = userData.getUsername();
+        String username = userData.getUserName();
 
         if (username == null || username.isEmpty()) {
             throw new Exception("User name cannot be empty");
@@ -56,8 +54,8 @@ public class UserManager {
         UserDataEntity userDataEntity = getFromDB(name, id);
 
         JsonObject output = new JsonObject();
-        output.addProperty("tentnatId", userDataEntity.getId());
-        output.addProperty("name", userDataEntity.getUsername());
+        output.addProperty("tentnatId", userDataEntity.getTenantId());
+        output.addProperty("name", userDataEntity.getUserName());
         output.addProperty("email", userDataEntity.getUserEmail());
         return output;
 

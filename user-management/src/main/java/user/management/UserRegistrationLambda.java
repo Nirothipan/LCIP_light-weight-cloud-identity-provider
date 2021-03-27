@@ -19,8 +19,8 @@ public class UserRegistrationLambda extends UserManagement implements RequestHan
 
     private static Object addUser(UserDataEntity data) {
         UserDataEntity userData = new UserDataEntity();
-        userData.setId(data.getId());
-        userData.setUsername(data.getUsername());
+        userData.setTenantId(data.getTenantId());
+        userData.setUserName(data.getUserName());
         userData.setUserEmail(data.getUserEmail());
         userData.setPassword(data.getPassword());
 
@@ -37,8 +37,8 @@ public class UserRegistrationLambda extends UserManagement implements RequestHan
 
     private static Object addUser() {
         UserDataEntity userData = new UserDataEntity();
-        userData.setId("122323");
-        userData.setUsername("niro12212");
+        userData.setTenantId("122323");
+        userData.setUserName("niro12212");
         userData.setUserEmail("niro@wso2.com");
         userData.setPassword("122121");
         JsonObject response = new JsonObject();
