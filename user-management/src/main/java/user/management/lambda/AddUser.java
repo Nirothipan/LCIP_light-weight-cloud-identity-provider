@@ -28,7 +28,7 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
         JsonObject response;
         try {
             response = userManager.addUser(userData);
-            return response.toString();
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
             return getErrorOutput(e.getMessage());
