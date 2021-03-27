@@ -4,11 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
-import app.management.Application;
+import app.management.ApplicationManagement;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -22,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public class Utils {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationManagement.class);
     private static final Pattern varPattern = Pattern.compile("\\$\\{([^}]*)}");
 
     private Utils() {

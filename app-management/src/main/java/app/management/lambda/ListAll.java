@@ -1,5 +1,6 @@
-package app.management;
+package app.management.lambda;
 
+import app.management.ApplicationManagement;
 import app.management.dao.UpdateDB;
 import app.management.manager.ApplicationManager;
 import app.management.model.config.Configuration;
@@ -17,34 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ApplicationListLambda implements RequestHandler<ApplicationDataEntity, Object> {
-
-    private static Configuration config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML,
-                                                           Configuration.class);
-
-    private static UpdateDB updateDB;
-
-    static {
-        Map<String, Object> jdbcConfig = new HashMap<>();
-        if (config.getDatabaseConfig().getEndpoint() != null) {
-            jdbcConfig.put(Constants.Database.JDBC_URL, config.getDatabaseConfig().getEndpoint());
-        }
-        if (config.getDatabaseConfig().getCredentials().getUsername() != null) {
-            jdbcConfig.put(Constants.Database.JDBC_USER, config.getDatabaseConfig().getCredentials().getUsername());
-        }
-        if (config.getDatabaseConfig().getCredentials().getPassword() != null) {
-            jdbcConfig.put(Constants.Database.JDBC_PASSWORD, config.getDatabaseConfig().getCredentials().getPassword());
-        }
-        if (config.getDatabaseConfig().getPoolSize() != null) {
-            jdbcConfig.put(Constants.Database.C3P0_MAX_CONNECTION_POOL_SIZE, config.getDatabaseConfig().getPoolSize());
-        }
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.Database.PERSISTENCE_UNIT_NAME,
-                                                                          jdbcConfig);
-        updateDB = new UpdateDB(emf, 3, 5000);
-    }
-
-    private static ApplicationManager applicationManager = new ApplicationManager(updateDB, config);
+public class ListAll extends ApplicationManagement implements RequestHandler<ApplicationDataEntity, Object> {
 
     @Override
     public Object handleRequest(ApplicationDataEntity userData, Context context) {
@@ -65,6 +39,7 @@ public class ApplicationListLambda implements RequestHandler<ApplicationDataEnti
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();
+            return getErrorOutput(e.getMessage()).toString();
         }
         System.out.println("Data added :" + response.toString());
         return response;
