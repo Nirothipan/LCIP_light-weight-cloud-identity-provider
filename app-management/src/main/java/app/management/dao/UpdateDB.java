@@ -1,13 +1,19 @@
 package app.management.dao;
 
+import app.management.model.entity.ApplicationIdDataEntity;
+import app.management.utils.Constants;
+import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import app.management.exception.DBException;
 import app.management.model.entity.ApplicationDataEntity;
+import org.hibernate.exception.JDBCConnectionException;
 
+import java.util.List;
 import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 
 /**
  * This class updates/retrieve information from the database.
@@ -128,6 +134,101 @@ public class UpdateDB {
             }
         } while (numAttempts <= maxRetries);
         throw new DBException("Connection failed. QueryTimeoutException occurred.");
+    }
+
+    public ApplicationDataEntity findEntity(String name, String id) throws DBException {
+
+        int numAttempts = 0;
+        EntityManager entityManager = getEntityManager();
+        do {
+            numAttempts++;
+            try {
+                entityManager.getTransaction().begin();
+                ApplicationDataEntity appDataEntity = new ApplicationDataEntity();
+                appDataEntity.setId(id);
+                appDataEntity.setAppName(name);
+                ApplicationDataEntity data = entityManager.find(ApplicationDataEntity.class, appDataEntity);
+                return data;
+
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if (cause != null) {
+//                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+//                        continue;
+//                    }
+                    Throwable nestedCause = cause.getCause();
+                    if (nestedCause instanceof ConstraintViolationException) {
+                        return null;
+                    }
+                    throw new DBException("Exception occurred while connecting to the database: ", e);
+                }
+            } finally {
+                entityManager.getTransaction().commit();
+                entityManager.close();
+                closeEntityManager(entityManager);
+            }
+        } while (numAttempts <= maxRetries);
+        throw new DBException("Connection failed. QueryTimeoutException occurred.");
+    }
+
+    public ApplicationIdDataEntity findEntityWithID(String appID) throws DBException {
+
+        int numAttempts = 0;
+        EntityManager entityManager = getEntityManager();
+        do {
+            numAttempts++;
+            try {
+                entityManager.getTransaction().begin();
+                ApplicationIdDataEntity appDataEntity = new ApplicationIdDataEntity();
+                appDataEntity.setClientId(appID);
+                ApplicationIdDataEntity data = entityManager.find(ApplicationIdDataEntity.class, appDataEntity);
+                return data;
+
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if (cause != null) {
+//                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+//                        continue;
+//                    }
+                    Throwable nestedCause = cause.getCause();
+                    if (nestedCause instanceof ConstraintViolationException) {
+                        return null;
+                    }
+                    throw new DBException("Exception occurred while connecting to the database: ", e);
+                }
+            } finally {
+                entityManager.getTransaction().commit();
+                entityManager.close();
+                closeEntityManager(entityManager);
+            }
+        } while (numAttempts <= maxRetries);
+        throw new DBException("Connection failed. QueryTimeoutException occurred.");
+    }
+
+
+    public List<ApplicationDataEntity> getAllApplication() throws DBException {
+
+        int numAttempts = 0;
+        do {
+            numAttempts++;
+            EntityManager entityManager = getEntityManager();
+
+            try {
+                Session session = (Session) entityManager.getDelegate();
+                session.setDefaultReadOnly(true);
+                TypedQuery<ApplicationDataEntity> query = entityManager
+                        .createNamedQuery(Constants.Database.Queries.LIST_ALL_APPLICATION, ApplicationDataEntity.class);
+                if (query.getResultList().size() > 0) {
+                    return query.getResultList();
+                }
+            } catch (PersistenceException e) {
+                validatePersistenceException(e);
+            } finally {
+                closeEntityManager(entityManager);
+            }
+        } while (numAttempts <= maxRetries);
+        throw new DBException("Connection failed. QueryTimeoutException occurred.");
+
     }
 
     private void validatePersistenceException(PersistenceException e) throws DBException {

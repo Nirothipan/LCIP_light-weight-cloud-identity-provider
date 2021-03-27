@@ -1,11 +1,17 @@
 package app.management.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import app.management.utils.Constants;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = Constants.Database.Queries.LIST_ALL_APPLICATION,
+                query = Constants.Database.Queries.GET_ALL_APPLICATION,
+                resultClass = ApplicationDataEntity.class
+        )
+})
 @Entity
 @Table(name = "APPLICATION_INFO")
 public class ApplicationDataEntity implements Serializable {
