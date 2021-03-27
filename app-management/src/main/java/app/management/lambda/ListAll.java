@@ -1,28 +1,19 @@
 package app.management.lambda;
 
 import app.management.ApplicationManagement;
-import app.management.dao.UpdateDB;
-import app.management.manager.ApplicationManager;
-import app.management.model.config.Configuration;
 import app.management.model.entity.ApplicationDataEntity;
-import app.management.utils.Constants;
-import app.management.utils.Utils;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ListAll extends ApplicationManagement implements RequestHandler<ApplicationDataEntity, Object> {
 
     @Override
     public Object handleRequest(ApplicationDataEntity userData, Context context) {
-        return getApplicationList(userData.getId());
+        return getApplicationList(userData.getTenantId());
     }
 
     public static void main(String[] args) {
@@ -42,7 +33,7 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
             return getErrorOutput(e.getMessage()).toString();
         }
         System.out.println("Data added :" + response.toString());
-        return response;
+        return response.toString();
     }
 
     private static JsonArray createOutput(List<ApplicationDataEntity> userDataEntityList, String tenantId) {
@@ -53,12 +44,12 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
 
             JsonObject app = new JsonObject();
 
-            app.addProperty("tenantName", userDataEntity.getId());
+            app.addProperty("tenantName", userDataEntity.getTenantId());
             app.addProperty("clientID", userDataEntity.getClientId());
             app.addProperty("applicationName", userDataEntity.getAppName());
             app.addProperty("callbackURL", userDataEntity.getCallBackUrl());
 
-            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getId())) {
+            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getTenantId())) {
                 allApps.add(app);
             }
         }
