@@ -24,13 +24,14 @@ import javax.persistence.NamedNativeQuery;
 @Table(name = "USER_INFO")
 public class UserDataEntity implements Serializable {
 
-    @Id
     @Column(name = "id")
     private int id;
 
+    @Id
     @Column(name = "tenant_id")
     private String tenantId;
 
+    @Id
     @Column(name = "user_name")
     private String userName;
 

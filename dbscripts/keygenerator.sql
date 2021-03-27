@@ -9,7 +9,8 @@ CREATE TABLE `USER_INFO` (
                              `user_name` varchar(50) NOT NULL,
                              `user_email` varchar(50) NOT NULL,
                              `password` varchar(1000) NOT NULL,
-                             PRIMARY KEY (`id`)
+                             PRIMARY KEY (`id`),
+                             CONSTRAINT userManagement UNIQUE (tenant_id,user_name)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 # todo add constraint
 #

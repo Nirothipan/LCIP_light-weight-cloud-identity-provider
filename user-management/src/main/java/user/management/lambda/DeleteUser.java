@@ -14,7 +14,7 @@ public class DeleteUser extends UserManagement implements RequestHandler<UserDat
     }
 
     public static void main(String[] args) {
-        // removeUser("niro", "1234");
+        removeUser("ram", "del");
     }
 
     private static Object removeUser(String name, String id) {

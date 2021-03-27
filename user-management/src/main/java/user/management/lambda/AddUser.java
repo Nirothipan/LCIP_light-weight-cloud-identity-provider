@@ -15,7 +15,7 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
 
     public static void main(String[] args) {
         //addUser(userData, context);
-        //  addUser();
+          addUser();
     }
 
     private static Object addUser(UserDataEntity data) {
@@ -35,21 +35,21 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
         }
     }
 
-    //    private static Object addUser() {
-    //        UserDataEntity userData = new UserDataEntity();
-    //        userData.setTenantId("122323");
-    //        userData.setUserName("niro12212");
-    //        userData.setUserEmail("niro@wso2.com");
-    //        userData.setPassword("122121");
-    //        JsonObject response = new JsonObject();
-    //        try {
-    //            response = userManager.addUser(userData);
-    //        } catch (Exception e) {
-    //            System.out.println("Exception :: " + e);
-    //            e.printStackTrace();
-    //        }
-    //        System.out.println("Data added :" + response.toString());
-    //        return response;
-    //    }
+        private static Object addUser() {
+            UserDataEntity userData = new UserDataEntity();
+            userData.setTenantId("del");
+            userData.setUserName("ram");
+            userData.setUserEmail("niro@wso2.com");
+            userData.setPassword("122121");
+            JsonObject response = new JsonObject();
+            try {
+                response = userManager.addUser(userData);
+            } catch (Exception e) {
+                System.out.println("Exception :: " + e);
+                e.printStackTrace();
+            }
+            System.out.println("Data added :" + response.toString());
+            return response;
+        }
 
 }
