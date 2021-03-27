@@ -2,15 +2,20 @@ package app.management;
 
 import app.management.dao.UpdateDB;
 import app.management.manager.ApplicationManager;
+import app.management.model.entity.ApplicationDataEntity;
 import app.management.utils.Constants;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Main user.management.Application class.
@@ -54,5 +59,12 @@ public class ApplicationManagement {
         output.addProperty("Status", "Internal Server Error");
         output.addProperty("Message", message);
         return output;
+    }
+
+    protected static boolean checkApplication(String applicationName, String tenantID) throws Exception {
+        List<ApplicationDataEntity> applicationList = applicationManager.listTenantApplication();
+        Optional<ApplicationDataEntity> resultList = applicationList.stream().parallel()
+                .filter(app -> app.getTenantId().equals(tenantID) && app.getAppName().equals(applicationName)).findFirst();
+        return resultList.isPresent();
     }
 }
