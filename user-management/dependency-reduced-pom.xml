@@ -36,7 +36,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>user.management.UserRegistrationLambda</mainClass>
+                  <mainClass>user.management.lambda.AddUser</mainClass>
                 </transformer>
               </transformers>
             </configuration>

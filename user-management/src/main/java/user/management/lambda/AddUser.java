@@ -1,11 +1,12 @@
-package user.management;
+package user.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.JsonObject;
+import user.management.UserManagement;
 import user.management.model.entity.UserDataEntity;
 
-public class UserRegistrationLambda extends UserManagement implements RequestHandler<UserDataEntity, Object> {
+public class AddUser extends UserManagement implements RequestHandler<UserDataEntity, Object> {
 
     @Override
     public Object handleRequest(UserDataEntity userData, Context context) {

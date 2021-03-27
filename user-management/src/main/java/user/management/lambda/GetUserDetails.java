@@ -1,20 +1,21 @@
-package user.management;
+package user.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.JsonObject;
+import user.management.UserManagement;
 import user.management.model.entity.UserDataEntity;
 
 import javax.naming.Context;
 
-public class UserDetailsLamda extends UserManagement implements RequestHandler<UserDataEntity, Object> {
+public class GetUserDetails extends UserManagement implements RequestHandler<UserDataEntity, Object> {
 
     @Override
     public Object handleRequest(UserDataEntity userDataEntity, com.amazonaws.services.lambda.runtime.Context context) {
-        return getUser(userDataEntity.getUserName(), userDataEntity.getTenantId());
+        return getUser(userDataEntity.getUserName(),userDataEntity.getTenantId());
     }
 
     public static void main(String[] args) {
-        getUser("niro", "12212");
+        getUser("niro","12212");
     }
 
     private static Object getUser(String name, String id) {

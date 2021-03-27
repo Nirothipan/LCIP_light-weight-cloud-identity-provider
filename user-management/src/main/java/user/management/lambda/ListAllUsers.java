@@ -1,13 +1,14 @@
-package user.management;
+package user.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import user.management.UserManagement;
 import user.management.model.entity.UserDataEntity;
 
 import java.util.List;
 
-public class ListAllUsersLambda extends UserManagement implements RequestHandler<UserDataEntity, Object> {
+public class ListAllUsers extends UserManagement implements RequestHandler<UserDataEntity, Object> {
 
     @Override
     public Object handleRequest(UserDataEntity userDataEntity, com.amazonaws.services.lambda.runtime.Context context) {
