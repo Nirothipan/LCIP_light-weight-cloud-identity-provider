@@ -16,19 +16,21 @@ import java.util.UUID;
 
 public class ApplicationManager {
 
-    private final Configuration config;
+//    private final Configuration config;
     private final UpdateDB updateDB;
 
-    public ApplicationManager(Configuration config) {
+    private static final int MAX_RETRIES = 3;
 
-        this.config = config;
-        this.updateDB = null;
+//    public ApplicationManager(Configuration config) {
+//
+////        this.config = config;
+//        this.updateDB = null;
+//
+//    }
 
-    }
+    public ApplicationManager(UpdateDB updateDB) {
 
-    public ApplicationManager(UpdateDB updateDB, Configuration config) {
-
-        this.config = config;
+//        this.config = config;
         this.updateDB = updateDB;
 
     }
@@ -135,7 +137,7 @@ public class ApplicationManager {
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);
             }
-        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        } while (numAttempts <= MAX_RETRIES);
     }
 
     public List<ApplicationDataEntity> listTenantApplication() throws DBException, Exception {
@@ -154,7 +156,7 @@ public class ApplicationManager {
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);
             }
-        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        } while (numAttempts <= MAX_RETRIES);
         return null;
 
     }
@@ -175,7 +177,7 @@ public class ApplicationManager {
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);
             }
-        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        } while (numAttempts <= MAX_RETRIES);
         return null;
     }
 
@@ -195,7 +197,7 @@ public class ApplicationManager {
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);
             }
-        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        } while (numAttempts <= MAX_RETRIES);
         return null;
     }
 
@@ -217,7 +219,7 @@ public class ApplicationManager {
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);
             }
-        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        } while (numAttempts <= MAX_RETRIES);
     }
 
 }
