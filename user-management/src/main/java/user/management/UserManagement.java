@@ -26,18 +26,27 @@ public class UserManagement {
 
     static {
         Map<String, Object> jdbcConfig = new HashMap<>();
-        if (config.getDatabaseConfig().getEndpoint() != null) {
-            jdbcConfig.put(Constants.Database.JDBC_URL, config.getDatabaseConfig().getEndpoint());
+
+        String jdbcUrl = System.getenv("jdbcUrl");
+
+        if (jdbcUrl == null || jdbcUrl.isEmpty()) {
+            jdbcUrl = "jdbc:mysql://localhost:3306/cloud_db?useSSL=false";
         }
-        if (config.getDatabaseConfig().getCredentials().getUsername() != null) {
-            jdbcConfig.put(Constants.Database.JDBC_USER, config.getDatabaseConfig().getCredentials().getUsername());
+        jdbcConfig.put(Constants.Database.JDBC_URL, jdbcUrl);
+
+        String userName = System.getenv("userName");
+        if (userName == null || userName.isEmpty()) {
+            userName = "root";
         }
-        if (config.getDatabaseConfig().getCredentials().getPassword() != null) {
-            jdbcConfig.put(Constants.Database.JDBC_PASSWORD, config.getDatabaseConfig().getCredentials().getPassword());
+        jdbcConfig.put(Constants.Database.JDBC_USER, userName);
+
+        String password = System.getenv("password");
+        if (password == null || password.isEmpty()) {
+            password = "root";
         }
-        if (config.getDatabaseConfig().getPoolSize() != null) {
-            jdbcConfig.put(Constants.Database.C3P0_MAX_CONNECTION_POOL_SIZE, config.getDatabaseConfig().getPoolSize());
-        }
+        jdbcConfig.put(Constants.Database.JDBC_PASSWORD, password);
+
+        jdbcConfig.put(Constants.Database.C3P0_MAX_CONNECTION_POOL_SIZE, 30);
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.Database.PERSISTENCE_UNIT_NAME,
                                                                           jdbcConfig);
