@@ -21,37 +21,31 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
 
     private static Object getUser(String tenantId) {
 
-        JsonArray response = null;//= new JsonObject();
         try {
             List<UserDataEntity> userDataEntityList = userManager.getTenantUser();
-            response = createOutput(userDataEntityList, tenantId);
+            JsonArray response = createOutput(userDataEntityList, tenantId);
+            return response.toString();
         } catch (Exception e) {
-            System.out.println("Exception :: " + e);
             e.printStackTrace();
+            return getErrorOutput(e.getMessage()).toString();
         }
-        System.out.println("Data added :" + response.toString());
-        return response.toString();
     }
 
     private static JsonArray createOutput(List<UserDataEntity> userDataEntityList, String tenantId) {
 
         JsonArray allUsers = new JsonArray();
-
         for (UserDataEntity userDataEntity : userDataEntityList) {
 
             JsonObject user = new JsonObject();
-
             user.addProperty("Tenant Name", userDataEntity.getTenantId());
             user.addProperty("User Name", userDataEntity.getUserName());
             user.addProperty("Email", userDataEntity.getUserEmail());
-
             if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getTenantId())) {
                 allUsers.add(user);
             } else {
                 allUsers.add(user);
             }
         }
-
         return allUsers;
     }
 

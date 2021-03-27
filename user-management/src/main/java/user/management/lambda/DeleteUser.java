@@ -14,22 +14,18 @@ public class DeleteUser extends UserManagement implements RequestHandler<UserDat
     }
 
     public static void main(String[] args) {
-        //addUser(userData, context);
-        //addUser();
-        removeUser("niro", "1234");
+        // removeUser("niro", "1234");
     }
 
     private static Object removeUser(String name, String id) {
 
-        JsonObject response = new JsonObject();
         try {
-            response = userManager.deletUser(name, id);
+            JsonObject response = userManager.deletUser(name, id);
+            return response.toString();
         } catch (Exception e) {
-            System.out.println("Exception :: " + e);
             e.printStackTrace();
+            return getErrorOutput(e.getMessage()).toString();
         }
-        System.out.println("Data added :" + response.toString());
-        return response.toString();
     }
 
 }

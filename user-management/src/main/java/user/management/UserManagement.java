@@ -1,5 +1,6 @@
 package user.management;
 
+import com.google.gson.JsonObject;
 import user.management.dao.UpdateDB;
 import user.management.manager.UserManager;
 import user.management.utils.Constants;
@@ -40,5 +41,12 @@ public class UserManagement {
     }
 
     protected static UserManager userManager = new UserManager(updateDB);
+
+    protected static JsonObject getErrorOutput(String message) {
+        JsonObject output = new JsonObject();
+        output.addProperty("Status", "Internal Server Error");
+        output.addProperty("Message", message);
+        return output;
+    }
 
 }
