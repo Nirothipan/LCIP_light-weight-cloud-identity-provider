@@ -45,7 +45,7 @@ public class KeyGenManager {
      * @param message   Message to the client side if any
      * @return JsonObject
      */
-    private JsonObject createOutput(String jwt, int errorCode, String message) {
+    public JsonObject createOutput(String jwt, int errorCode, String message) {
 
         JsonObject output = new JsonObject();
         output.addProperty("key", jwt);
@@ -78,8 +78,8 @@ public class KeyGenManager {
             Date today = new Date((currentTime.getTime()).getTime());
             Algorithm signingAlgorithm = getAlgorithm();
 
-            jwt = JWT.create().withIssuer(ISSUER).withIssuedAt(today).withExpiresAt(expiryDate)
-                    .withArrayClaim(API_CODE_CLAIM, new String[]{"api1"}) // todo
+            jwt = JWT.create().withIssuer(ISSUER).withIssuedAt(today).withExpiresAt(expiryDate).withArrayClaim(
+                    API_CODE_CLAIM, new String[] { "api1" }) // todo
                     .sign(signingAlgorithm);
 
             LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
@@ -136,4 +136,26 @@ public class KeyGenManager {
         return Algorithm.RSA384(null, privateKey);
 
     }
+
+    public LicensekeyGeneratorEntity fetchToken(LicensekeyGeneratorEntity licenseKeyGeneratorEntity)
+            throws DBException, Exception {
+        int numAttempts = 0;
+        do {
+            ++numAttempts;
+            try {
+                return updateDB.retrieveJWTKeyIfExists(licenseKeyGeneratorEntity);
+            } catch (PersistenceException e) {
+                Throwable cause = e.getCause();
+                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
+                    continue;
+                }
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
+            }
+        } while (numAttempts <= MAX_RETRIES);
+
+        return null;
+    }
+
 }

@@ -55,10 +55,10 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
 
     public static void main(String[] args) {
         LicensekeyGeneratorEntity token = new LicensekeyGeneratorEntity();
-        token.setUserName("niro");
+        token.setUserName("ram");
         token.setAppId("1212");
         token.setTenantId("212121");
-        token.setExpiryTime("2020-11-11 00:00:00");
+        token.setExpiryTime("2020-11-01 00:00:00");
         createKey(token);
     }
 
@@ -76,20 +76,27 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
 
         if (isUserValid) {
             if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+                System.out.println(getErrorOutput("Application Not Valid"));
                 return getErrorOutput("Application Not Valid");
             }
         } else {
+            System.out.println(getErrorOutput("Invalid User"));
             return getErrorOutput("Invalid User");
         }
 
-        LicensekeyGeneratorEntity existingToken = getToken(token);
-
-        if (token != null) {
-            // do something and send the token back
+        try {
+            LicensekeyGeneratorEntity existingToken = getToken(token);
+            if (existingToken != null) {
+                Object response =  keyGenManager.createOutput(existingToken.getToken(), 0, null);
+                System.out.println(response);
+                return response;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return toJson(getErrorOutput(ex.getMessage()));
         }
 
         // generate token
-
         UserData userData = new UserData();
         userData.setUsername(token.getUserName());
         userData.setTenantId(token.getTenantId());
@@ -117,8 +124,7 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
     }
 
     // todo - get Existing token from the db
-    private static LicensekeyGeneratorEntity getToken(LicensekeyGeneratorEntity token) {
-        LicensekeyGeneratorEntity key = new LicensekeyGeneratorEntity();
-        return key;
+    private static LicensekeyGeneratorEntity getToken(LicensekeyGeneratorEntity token) throws Exception {
+        return keyGenManager.fetchToken(token);
     }
 }

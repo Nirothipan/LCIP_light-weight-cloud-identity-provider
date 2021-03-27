@@ -3,8 +3,6 @@ package licensekey.generator.dao;
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import licensekey.generator.exception.DBException;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
-import licensekey.generator.utils.Constants;
-import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 
@@ -12,7 +10,6 @@ import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
 
 /**
  * This class updates/retrieve information from the database.
@@ -46,7 +43,8 @@ public class UpdateDB {
      * @return JWT if exist or null
      * @throws DBException If the Database connection causes an error
      */
-    public String retrieveJWTKeyIfExists(String username) throws DBException {
+    public LicensekeyGeneratorEntity retrieveJWTKeyIfExists(LicensekeyGeneratorEntity licensekeyGeneratorEntity)
+            throws DBException {
 
         int numAttempts = 0;
         do {
@@ -54,16 +52,8 @@ public class UpdateDB {
             EntityManager entityManager = getEntityManager();
 
             try {
-                Session session = (Session) entityManager.getDelegate();
-                session.setDefaultReadOnly(true);
-                TypedQuery<LicensekeyGeneratorEntity> query = entityManager.createNamedQuery(
-                        Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
-                        LicensekeyGeneratorEntity.class).setParameter(Constants.Database.QueryParams.USERNAME,
-                                                                      username);
-                if (query.getResultList().size() > 0) {
-                    return query.getResultList().get(0).getToken();
-                }
-                return null;
+                entityManager.getTransaction().begin();
+                return entityManager.find(LicensekeyGeneratorEntity.class, licensekeyGeneratorEntity);
             } catch (PersistenceException e) {
                 validatePersistenceException(e);
             } finally {
