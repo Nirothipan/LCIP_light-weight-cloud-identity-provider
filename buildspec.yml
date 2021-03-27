@@ -11,4 +11,5 @@ phases:
 artifacts:
   files:
     - user-management/target/user-management-1.0-SNAPSHOT.jar
+    - app-management/target/app-management-1.0-SNAPSHOT.jar
   discard-paths: yes
