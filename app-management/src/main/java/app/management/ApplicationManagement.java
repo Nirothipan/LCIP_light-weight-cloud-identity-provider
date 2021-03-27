@@ -57,7 +57,7 @@ public class ApplicationManagement {
         return output;
     }
 
-    protected static boolean checkApplication(String applicationName, String tenantID) {
+    public static boolean checkApplication(String applicationName, String tenantID) {
         List<ApplicationDataEntity> applicationList = null;
         try {
             applicationList = applicationManager.listTenantApplication();
