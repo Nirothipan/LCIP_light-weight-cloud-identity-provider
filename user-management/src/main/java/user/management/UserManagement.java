@@ -19,8 +19,8 @@ import javax.persistence.Persistence;
 
 public class UserManagement {
 
-    private static Configuration config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML,
-                                                           Configuration.class);
+    //private static Configuration config = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML,
+                                                           //Configuration.class);
 
     private static UpdateDB updateDB;
 
@@ -53,7 +53,7 @@ public class UserManagement {
         updateDB = new UpdateDB(emf, 3, 5000);
     }
 
-    protected static UserManager userManager = new UserManager(updateDB, config);
+    protected static UserManager userManager = new UserManager(updateDB);
 
     public static void main(String[] args) {
 
