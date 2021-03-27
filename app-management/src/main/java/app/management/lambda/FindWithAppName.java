@@ -28,7 +28,7 @@ public class FindWithAppName extends ApplicationManagement implements RequestHan
             return getErrorOutput(e.getMessage()).toString();
         }
         System.out.println("Data retrieved :" + response.toString());
-        return response;
+        return response.toString();
     }
 
 }
