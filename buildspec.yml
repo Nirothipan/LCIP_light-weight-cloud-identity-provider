@@ -10,5 +10,5 @@ phases:
       - echo Build completed successfully
 artifacts:
   files:
-    - target/key-validator-lambda-1.0-SNAPSHOT.jar
+    - user-management/target/user-management-1.0-SNAPSHOT.jar
   discard-paths: yes
