@@ -11,52 +11,43 @@ import java.util.List;
  */
 public class UserData {
 
-    @SerializedName("username")
     private String username;
-    @SerializedName("creator_username")
-    private String creatorUsername;
-    @SerializedName("expiry-date")
+
     private String expiryDate;
-    @SerializedName("apis")
-    private List<String> apis;
+
+    private String appId;
+
+    private String tenantId;
 
     public String getUsername() {
-
         return username;
     }
 
     public void setUsername(String username) {
-
         this.username = username;
     }
 
     public String getExpiryDate() {
-
         return expiryDate;
     }
 
     public void setExpiryDate(String expiryDate) {
-
         this.expiryDate = expiryDate;
     }
 
-    public List<String> getApis() {
-
-        return apis;
+    public String getAppId() {
+        return appId;
     }
 
-    public void setApis(List<String> apis) {
-
-        this.apis = apis;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    public String getCreatorUsername() {
-
-        return creatorUsername;
+    public String getTenantId() {
+        return tenantId;
     }
 
-    public void setCreatorUsername(String creatorUsername) {
-
-        this.creatorUsername = creatorUsername;
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 }

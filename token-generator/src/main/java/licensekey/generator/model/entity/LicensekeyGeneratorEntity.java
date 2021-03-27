@@ -16,100 +16,83 @@ import javax.persistence.Table;
  * @since 1.0.0
  */
 @NamedNativeQueries({
-        @NamedNativeQuery(
-                name = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
+        @NamedNativeQuery(name = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
                 query = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER,
-                resultClass = LicensekeyGeneratorEntity.class
-        )
-})
+                resultClass = LicensekeyGeneratorEntity.class) })
 
 @Entity
-@Table(name = "KEY_GEN_INFO")
+@Table(name = "TOKEN_INFO")
 public class LicensekeyGeneratorEntity implements Serializable {
 
     private static final long serialVersionUID = -4997964964871690908L;
 
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "token")
+    private String token;
 
-    @Column(name = "username")
-    private String username;
+    @Id
+    @Column(name = "tenant_id")
+    private String tenantId;
 
-    @Column(name = "creator_username")
-    private String creatorUsername;
-
-    @Column(name = "jwt")
-    private String jwtToken;
-
-    @Column(name = "expiry_date")
-    private long expiryDate;
-
+    @Id
     @Column(name = "created_date")
     private long createdDate;
 
-    public static long getSerialVersionUID() {
+    @Id
+    @Column(name = "user_name")
+    private String userName;
 
-        return serialVersionUID;
+    @Column(name = "app_id")
+    private String appId;
+
+    @Column(name = "expiry_time")
+    private String expiryTime;
+
+    public String getToken() {
+        return token;
     }
 
-    public int getId() {
-
-        return id;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public void setId(int id) {
-
-        this.id = id;
+    public String getTenantId() {
+        return tenantId;
     }
 
-    public String getUsername() {
-
-        return username;
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
-    public void setUsername(String username) {
-
-        this.username = username;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getCreatorUsername() {
-
-        return creatorUsername;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setCreatorUsername(String creatorUsername) {
-
-        this.creatorUsername = creatorUsername;
+    public String getAppId() {
+        return appId;
     }
 
-    public String getJwtToken() {
-
-        return jwtToken;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    public void setJwtToken(String jwtToken) {
-
-        this.jwtToken = jwtToken;
+    public String getExpiryTime() {
+        return expiryTime;
     }
 
-    public long getExpiryDate() {
-
-        return expiryDate;
-    }
-
-    public void setExpiryDate(long expiryDate) {
-
-        this.expiryDate = expiryDate;
+    public void setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
     }
 
     public long getCreatedDate() {
-
         return createdDate;
     }
 
     public void setCreatedDate(long createdDate) {
-
         this.createdDate = createdDate;
     }
 }

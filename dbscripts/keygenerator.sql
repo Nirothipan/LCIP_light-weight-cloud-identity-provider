@@ -11,7 +11,7 @@ CREATE TABLE `USER_INFO`
     PRIMARY KEY (`id`),
     CONSTRAINT userManagement UNIQUE (tenant_id, user_name)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 32
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = latin1;
 
 DROP TABLE IF EXISTS `TOKEN_INFO`;
@@ -20,10 +20,10 @@ DROP TABLE IF EXISTS `TOKEN_INFO`;
 CREATE TABLE `TOKEN_INFO`
 (
     `token`       varchar(1000) NOT NULL,
-    `expiry_time` varchar(50)   NOT NULL,
+    `tenant_id`   varchar(50)   NOT NULL,
     `user_name`   varchar(50)   NOT NULL,
     `app_id`      varchar(50)   NOT NULL,
-    `state` boolean NOT NULL DEFAULT FALSE,
+    `expiry_time` varchar(50)   NOT NULL,
     PRIMARY KEY (`token`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 32

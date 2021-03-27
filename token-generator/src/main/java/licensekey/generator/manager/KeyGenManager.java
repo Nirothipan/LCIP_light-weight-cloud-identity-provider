@@ -8,7 +8,6 @@ import licensekey.generator.dao.UpdateDB;
 import licensekey.generator.exception.DBException;
 import licensekey.generator.exception.PrivateKeyGenerationException;
 import licensekey.generator.model.UserData;
-import licensekey.generator.model.config.Configuration;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
 import licensekey.generator.service.PrivateKeyReader;
 import org.hibernate.exception.JDBCConnectionException;
@@ -17,7 +16,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.List;
 import javax.persistence.PersistenceException;
 
 import static licensekey.generator.utils.Constants.API_CODE_CLAIM;
@@ -30,19 +28,11 @@ import static licensekey.generator.utils.Constants.ISSUER;
  */
 public class KeyGenManager {
 
-    private final Configuration config;
     private final UpdateDB updateDB;
+    private static final int MAX_RETRIES = 3;
 
-    public KeyGenManager(Configuration config) {
+    public KeyGenManager(UpdateDB updateDB) {
 
-        this.config = config;
-        this.updateDB = null;
-
-    }
-
-    public KeyGenManager(UpdateDB updateDB, Configuration config) {
-
-        this.config = config;
         this.updateDB = updateDB;
 
     }
@@ -73,7 +63,7 @@ public class KeyGenManager {
      * @throws PrivateKeyGenerationException If the Private Key cannot be generated
      * @throws DBException                   If the Database connection causes an error
      */
-    public JsonObject generateKey(UserData userData) throws DBException, Exception {
+    public JsonObject generateKeyAndUpdateDB(UserData userData) throws DBException, Exception {
         // Avoid creating duplicate keys
         String username = userData.getUsername();
         String jwt = null;
@@ -82,27 +72,26 @@ public class KeyGenManager {
             Timestamp timestamp = Timestamp.valueOf(userData.getExpiryDate());
             Calendar currentTime = Calendar.getInstance();
             Date expiryDate = new Date(timestamp.getTime());
-            List<String> productCodesList = userData.getApis();
+           /* List<String> productCodesList = userData.getApis();
             String[] apiCodesArray = new String[productCodesList.size()];
-            apiCodesArray = productCodesList.toArray(apiCodesArray);
+            apiCodesArray = productCodesList.toArray(apiCodesArray);*/
             Date today = new Date((currentTime.getTime()).getTime());
             Algorithm signingAlgorithm = getAlgorithm();
 
-            jwt = JWT.create()
-                    .withIssuer(ISSUER)
-                    .withIssuedAt(today)
-                    .withExpiresAt(expiryDate)
-                    .withArrayClaim(API_CODE_CLAIM, apiCodesArray)
+            jwt = JWT.create().withIssuer(ISSUER).withIssuedAt(today).withExpiresAt(expiryDate)
+                    .withArrayClaim(API_CODE_CLAIM, new String[]{"api1"}) // todo
                     .sign(signingAlgorithm);
 
             LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
+
             licensekeyGeneratorEntity.setCreatedDate(today.getTime());
-            licensekeyGeneratorEntity.setCreatorUsername(userData.getCreatorUsername());
-            licensekeyGeneratorEntity.setExpiryDate(expiryDate.getTime());
-            licensekeyGeneratorEntity.setJwtToken(jwt);
-            licensekeyGeneratorEntity.setUsername(username);
+            licensekeyGeneratorEntity.setUserName(userData.getUsername());
+            licensekeyGeneratorEntity.setExpiryTime(String.valueOf(expiryDate.getTime()));
+            licensekeyGeneratorEntity.setToken(jwt);
+            licensekeyGeneratorEntity.setAppId(userData.getAppId());
+            licensekeyGeneratorEntity.setTenantId(userData.getTenantId());
             // Persist to the database
-            // persistToDB(licensekeyGeneratorEntity);
+            persistToDB(licensekeyGeneratorEntity);
 
         }
         return createOutput(jwt, 0, null);
@@ -124,14 +113,14 @@ public class KeyGenManager {
                 return;
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
-                if ((cause instanceof CommunicationsException ||
-                        cause instanceof JDBCConnectionException)) {
+                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
                     continue;
                 }
-                throw new RuntimeException("Exception occurred when creating EntityManagerFactory for the named " +
-                        "persistence unit: ", e);
+                throw new RuntimeException(
+                        "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
+                        e);
             }
-        } while (numAttempts <= config.getDatabaseConfig().getMaxRetries());
+        } while (numAttempts <= MAX_RETRIES);
     }
 
     /**
@@ -142,11 +131,9 @@ public class KeyGenManager {
      */
     private Algorithm getAlgorithm() throws Exception {
 
-       
-            RSAPrivateKey privateKey = (RSAPrivateKey) PrivateKeyReader.getPrivateKey(
-                config.getKeyFileInfo().getLocation());
+        RSAPrivateKey privateKey = (RSAPrivateKey) PrivateKeyReader.getPrivateKey();
         System.out.println(privateKey.getEncoded());
-            return Algorithm.RSA384(null, privateKey);
-        
+        return Algorithm.RSA384(null, privateKey);
+
     }
 }

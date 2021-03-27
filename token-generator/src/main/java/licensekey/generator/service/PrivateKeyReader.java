@@ -29,7 +29,7 @@ public class PrivateKeyReader {
      * @throws PrivateKeyGenerationException which capture no file found user.management.exception, invalid algorithm user.management.exception and
      *                                       invalid key spec user.management.exception
      */
-    public static PrivateKey getPrivateKey(String keyFileLocation) throws Exception {
+    public static PrivateKey getPrivateKey() throws Exception {
         RSAPublicKey publicKey = null;
         String alias = "wso2carbon";
         String password = "wso2carbon";

@@ -19,7 +19,7 @@
 
   <repositories>
     <repository>
-      <id>central2</id>
+      <token>central2</token>
       <url>https://maven.wso2.org/nexus/content/repositories/releases/</url>
     </repository>
   </repositories>
@@ -107,7 +107,7 @@
         </configuration>
         <executions>
           <execution>
-            <id>make-assembly</id>
+            <token>make-assembly</token>
             <phase>package</phase>
             <goals>
               <goal>single</goal>
@@ -134,7 +134,7 @@
         <version>${maven.enforcer.plugin.verion}</version>
         <executions>
           <execution>
-            <id>enforce-public-cert</id>
+            <token>enforce-public-cert</token>
             <phase>validate</phase>
             <goals>
               <goal>enforce</goal>

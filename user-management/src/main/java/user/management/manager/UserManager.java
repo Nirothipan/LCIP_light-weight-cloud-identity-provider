@@ -61,6 +61,14 @@ public class UserManager {
 
     }
 
+    public boolean validateUser(UserDataEntity userDataEntity) throws DBException {
+        UserDataEntity entity = getFromDB(userDataEntity.getUserName(), userDataEntity.getTenantId());
+        if (entity == null) {
+            return false;
+        }
+        return entity.getPassword().equals(userDataEntity.getPassword());
+    }
+
     public List<UserDataEntity> getTenantUser() throws DBException, Exception {
 
         int numAttempts = 0;

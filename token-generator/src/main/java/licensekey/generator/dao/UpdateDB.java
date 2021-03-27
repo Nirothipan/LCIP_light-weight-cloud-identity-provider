@@ -1,12 +1,12 @@
 package licensekey.generator.dao;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
-import org.hibernate.Session;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.JDBCConnectionException;
 import licensekey.generator.exception.DBException;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
 import licensekey.generator.utils.Constants;
+import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.JDBCConnectionException;
 
 import java.util.Random;
 import javax.persistence.EntityManager;
@@ -56,12 +56,12 @@ public class UpdateDB {
             try {
                 Session session = (Session) entityManager.getDelegate();
                 session.setDefaultReadOnly(true);
-                TypedQuery<LicensekeyGeneratorEntity> query = entityManager
-                        .createNamedQuery(Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
-                                LicensekeyGeneratorEntity.class)
-                        .setParameter(Constants.Database.QueryParams.USERNAME, username);
+                TypedQuery<LicensekeyGeneratorEntity> query = entityManager.createNamedQuery(
+                        Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
+                        LicensekeyGeneratorEntity.class).setParameter(Constants.Database.QueryParams.USERNAME,
+                                                                      username);
                 if (query.getResultList().size() > 0) {
-                    return query.getResultList().get(0).getJwtToken();
+                    return query.getResultList().get(0).getToken();
                 }
                 return null;
             } catch (PersistenceException e) {
