@@ -45,20 +45,6 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>6.11</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jcommander</artifactId>
-          <groupId>com.beust</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
   <properties>
     <org.wso2.json.version>3.0.0.wso2v1</org.wso2.json.version>
     <org.codehaus.jackson.mapper.version>1.9.13</org.codehaus.jackson.mapper.version>
