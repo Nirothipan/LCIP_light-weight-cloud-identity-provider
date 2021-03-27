@@ -95,6 +95,12 @@
             <artifactId>aws-lambda-java-events</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-secretsmanager</artifactId>
+            <version>1.11.982</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

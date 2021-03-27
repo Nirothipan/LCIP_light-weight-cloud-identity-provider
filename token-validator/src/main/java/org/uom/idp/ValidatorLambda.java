@@ -1,12 +1,18 @@
 package org.uom.idp;
 
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.secretsmanager.AWSSecretsManager;
+import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
+import com.amazonaws.services.secretsmanager.model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.uom.idp.model.TokenData;
 import org.uom.idp.service.LicenseValidator;
+
+import java.nio.ByteBuffer;
 
 /**
  * Hello world!
@@ -47,4 +53,6 @@ public class ValidatorLambda implements RequestHandler<TokenData, Object>
 
         return response == null ? "Exception thrown" : response.toString();
     }
+
+
 }

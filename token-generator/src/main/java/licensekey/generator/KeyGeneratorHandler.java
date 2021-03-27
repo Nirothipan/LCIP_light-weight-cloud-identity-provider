@@ -14,6 +14,7 @@ import licensekey.generator.utils.Constants;
 import licensekey.generator.utils.Utils;
 import org.hibernate.exception.JDBCConnectionException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
@@ -25,6 +26,25 @@ public class KeyGeneratorHandler implements RequestHandler<UserData, Object> {
     private KeyGenManager keyGenManager;
     private Configuration config;
 
+    public static void main(String[] args) {
+//        UserData userData = new UserData();
+//        userData.setCreatorUsername("arunans23");
+//        userData.setExpiryDate("2022-01-01 12:20:20");
+//        userData.setUsername("arunans23");
+//        userData.setApis(new ArrayList<String>());
+//
+//        Configuration test = Utils.loadConfig(Constants.Configurations.CONFIGURATION_YAML, Configuration.class);
+//        KeyGenManager keyGenManager1 = null;
+//        keyGenManager1 = initializeKeyGenManager(test);
+//        JsonObject response = new JsonObject();
+//        try {
+//            response = keyGenManager1.generateKey(userData);
+//            System.out.println(response.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+    }
 
     @Override
     public Object handleRequest(UserData userData, Context context) {
