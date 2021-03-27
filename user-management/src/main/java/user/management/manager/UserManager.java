@@ -12,15 +12,14 @@ import javax.persistence.PersistenceException;
 
 public class UserManager {
 
-   // private final Configuration config;
+    // private final Configuration config;
     private final UpdateDB updateDB;
 
     private static final int MAX_RETRIES = 3;
 
-
     public UserManager(UpdateDB updateDB) {
 
-       // this.config = config;
+        // this.config = config;
         this.updateDB = updateDB;
 
     }
@@ -28,7 +27,7 @@ public class UserManager {
     private JsonObject createOutput(boolean isSuccess, String message) {
 
         JsonObject output = new JsonObject();
-        output.addProperty("status", isSuccess ? "added" : "failed");
+        output.addProperty("Status", isSuccess ? "success" : "failure");
         return output;
     }
 

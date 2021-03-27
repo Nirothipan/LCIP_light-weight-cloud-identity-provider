@@ -7,19 +7,8 @@ package user.management.utils;
  */
 public class Constants {
 
-    public static final String ISSUER = "uom.lk";
-    public static final String API_CODE_CLAIM = "apiCodes";
-
     private Constants() {
 
-    }
-
-    /**
-     * Configuration constants.
-     */
-    public static class Configurations {
-
-        public static final String CONFIGURATION_YAML = "licensekeygenerator.yaml";
     }
 
     /**
@@ -39,16 +28,8 @@ public class Constants {
         public static class Queries {
 
             public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME = "getAllUser";
-            public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER =
-                    "SELECT * FROM USER_INFO";
+            public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER = "SELECT * FROM USER_INFO";
         }
 
-        /**
-         * SQL query parameters.
-         */
-        public static class QueryParams {
-
-            public static final String USERNAME = "user_name";
-        }
     }
 }
