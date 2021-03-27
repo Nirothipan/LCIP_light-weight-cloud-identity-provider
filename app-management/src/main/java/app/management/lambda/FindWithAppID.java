@@ -39,7 +39,7 @@ public class FindWithAppID extends ApplicationManagement implements RequestHandl
             return getErrorOutput(e.getMessage()).toString();
         }
         System.out.println("Data retrieved :" + response.toString());
-        return response;
+        return response.toString();
     }
 
 }
