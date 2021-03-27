@@ -14,10 +14,10 @@ public class UserDetailsLamda extends UserManagement implements RequestHandler<U
     }
 
     public static void main(String[] args) {
-        getUser("niro",1234);
+        getUser("niro","12212");
     }
 
-    private static Object getUser(String name, int id) {
+    private static Object getUser(String name, String id) {
 
         JsonObject response = new JsonObject();
         try {

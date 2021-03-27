@@ -35,7 +35,7 @@ public class UserDataEntity implements Serializable {
 
     @Id
     @Column(name = "tenantId")
-    private int tenantId;
+    private String tenantId;
 
     @Id
     @Column(name = "username")
@@ -68,11 +68,11 @@ public class UserDataEntity implements Serializable {
         this.username = username;
     }
 
-    public int getId() {
+    public String getId() {
         return tenantId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.tenantId = id;
     }
 

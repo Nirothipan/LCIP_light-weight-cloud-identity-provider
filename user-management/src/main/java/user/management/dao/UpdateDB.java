@@ -102,7 +102,7 @@ public class UpdateDB {
         throw new DBException("Connection failed. QueryTimeoutException occurred.");
     }
 
-    public void removeEntity(String name, int id) throws DBException {
+    public void removeEntity(String name, String id) throws DBException {
 
         int numAttempts = 0;
         EntityManager entityManager = getEntityManager();
@@ -136,7 +136,7 @@ public class UpdateDB {
         throw new DBException("Connection failed. QueryTimeoutException occurred.");
     }
 
-    public UserDataEntity findEntity(String name, int id) throws DBException {
+    public UserDataEntity findEntity(String name, String id) throws DBException {
 
         int numAttempts = 0;
         EntityManager entityManager = getEntityManager();

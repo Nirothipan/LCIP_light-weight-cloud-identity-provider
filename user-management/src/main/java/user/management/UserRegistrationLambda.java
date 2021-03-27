@@ -20,7 +20,7 @@ public class UserRegistrationLambda extends UserManagement implements RequestHan
 
     private static Object addUser(){
         UserDataEntity  userData = new UserDataEntity ();
-        userData.setId(1234);
+        userData.setId("122323");
         userData.setUsername("niro12212");
         userData.setUserEmail("niro@wso2.com");
         userData.setPassword("122121");

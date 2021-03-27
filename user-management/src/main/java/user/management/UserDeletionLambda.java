@@ -9,16 +9,16 @@ public class UserDeletionLambda extends UserManagement implements RequestHandler
 
     @Override
     public Object handleRequest(UserDataEntity userData, Context context) {
-        return removeUser("niro", 1234);
+        return removeUser("niro", "1234");
     }
 
     public static void main(String[] args) {
         //addUser(userData, context);
         //addUser();
-        removeUser("niro", 1234);
+        removeUser("niro", "1234");
     }
 
-    private static Object removeUser(String name, int id) {
+    private static Object removeUser(String name, String id) {
 
         JsonObject response = new JsonObject();
         try {

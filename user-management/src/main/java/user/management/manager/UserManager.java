@@ -49,13 +49,13 @@ public class UserManager {
         return createOutput(true, null);
     }
 
-    public JsonObject deletUser(String name, int id) throws DBException, Exception {
+    public JsonObject deletUser(String name, String id) throws DBException, Exception {
 
         removeFromDB(name, id);
         return createOutput(true, null);
     }
 
-    public JsonObject getUser(String name, int id) throws DBException, Exception {
+    public JsonObject getUser(String name, String id) throws DBException, Exception {
 
         UserDataEntity userDataEntity = getFromDB(name, id);
 
@@ -88,7 +88,7 @@ public class UserManager {
 
     }
 
-    private synchronized UserDataEntity getFromDB(String name, int id) throws DBException {
+    private synchronized UserDataEntity getFromDB(String name, String id) throws DBException {
 
         int numAttempts = 0;
         do {
@@ -108,7 +108,7 @@ public class UserManager {
         return null;
     }
 
-    private synchronized void removeFromDB(String name, int id) throws DBException {
+    private synchronized void removeFromDB(String name, String id) throws DBException {
 
         int numAttempts = 0;
         do {
