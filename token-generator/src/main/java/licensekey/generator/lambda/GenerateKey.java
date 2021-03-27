@@ -10,9 +10,9 @@ import licensekey.generator.dao.UpdateDB;
 import licensekey.generator.manager.KeyGenManager;
 import licensekey.generator.model.UserData;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
+import licensekey.generator.utils.Constants;
 import user.management.UserApi;
 import user.management.model.entity.UserDataEntity;
-import user.management.utils.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +75,11 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
         boolean isUserValid = userApi.validate(userDataEntity);
 
         if (isUserValid) {
-            isUserValid = ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId());
+            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+                return getErrorOutput("Application Not Valid");
+            }
+        } else {
+            return getErrorOutput("Invalid User");
         }
 
         LicensekeyGeneratorEntity existingToken = getToken(token);
