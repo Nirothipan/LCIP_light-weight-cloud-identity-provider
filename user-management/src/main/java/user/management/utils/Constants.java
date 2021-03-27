@@ -1,10 +1,5 @@
 package user.management.utils;
 
-/**
- * This class includes the constance used in the licensekey.generator package.
- *
- * @since 1.0.0
- */
 public class Constants {
 
     private Constants() {

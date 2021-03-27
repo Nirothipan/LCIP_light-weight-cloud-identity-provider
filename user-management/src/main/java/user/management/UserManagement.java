@@ -35,7 +35,6 @@ public class UserManagement {
         }
         jdbcConfig.put(Constants.Database.JDBC_PASSWORD, secret);
         jdbcConfig.put(Constants.Database.C3P0_MAX_CONNECTION_POOL_SIZE, 30);
-        jdbcConfig.put("idleConnectionTestPeriod", 30);
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.Database.PERSISTENCE_UNIT_NAME,
                                                                           jdbcConfig);
         updateDB = new UpdateDB(emf, 3, 5000);
