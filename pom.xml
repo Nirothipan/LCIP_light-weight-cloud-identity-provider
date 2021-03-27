@@ -13,6 +13,7 @@
         <module>token-generator</module>
         <module>user-management</module>
         <module>app-management</module>
+        <module>app-remove-mgt</module>
     </modules>
 
 
