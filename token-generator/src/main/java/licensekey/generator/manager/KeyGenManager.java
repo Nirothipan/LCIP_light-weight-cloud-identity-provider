@@ -84,7 +84,7 @@ public class KeyGenManager {
 
             LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
 
-            licensekeyGeneratorEntity.setCreatedDate(today.getTime());
+            licensekeyGeneratorEntity.setCreatedDate(String.valueOf(today.getTime()));
             licensekeyGeneratorEntity.setUserName(userData.getUsername());
             licensekeyGeneratorEntity.setExpiryTime(String.valueOf(expiryDate.getTime()));
             licensekeyGeneratorEntity.setToken(jwt);

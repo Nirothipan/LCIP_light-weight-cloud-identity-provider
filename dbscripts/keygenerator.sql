@@ -19,11 +19,12 @@ DROP TABLE IF EXISTS `TOKEN_INFO`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TOKEN_INFO`
 (
-    `token`       varchar(1000) NOT NULL,
-    `tenant_id`   varchar(50)   NOT NULL,
-    `user_name`   varchar(50)   NOT NULL,
-    `app_id`      varchar(50)   NOT NULL,
-    `expiry_time` varchar(50)   NOT NULL,
+    `token`        varchar(1000) NOT NULL,
+    `tenant_id`    varchar(50)   NOT NULL,
+    `user_name`    varchar(50)   NOT NULL,
+    `app_id`       varchar(50)   NOT NULL,
+    `created_date` varchar(50)   NOT NULL,
+    `expiry_time`  varchar(50)   NOT NULL,
     PRIMARY KEY (`token`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 32

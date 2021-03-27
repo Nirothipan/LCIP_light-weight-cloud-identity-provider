@@ -36,7 +36,7 @@ public class LicensekeyGeneratorEntity implements Serializable {
 
     @Id
     @Column(name = "created_date")
-    private long createdDate;
+    private String createdDate;
 
     @Id
     @Column(name = "user_name")
@@ -88,11 +88,11 @@ public class LicensekeyGeneratorEntity implements Serializable {
         this.expiryTime = expiryTime;
     }
 
-    public long getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(long createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 }

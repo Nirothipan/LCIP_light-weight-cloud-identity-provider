@@ -10,9 +10,9 @@ import licensekey.generator.dao.UpdateDB;
 import licensekey.generator.manager.KeyGenManager;
 import licensekey.generator.model.UserData;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
+import licensekey.generator.utils.Constants;
 import user.management.UserApi;
 import user.management.model.entity.UserDataEntity;
-import user.management.utils.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
