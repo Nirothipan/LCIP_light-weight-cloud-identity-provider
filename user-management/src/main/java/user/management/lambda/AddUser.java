@@ -14,20 +14,12 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
     }
 
     public static void main(String[] args) {
-        //addUser(userData, context);
-        addUser();
+        //addUser();
     }
 
-    private static Object addUser(UserDataEntity data) {
-        UserDataEntity userData = new UserDataEntity();
-        userData.setTenantId(data.getTenantId());
-        userData.setUserName(data.getUserName());
-        userData.setUserEmail(data.getUserEmail());
-        userData.setPassword(data.getPassword());
-
-        JsonObject response;
+    private static Object addUser(UserDataEntity userData) {
         try {
-            response = userManager.addUser(userData);
+            JsonObject response = userManager.addUser(userData);
             return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,21 +27,21 @@ public class AddUser extends UserManagement implements RequestHandler<UserDataEn
         }
     }
 
-    private static Object addUser() {
-        UserDataEntity userData = new UserDataEntity();
-        userData.setTenantId("del");
-        userData.setUserName("ram");
-        userData.setUserEmail("niro@wso2.com");
-        userData.setPassword("122121");
-        JsonObject response = new JsonObject();
-        try {
-            response = userManager.addUser(userData);
-        } catch (Exception e) {
-            System.out.println("Exception :: " + e);
-            e.printStackTrace();
-        }
-        System.out.println("Data added :" + response.toString());
-        return response;
-    }
+    //    private static Object addUser() {
+    //        UserDataEntity userData = new UserDataEntity();
+    //        userData.setTenantId("del");
+    //        userData.setUserName("ram");
+    //        userData.setUserEmail("niro@wso2.com");
+    //        userData.setPassword("122121");
+    //        JsonObject response = new JsonObject();
+    //        try {
+    //            response = userManager.addUser(userData);
+    //        } catch (Exception e) {
+    //            System.out.println("Exception :: " + e);
+    //            e.printStackTrace();
+    //        }
+    //        System.out.println("Data added :" + response.toString());
+    //        return response;
+    //    }
 
 }
