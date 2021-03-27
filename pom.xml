@@ -12,6 +12,7 @@
         <module>token-validator</module>
         <module>token-generator</module>
         <module>user-management</module>
+        <module>app-management</module>
     </modules>
 
 

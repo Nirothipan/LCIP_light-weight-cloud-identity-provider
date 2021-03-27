@@ -1,0 +1,14 @@
+database:
+  credentials:
+    username:    root
+    password:    root
+  endpoint:      jdbc:mysql://localhost:3306/cloud?useSSL=false
+  poolSize:      30
+  maxRetries:    10
+  retryInterval: 3
+microserviceConnection:
+  credentials:
+    username: abc
+    password: abc
+keyFileInfo:
+  location: '/Users/user/MSc/CS5242-SDCP-Code_Keystore/keygenerator/src/main/resources/wso2carbon.jks'
