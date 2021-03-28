@@ -7,8 +7,8 @@ package licensekey.generator.utils;
  */
 public class Constants {
 
-    public static final String ISSUER = "uom.lk";
-    public static final String API_CODE_CLAIM = "apiCodes";
+    public static final String ISSUER = "lcip";
+    public static final String API_CODE_CLAIM = "scopes";
 
     private Constants() {
 

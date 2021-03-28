@@ -8,6 +8,8 @@ phases:
   post_build:
     commands:
       - echo Build completed successfully
+      - aws lambda update-function-code --function-name getUserDetails --region us-east-1 --s3-bucket s3://cloud-idp-bucket/lcip-lambdas/user-management-1.0-SNAPSHOT.jar
+      - echo Lambda deployment completed successfully
 artifacts:
   files:
     - user-management/target/user-management-1.0-SNAPSHOT.jar

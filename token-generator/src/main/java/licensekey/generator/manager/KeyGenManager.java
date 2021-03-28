@@ -2,6 +2,7 @@ package licensekey.generator.manager;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import licensekey.generator.dao.UpdateDB;
@@ -63,7 +64,7 @@ public class KeyGenManager {
      * @throws PrivateKeyGenerationException If the Private Key cannot be generated
      * @throws DBException                   If the Database connection causes an error
      */
-    public JsonObject generateKeyAndUpdateDB(UserData userData) throws DBException, Exception {
+    public JsonObject generateKeyAndUpdateDB(UserData userData, String[] scopes) throws DBException, Exception {
         // Avoid creating duplicate keys
         String username = userData.getUsername();
         String jwt = null;
@@ -78,8 +79,13 @@ public class KeyGenManager {
             Date today = new Date((currentTime.getTime()).getTime());
             Algorithm signingAlgorithm = getAlgorithm();
 
-            jwt = JWT.create().withIssuer(ISSUER).withIssuedAt(today).withExpiresAt(expiryDate).withArrayClaim(
-                    API_CODE_CLAIM, new String[] { "api1" }) // todo
+            jwt = JWT.create()
+                    .withIssuer(ISSUER)
+                    .withIssuedAt(today)
+                    .withExpiresAt(expiryDate)
+                    .withArrayClaim(API_CODE_CLAIM, scopes) // todo
+                    .withClaim("Application Name", userData.getAppId())
+                    .withClaim("Organization Name", userData.getTenantId())
                     .sign(signingAlgorithm);
 
             LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
