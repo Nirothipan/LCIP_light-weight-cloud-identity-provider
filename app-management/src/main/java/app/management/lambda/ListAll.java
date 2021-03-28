@@ -4,8 +4,8 @@ import app.management.ApplicationManagement;
 import app.management.model.entity.ApplicationDataEntity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
 
     private static Object getApplicationList(String tenantId) {
 
-        JsonArray response = new JsonArray();
+        JSONArray response = new JSONArray();
         try {
             List<ApplicationDataEntity> applicationList = applicationManager.listTenantApplication();
             response = createOutput(applicationList, tenantId);
@@ -36,18 +36,18 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
         return response.toString();
     }
 
-    private static JsonArray createOutput(List<ApplicationDataEntity> appDataEntityList, String tenantId) {
+    private static JSONArray createOutput(List<ApplicationDataEntity> appDataEntityList, String tenantId) {
 
-        JsonArray allApps = new JsonArray();
+        JSONArray allApps = new JSONArray();
 
         for (ApplicationDataEntity appDataEntity : appDataEntityList) {
 
-            JsonObject app = new JsonObject();
+            JSONObject app = new JSONObject();
 
-            app.addProperty("tenantName", appDataEntity.getTenantId());
-            app.addProperty("clientID", appDataEntity.getClientId());
-            app.addProperty("applicationName", appDataEntity.getAppName());
-            app.addProperty("callbackURL", appDataEntity.getCallBackUrl());
+            app.put("tenantName", appDataEntity.getTenantId());
+            app.put("clientID", appDataEntity.getClientId());
+            app.put("applicationName", appDataEntity.getAppName());
+            app.put("callbackURL", appDataEntity.getCallBackUrl());
 
             if (tenantId != null && !tenantId.isEmpty()) {
                 if (tenantId.equals(appDataEntity.getTenantId())) {

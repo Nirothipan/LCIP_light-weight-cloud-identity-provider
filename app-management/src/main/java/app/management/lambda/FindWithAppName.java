@@ -4,7 +4,7 @@ import app.management.ApplicationManagement;
 import app.management.model.entity.ApplicationDataEntity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 
 public class FindWithAppName extends ApplicationManagement implements RequestHandler<ApplicationDataEntity, Object> {
 
@@ -15,12 +15,12 @@ public class FindWithAppName extends ApplicationManagement implements RequestHan
 
     public static void main(String[] args) {
         getApplication("AppNew3", "12345");
-//        System.out.println("checking........." + checkApplication("AppNew2", "1234456"));
+        //        System.out.println("checking........." + checkApplication("AppNew2", "1234456"));
     }
 
     private static Object getApplication(String name, String id) {
 
-        JsonObject response = new JsonObject();
+        JSONObject response = new JSONObject();
         try {
             response = applicationManager.getApplication(name, id);
         } catch (Exception e) {

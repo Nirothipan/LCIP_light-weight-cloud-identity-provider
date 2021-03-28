@@ -1,10 +1,10 @@
 package app.management.utils;
 
+import app.management.ApplicationManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
-import app.management.ApplicationManagement;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -35,21 +35,21 @@ public class Utils {
      */
     public static <T> T loadConfig(String fileName, Class<T> clazz) throws RuntimeException {
 
-//        File initialFile = new File("/Users/user/Msc/lcip-lambdas/user-management/src/main/resources/licensekeygenerator.yaml");
+        //        File initialFile = new File("/Users/user/Msc/lcip-lambdas/user-management/src/main/resources/licensekeygenerator.yaml");
         InputStream licenseGeneratorConfigInputstream = Utils.class.getClassLoader().getResourceAsStream(fileName);
-//        try {
-//            licenseGeneratorConfigInputstream = new FileInputStream(initialFile);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        String yamlFileString = null;
-//        if (licenseGeneratorConfigInputstream != null) {
-//            try (Scanner scanner = new Scanner(licenseGeneratorConfigInputstream, StandardCharsets.UTF_8.name())) {
-//                yamlFileString = scanner.useDelimiter("\\A").next();
-//                yamlFileString = substituteVariables(yamlFileString);
-//
-//            }
-//        }
+        //        try {
+        //            licenseGeneratorConfigInputstream = new FileInputStream(initialFile);
+        //        } catch (FileNotFoundException e) {
+        //            e.printStackTrace();
+        //        }
+        //        String yamlFileString = null;
+        //        if (licenseGeneratorConfigInputstream != null) {
+        //            try (Scanner scanner = new Scanner(licenseGeneratorConfigInputstream, StandardCharsets.UTF_8.name())) {
+        //                yamlFileString = scanner.useDelimiter("\\A").next();
+        //                yamlFileString = substituteVariables(yamlFileString);
+        //
+        //            }
+        //        }
 
         //  InputStream licenseGeneratorConfigInputstream = Utils.class.getClassLoader().getResourceAsStream(fileName);
         String yamlFileString = null;

@@ -4,14 +4,14 @@ import app.management.ApplicationManagement;
 import app.management.model.entity.ApplicationDataEntity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 
 public class Delete extends ApplicationManagement implements RequestHandler<ApplicationDataEntity, Object> {
 
     @Override
     public Object handleRequest(ApplicationDataEntity appData, Context context) {
 
-        return removeApplication(appData.getAppName(),appData.getTenantId());
+        return removeApplication(appData.getAppName(), appData.getTenantId());
     }
 
     public static void main(String[] args) {
@@ -19,10 +19,10 @@ public class Delete extends ApplicationManagement implements RequestHandler<Appl
         removeApplication();
     }
 
-    private static void removeApplication(){
+    private static void removeApplication() {
         ApplicationDataEntity userData = new ApplicationDataEntity();
         userData.setAppName("AppNew3");
-        JsonObject response = new JsonObject();
+        JSONObject response = new JSONObject();
         try {
             response = applicationManager.deleteApplication(userData.getAppName(), "12345");
         } catch (Exception e) {
@@ -32,8 +32,8 @@ public class Delete extends ApplicationManagement implements RequestHandler<Appl
         System.out.println("Removed added :" + response.toString());
     }
 
-    private Object removeApplication(String name, String id){
-        JsonObject response = new JsonObject();
+    private Object removeApplication(String name, String id) {
+        JSONObject response = new JSONObject();
         try {
             response = applicationManager.deleteApplication(name, id);
         } catch (Exception e) {

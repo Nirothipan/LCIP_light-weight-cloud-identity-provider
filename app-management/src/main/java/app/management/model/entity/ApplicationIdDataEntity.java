@@ -1,8 +1,10 @@
 package app.management.model.entity;
 
-
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "APPLICATION_INFO")
@@ -15,7 +17,6 @@ public class ApplicationIdDataEntity implements Serializable {
 
     @Column(name = "application_name")
     private String appName;
-
 
     @Column(name = "callBackUrl")
     private String callBackUrl;

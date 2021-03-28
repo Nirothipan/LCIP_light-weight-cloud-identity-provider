@@ -1,119 +1,119 @@
 package app.management.manager;
 
-import app.management.model.entity.ApplicationIdDataEntity;
-import com.google.gson.JsonObject;
-
 import app.management.dao.UpdateDB;
 import app.management.exception.DBException;
 import app.management.model.entity.ApplicationDataEntity;
-//import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import app.management.model.entity.ApplicationIdDataEntity;
 import org.hibernate.exception.JDBCConnectionException;
+import org.json.simple.JSONObject;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.PersistenceException;
+
+//import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
 public class ApplicationManager {
 
-//    private final Configuration config;
+    //    private final Configuration config;
     private final UpdateDB updateDB;
 
     private static final int MAX_RETRIES = 3;
 
-//    public ApplicationManager(Configuration config) {
-//
-////        this.config = config;
-//        this.updateDB = null;
-//
-//    }
+    //    public ApplicationManager(Configuration config) {
+    //
+    ////        this.config = config;
+    //        this.updateDB = null;
+    //
+    //    }
 
     public ApplicationManager(UpdateDB updateDB) {
 
-//        this.config = config;
+        //        this.config = config;
         this.updateDB = updateDB;
 
     }
 
-    private JsonObject createOutput(boolean isSuccess, String message) {
+    private JSONObject createOutput(boolean isSuccess, String message) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("status", isSuccess ? "added" : "failed");
-        output.addProperty("message", message);
+        JSONObject output = new JSONObject();
+        output.put("status", isSuccess ? "added" : "failed");
+        output.put("message", message);
         return output;
     }
 
-    private JsonObject deleteOutput(boolean isSuccess, String message, String appName) {
+    private JSONObject deleteOutput(boolean isSuccess, String message, String appName) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("status", isSuccess ? "deleted" : "failed");
-        output.addProperty("message", message);
-        output.addProperty("application Name", appName);
+        JSONObject output = new JSONObject();
+        output.put("status", isSuccess ? "deleted" : "failed");
+        output.put("message", message);
+        output.put("application Name", appName);
         return output;
     }
 
-    private JsonObject createOutput(String appID, String appName, int errorCode, String message) {
+    private JSONObject createOutput(String appID, String appName, int errorCode, String message) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("clientID", appID);
-        output.addProperty("appName", appName);
-        output.addProperty("errorCode", errorCode);
-        output.addProperty("message", message);
+        JSONObject output = new JSONObject();
+        output.put("clientID", appID);
+        output.put("appName", appName);
+        output.put("errorCode", errorCode);
+        output.put("message", message);
         return output;
     }
 
-    public JsonObject addApplication(ApplicationDataEntity appData) throws DBException, Exception {
+    public JSONObject addApplication(ApplicationDataEntity appData) throws DBException, Exception {
         // Avoid creating duplicate keys
         String appName = appData.getAppName();
         String clientID = null;
 
         if (appName != null && !appName.isEmpty()) {
-            UUID uuid = UUID.randomUUID();;
+            UUID uuid = UUID.randomUUID();
+            ;
             clientID = uuid.toString();
 
             ApplicationDataEntity applicationManagement = appData;
             applicationManagement.setClientId(clientID);
             persistToDB(applicationManagement);
-            return createOutput(clientID, appName,0, null);
+            return createOutput(clientID, appName, 0, null);
         }
         return createOutput(false, "Application Name is empty");
     }
 
-    public JsonObject getApplication(String name, String id) throws DBException, Exception {
+    public JSONObject getApplication(String name, String id) throws DBException, Exception {
 
         ApplicationDataEntity appDataEntity = findApplication(name, id);
 
-        JsonObject output = new JsonObject();
+        JSONObject output = new JSONObject();
         if (appDataEntity != null) {
-            output.addProperty("tenantName", appDataEntity.getTenantId());
-            output.addProperty("clientID", appDataEntity.getClientId());
-            output.addProperty("applicationName", appDataEntity.getAppName());
-            output.addProperty("callbackURL", appDataEntity.getCallBackUrl());
+            output.put("tenantName", appDataEntity.getTenantId());
+            output.put("clientID", appDataEntity.getClientId());
+            output.put("applicationName", appDataEntity.getAppName());
+            output.put("callbackURL", appDataEntity.getCallBackUrl());
             return output;
         }
-        output.addProperty("Error", "Could not get Application with given name: " + name);
+        output.put("Error", "Could not get Application with given name: " + name);
         return output;
 
     }
 
-    public JsonObject getApplicationWithID(String appID) throws DBException, Exception {
+    public JSONObject getApplicationWithID(String appID) throws DBException, Exception {
 
         ApplicationIdDataEntity appDataEntity = findApplicationWithID(appID);
 
-        JsonObject output = new JsonObject();
+        JSONObject output = new JSONObject();
         if (appDataEntity != null) {
-            output.addProperty("tenantName", appDataEntity.getId());
-            output.addProperty("clientID", appDataEntity.getClientId());
-            output.addProperty("applicationName", appDataEntity.getAppName());
-            output.addProperty("callbackURL", appDataEntity.getCallBackUrl());
+            output.put("tenantName", appDataEntity.getId());
+            output.put("clientID", appDataEntity.getClientId());
+            output.put("applicationName", appDataEntity.getAppName());
+            output.put("callbackURL", appDataEntity.getCallBackUrl());
             return output;
         }
-        output.addProperty("Error", "Could not get Application with given ID: " + appID);
+        output.put("Error", "Could not get Application with given ID: " + appID);
         return output;
-
 
     }
 
-    public JsonObject deleteApplication(String  appName, String tenantID) throws DBException, Exception {
+    public JSONObject deleteApplication(String appName, String tenantID) throws DBException, Exception {
 
         if (appName != null && !appName.isEmpty() && tenantID != null && !tenantID.isEmpty()) {
             removeFromDB(appName, tenantID);
@@ -132,9 +132,9 @@ public class ApplicationManager {
                 return;
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
-//                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
-//                    continue;
-//                }
+                //                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
+                //                    continue;
+                //                }
                 throw new RuntimeException(
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);
@@ -203,7 +203,6 @@ public class ApplicationManager {
         return null;
     }
 
-
     private synchronized void persistToDB(ApplicationDataEntity userData) throws DBException {
 
         int numAttempts = 0;
@@ -213,10 +212,6 @@ public class ApplicationManager {
                 updateDB.insertEntity(userData);
                 return;
             } catch (PersistenceException e) {
-                Throwable cause = e.getCause();
-//                if ((cause instanceof CommunicationsException || cause instanceof JDBCConnectionException)) {
-//                    continue;
-//                }
                 throw new RuntimeException(
                         "Exception occurred when creating EntityManagerFactory for the named " + "persistence unit: ",
                         e);

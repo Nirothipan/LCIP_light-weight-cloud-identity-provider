@@ -1,23 +1,12 @@
 package app.management.lambda;
 
 import app.management.ApplicationManagement;
-import app.management.dao.UpdateDB;
-import app.management.manager.ApplicationManager;
-import app.management.model.config.Configuration;
 import app.management.model.entity.ApplicationDataEntity;
-import app.management.utils.Constants;
-import app.management.utils.Utils;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.HashMap;
-import java.util.Map;
+import org.json.simple.JSONObject;
 
 public class FindWithAppID extends ApplicationManagement implements RequestHandler<ApplicationDataEntity, Object> {
-
 
     @Override
     public Object handleRequest(ApplicationDataEntity userData, Context context) {
@@ -30,7 +19,7 @@ public class FindWithAppID extends ApplicationManagement implements RequestHandl
 
     private static Object getApplication(String appID) {
 
-        JsonObject response = new JsonObject();
+        JSONObject response = new JSONObject();
         try {
             response = applicationManager.getApplicationWithID(appID);
         } catch (Exception e) {
