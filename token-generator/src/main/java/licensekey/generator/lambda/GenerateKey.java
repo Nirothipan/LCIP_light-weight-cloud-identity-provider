@@ -3,17 +3,13 @@ package licensekey.generator.lambda;
 import app.management.ApplicationManagement;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.mchange.v1.util.ArrayUtils;
-import com.mchange.v1.util.CollectionUtils;
 import licensekey.generator.dao.UpdateDB;
 import licensekey.generator.lambda.dao.LicenseKeyGenerator;
 import licensekey.generator.manager.KeyGenManager;
 import licensekey.generator.model.UserData;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
 import licensekey.generator.utils.Constants;
+import org.json.simple.JSONObject;
 import user.management.UserApi;
 import user.management.model.entity.UserDataEntity;
 
@@ -67,7 +63,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         token.setAppId("id-2");
         token.setTenantId("121qw");
         token.setExpiryDate(getDate("2021-11-01 00:00:00+0530"));
-        createKey(token, "1234", new String[]{} );
+        createKey(token, "1234", new String[] {});
     }
 
     private static long getDate(String date) {
@@ -91,9 +87,9 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
 
         String[] scopes = token.getScopes();
         if (scopes == null) {
-            scopes = new String[]{};
+            scopes = new String[] {};
         }
-        return createKey(licensekeyGeneratorEntity, token.getPassword(),scopes).toString();
+        return createKey(licensekeyGeneratorEntity, token.getPassword(), scopes).toString();
     }
 
     public static Object createKey(LicensekeyGeneratorEntity token, String pwd, String[] scopes) {
@@ -104,7 +100,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         if (currentDate.after(expiryDate)) {
             String msg = "Expiry date is invalid";
             System.out.println(msg);
-            return toJson(getErrorOutput(msg));
+            return (getErrorOutput(msg));
         }
 
         UserDataEntity userDataEntity = new UserDataEntity();
@@ -115,15 +111,15 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         UserApi userApi = new UserApi();
         boolean isUserValid = userApi.validate(userDataEntity);
 
-//        if (isUserValid) {
-//            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
-//                System.out.println(getErrorOutput("Application Not Valid"));
-//                return getErrorOutput("Application Not Valid");
-//            }
-//        } else {
-//            System.out.println(getErrorOutput("Invalid User"));
-//            return getErrorOutput("Invalid User");
-//        }
+        if (isUserValid) {
+            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+                System.out.println(getErrorOutput("Application Not Valid"));
+                return getErrorOutput("Application Not Valid");
+            }
+        } else {
+            System.out.println(getErrorOutput("Invalid User"));
+            return getErrorOutput("Invalid User");
+        }
 
         try {
             LicensekeyGeneratorEntity existingToken = getToken(token);
@@ -134,7 +130,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            return toJson(getErrorOutput(ex.getMessage()));
+            return (getErrorOutput(ex.getMessage()));
         }
 
         // generate token
@@ -144,24 +140,18 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         userData.setAppId(token.getAppId());
         userData.setExpiryDate(token.getExpiryDate());
         try {
-            JsonObject response = keyGenManager.generateKeyAndUpdateDB(userData, scopes);
-            return response.toString();
+            return keyGenManager.generateKeyAndUpdateDB(userData, scopes);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return toJson(getErrorOutput(ex.getMessage()));
+            return (getErrorOutput(ex.getMessage()));
         }
     }
 
-    protected static JsonObject getErrorOutput(String message) {
-        JsonObject output = new JsonObject();
-        output.addProperty("Status", "Internal Server Error");
-        output.addProperty("Message", message);
+    protected static JSONObject getErrorOutput(String message) {
+        JSONObject output = new JSONObject();
+        output.put("Status", "Internal Server Error");
+        output.put("Message", message);
         return output;
-    }
-
-    protected static String toJson(Object json) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(json);
     }
 
     private static LicensekeyGeneratorEntity getToken(LicensekeyGeneratorEntity token) throws Exception {
