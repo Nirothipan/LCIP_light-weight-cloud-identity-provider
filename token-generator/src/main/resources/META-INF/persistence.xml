@@ -47,4 +47,26 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
             <property name="hibernate.c3p0.idle_test_period" value="60"/>
         </properties>
     </persistence-unit>
+    <persistence-unit name="app.management.model.ApplicationData">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>app.management.model.entity.ApplicationDataEntity</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value=""/>
+            <property name="javax.persistence.jdbc.user" value=""/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.connection.autocommit" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+
+            <!--Configuring Connection Pool-->
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="20"/>
+            <property name="hibernate.c3p0.timeout" value="500"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="60"/>
+        </properties>
+    </persistence-unit>
 </persistence>
