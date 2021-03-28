@@ -2,7 +2,7 @@ package tenant.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import tenant.management.TenantManagement;
 import tenant.management.lambda.dao.TenantCreationData;
 import tenant.management.model.entity.TenantDataEntity;
@@ -30,7 +30,7 @@ public class AddTenant extends TenantManagement implements RequestHandler<Tenant
             TenantDataEntity tenantData = new TenantDataEntity();
             tenantData.setTenantId(tenantCreationData.getTenantId());
             tenantData.setAdminName(tenantCreationData.getAdminUserName());
-            JsonObject response = tenantManager.addTenant(tenantData);
+            JSONObject response = tenantManager.addTenant(tenantData);
 
             UserDataEntity userDataEntity = new UserDataEntity();
             userDataEntity.setTenantId(tenantCreationData.getTenantId());
@@ -40,10 +40,10 @@ public class AddTenant extends TenantManagement implements RequestHandler<Tenant
 
             UserApi userApi = new UserApi();
             userApi.addUser(userDataEntity);
-            return toJson(response);
+            return (response);
         } catch (Exception e) {
             e.printStackTrace();
-            return toJson(getErrorOutput(e.getMessage()));
+            return (getErrorOutput(e.getMessage()));
         }
     }
 

@@ -3,12 +3,12 @@ package tenant.management.model.entity;
 import tenant.management.utils.Constants;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.Table;
 
 /**
  * Database Entity.

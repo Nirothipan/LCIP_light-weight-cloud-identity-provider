@@ -1,14 +1,15 @@
 package tenant.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import tenant.management.TenantManagement;
 import tenant.management.model.entity.TenantDataEntity;
 
 public class GetTenantDetails extends TenantManagement implements RequestHandler<TenantDataEntity, Object> {
 
     @Override
-    public Object handleRequest(TenantDataEntity tenantDataEntity, com.amazonaws.services.lambda.runtime.Context context) {
+    public Object handleRequest(TenantDataEntity tenantDataEntity,
+                                com.amazonaws.services.lambda.runtime.Context context) {
         return gettenant(tenantDataEntity.getTenantId());
     }
 
@@ -19,11 +20,11 @@ public class GetTenantDetails extends TenantManagement implements RequestHandler
     private static Object gettenant(String id) {
 
         try {
-            JsonObject response = tenantManager.getTenant(id);
-            return toJson(response);
+            JSONObject response = tenantManager.getTenant(id);
+            return (response);
         } catch (Exception e) {
             e.printStackTrace();
-            return toJson(getErrorOutput(e.getMessage()));
+            return (getErrorOutput(e.getMessage()));
         }
     }
 
