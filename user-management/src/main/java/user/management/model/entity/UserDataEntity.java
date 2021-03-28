@@ -16,8 +16,8 @@ import javax.persistence.NamedNativeQuery;
  * @since 1.0.0
  */
 @NamedNativeQueries({
-        @NamedNativeQuery(name = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME,
-                query = Constants.Database.Queries.FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER,
+        @NamedNativeQuery(name = Constants.Database.Queries.GET_ALL_USER,
+                query = Constants.Database.Queries.GET_ALL_USERS_QUERY,
                 resultClass = UserDataEntity.class) })
 
 @Entity

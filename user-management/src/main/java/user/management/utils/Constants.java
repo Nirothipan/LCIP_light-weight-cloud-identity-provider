@@ -22,8 +22,8 @@ public class Constants {
          */
         public static class Queries {
 
-            public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER_NAME = "getAllUser";
-            public static final String FIND_LICENSE_KEY_IF_EXISTS_FOR_A_GIVEN_USER = "SELECT * FROM USER_INFO";
+            public static final String GET_ALL_USER = "getAllUser";
+            public static final String GET_ALL_USERS_QUERY = "SELECT * FROM USER_INFO";
         }
 
     }

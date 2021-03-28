@@ -1,5 +1,6 @@
 package licensekey.generator.lambda;
 
+import app.management.ApplicationManagement;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
@@ -64,7 +65,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         token.setAppId("1212");
         token.setTenantId("212121");
         token.setExpiryDate(getDate("2021-11-01 00:00:00+0530"));
-        createKey(token , "xxxxx");
+        createKey(token, "xxxxx");
     }
 
     private static long getDate(String date) {
@@ -109,10 +110,10 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         boolean isUserValid = userApi.validate(userDataEntity);
 
         if (isUserValid) {
-            //            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
-            //                System.out.println(getErrorOutput("Application Not Valid"));
-            //                return getErrorOutput("Application Not Valid");
-            //            }
+            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+                System.out.println(getErrorOutput("Application Not Valid"));
+                return getErrorOutput("Application Not Valid");
+            }
         } else {
             System.out.println(getErrorOutput("Invalid User"));
             return getErrorOutput("Invalid User");
