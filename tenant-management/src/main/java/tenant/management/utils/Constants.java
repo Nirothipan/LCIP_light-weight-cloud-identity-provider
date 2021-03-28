@@ -13,7 +13,7 @@ public class Constants {
 
         public static final String PERSISTENCE_UNIT_NAME = "tenant.management.model.tenantData";
         public static final String JDBC_URL = "javax.persistence.jdbc.url";
-        public static final String JDBC_USER = "javax.persistence.jdbc.tenant";
+        public static final String JDBC_USER = "javax.persistence.jdbc.user";
         public static final String JDBC_PASSWORD = "javax.persistence.jdbc.password";
         public static final String C3P0_MAX_CONNECTION_POOL_SIZE = "hibernate.c3p0.max_size";
 

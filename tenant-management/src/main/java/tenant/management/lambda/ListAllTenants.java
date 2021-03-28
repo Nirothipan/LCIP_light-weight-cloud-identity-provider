@@ -24,6 +24,7 @@ public class ListAllTenants extends TenantManagement implements RequestHandler<T
         try {
             List<TenantDataEntity> tenantDataEntityList = tenantManager.getAllTenants();
             JsonArray response = createOutput(tenantDataEntityList);
+            System.out.println(response.toString());
             return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
