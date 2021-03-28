@@ -1,5 +1,9 @@
 package org.uom.idp.service;
 
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.secretsmanager.AWSSecretsManager;
+import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
+import com.amazonaws.services.secretsmanager.model.*;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -8,15 +12,18 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.uom.idp.exceptions.DecodeLicenseKeyException;
 import org.uom.idp.exceptions.PublicKeyException;
 import org.uom.idp.exceptions.VerifyLicenseKeyException;
 import org.uom.idp.utils.Constants;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.security.interfaces.RSAPublicKey;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-import java.security.interfaces.RSAPublicKey;
 
 import static org.uom.idp.utils.Constants.API_CODES_CLAIM;
 
@@ -76,8 +83,10 @@ public class LicenseValidator {
      */
     private static RSAPublicKey getRSAPublicKey() throws Exception {
 
-        String alias = "wso2carbon";
-        String password = "wso2carbon";
+        RSAPublicKey publicKey = null;
+        JSONObject credentials = retrieveCredentials();
+        String alias = credentials.get("lcip-jks-alias").toString();
+        String password = credentials.get("lcip-jks-password").toString();
 
         InputStream file = LicenseValidator.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
         KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -86,6 +95,51 @@ public class LicenseValidator {
         // Get certificate of public key
         Certificate cert = keystore.getCertificate(alias);
         return (RSAPublicKey) cert.getPublicKey();
+
+    }
+
+    public static JSONObject retrieveCredentials() throws ParseException {
+
+        String secretName = "dev/lcip-secret-keys";
+        String endpoint = "secretsmanager.us-east-1.amazonaws.com";
+        String region = "us-east-1";
+
+        AwsClientBuilder.EndpointConfiguration config = new AwsClientBuilder.EndpointConfiguration(endpoint, region);
+        AWSSecretsManagerClientBuilder clientBuilder = AWSSecretsManagerClientBuilder.standard();
+        clientBuilder.setEndpointConfiguration(config);
+        AWSSecretsManager client = clientBuilder.build();
+
+        String secret;
+        ByteBuffer binarySecretData;
+        GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest()
+                .withSecretId(secretName).withVersionStage("AWSCURRENT");
+        GetSecretValueResult getSecretValueResult = null;
+        try {
+            getSecretValueResult = client.getSecretValue(getSecretValueRequest);
+
+        } catch (ResourceNotFoundException e) {
+            System.out.println("The requested secret " + secretName + " was not found");
+        } catch (InvalidRequestException e) {
+            System.out.println("The request was invalid due to: " + e.getMessage());
+        } catch (InvalidParameterException e) {
+            System.out.println("The request had invalid params: " + e.getMessage());
+        }
+
+        if (getSecretValueResult == null) {
+            return null;
+        }
+
+        // Depending on whether the secret was a string or binary, one of these fields will be populated
+        if (getSecretValueResult.getSecretString() != null) {
+            secret = getSecretValueResult.getSecretString();
+            JSONParser parser = new JSONParser();
+            JSONObject secretJson = (JSONObject) parser.parse(secret);
+            return secretJson;
+        } else {
+            binarySecretData = getSecretValueResult.getSecretBinary();
+            System.out.println(binarySecretData.toString());
+        }
+        return null;
     }
 
     /**
