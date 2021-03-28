@@ -9,7 +9,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value=""/>
-            <property name="javax.persistence.jdbc.tenant" value=""/>
+            <property name="javax.persistence.jdbc.user" value=""/>
             <property name="javax.persistence.jdbc.password" value=""/>
 
             <property name="hibernate.show_sql" value="false"/>
@@ -26,3 +26,4 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
         </properties>
     </persistence-unit>
 </persistence>
+

@@ -55,7 +55,7 @@ public class TenantManager {
         JsonObject tenant = new JsonObject();
         tenant.addProperty("Tenant Id", tenantDataEntity.getTenantId());
         tenant.addProperty("Tenant Name", tenantDataEntity.getTenantName());
-
+        tenant.addProperty("Tenant admin", tenantDataEntity.getAdminName());
         return tenant;
 
     }

@@ -24,6 +24,7 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
         try {
             List<UserDataEntity> userDataEntityList = userManager.getTenantUser();
             JsonArray response = createOutput(userDataEntityList, tenantId);
+            System.out.println(response.toString());
             return toJson(response);
         } catch (Exception e) {
             e.printStackTrace();
