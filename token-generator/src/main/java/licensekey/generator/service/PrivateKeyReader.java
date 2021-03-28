@@ -32,8 +32,6 @@ import java.security.interfaces.RSAPublicKey;
  */
 public class PrivateKeyReader {
 
-    private static boolean fileDownloaded = false;
-
     /**
      * @return Private key
      * @throws PrivateKeyGenerationException which capture no file found user.management.exception, invalid algorithm user.management.exception and
@@ -46,10 +44,6 @@ public class PrivateKeyReader {
         String alias = credentials.get("lcip-jks-alias").toString();
         String password = credentials.get("lcip-jks-password").toString();
 
-        if (!fileDownloaded) {
-            downloadFileFromS3();
-            fileDownloaded = true;
-        }
 
         String bucket_name = "cloud-idp-bucket";
         String key_name = "wso2carbon.jks";
@@ -116,29 +110,4 @@ public class PrivateKeyReader {
         return null;
     }
 
-    public static void main(String[] args) {
-        downloadFileFromS3();
-    }
-
-    private static void downloadFileFromS3() {
-        String bucket_name = "cloud-idp-bucket";
-        String key_name = "wso2carbon.jks";
-        System.out.format("Downloading %s from S3 bucket %s...\n", key_name, bucket_name);
-        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
-        try {
-            S3Object o = s3.getObject(bucket_name, key_name);
-            S3ObjectInputStream s3is = o.getObjectContent();
-            File downloadedFile = new File(key_name);
-            FileOutputStream fos = new FileOutputStream(downloadedFile);
-            byte[] read_buf = new byte[1024];
-            int read_len = 0;
-            while ((read_len = s3is.read(read_buf)) > 0) {
-                fos.write(read_buf, 0, read_len);
-            }
-            s3is.close();
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
