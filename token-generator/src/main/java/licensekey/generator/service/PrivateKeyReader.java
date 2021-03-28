@@ -1,7 +1,10 @@
 package licensekey.generator.service;
 
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import licensekey.generator.exception.PrivateKeyGenerationException;
@@ -38,13 +41,23 @@ public class PrivateKeyReader {
             fileDownloaded = true;
         }
 
+        String bucket_name = "cloud-idp-bucket";
+        String key_name = "wso2carbon.jks";
+
+        AmazonS3 s3Client = new AmazonS3Client(new ProfileCredentialsProvider());
+        S3Object object = s3Client.getObject(new GetObjectRequest(bucket_name, key_name));
+        InputStream file = object.getObjectContent();
+        // Process the objectData stream.
+
+
         // point your keystore here
-        InputStream file = PrivateKeyReader.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
+       // InputStream file = PrivateKeyReader.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
         KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
         keystore.load(file, password.toCharArray());
 
         // Get certificate of public key
         Certificate cert = keystore.getCertificate(alias);
+        file.close();
         return (PrivateKey)keystore.getKey(alias, password.toCharArray());
 
         //        AWSSecretsManager client  = AWSSecretsManagerClientBuilder.standard()
