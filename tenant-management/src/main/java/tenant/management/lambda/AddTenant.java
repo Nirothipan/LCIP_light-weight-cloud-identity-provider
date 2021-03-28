@@ -34,7 +34,7 @@ public class AddTenant extends TenantManagement implements RequestHandler<Tenant
 
             UserDataEntity userDataEntity = new UserDataEntity();
             userDataEntity.setTenantId(tenantCreationData.getTenantId());
-            userDataEntity.setUserEmail(tenantCreationData.getAdminUserName());
+            userDataEntity.setUserEmail(tenantCreationData.getAdminEmail());
             userDataEntity.setPassword(tenantCreationData.getAdminPassword());
             userDataEntity.setUserName(tenantCreationData.getAdminUserName());
 
