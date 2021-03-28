@@ -61,7 +61,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
     public static void main(String[] args) {
 
         LicensekeyGeneratorEntity token = new LicensekeyGeneratorEntity();
-        token.setUserName("ram1");
+        token.setUserName("tokenExisting");
         token.setAppId("1212");
         token.setTenantId("212121");
         token.setExpiryDate(getDate("2021-11-01 00:00:00+0530"));
@@ -109,15 +109,15 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         UserApi userApi = new UserApi();
         boolean isUserValid = userApi.validate(userDataEntity);
 
-        if (isUserValid) {
-            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
-                System.out.println(getErrorOutput("Application Not Valid"));
-                return getErrorOutput("Application Not Valid");
-            }
-        } else {
-            System.out.println(getErrorOutput("Invalid User"));
-            return getErrorOutput("Invalid User");
-        }
+//        if (isUserValid) {
+//            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+//                System.out.println(getErrorOutput("Application Not Valid"));
+//                return getErrorOutput("Application Not Valid");
+//            }
+//        } else {
+//            System.out.println(getErrorOutput("Invalid User"));
+//            return getErrorOutput("Invalid User");
+//        }
 
         try {
             LicensekeyGeneratorEntity existingToken = getToken(token);
