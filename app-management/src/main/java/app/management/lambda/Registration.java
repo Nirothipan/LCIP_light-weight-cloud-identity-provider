@@ -50,15 +50,13 @@ public class Registration extends ApplicationManagement implements RequestHandle
         LambdaLogger logger = context.getLogger();
         logger.log("initializing handler ");
 
-        JSONObject response = new JSONObject();
         try {
-            response = applicationManager.addApplication(userData);
+            return applicationManager.addApplication(userData);
         } catch (Exception e) {
             logger.log("Exception :: " + e);
             e.printStackTrace();
             return getErrorOutput(e.getMessage()).toString();
         }
-        return response.toString();
     }
 
 }

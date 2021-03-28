@@ -33,7 +33,7 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
             return getErrorOutput(e.getMessage()).toString();
         }
         System.out.println("Data added :" + response.toString());
-        return response.toString();
+        return response;
     }
 
     private static JSONArray createOutput(List<ApplicationDataEntity> appDataEntityList, String tenantId) {

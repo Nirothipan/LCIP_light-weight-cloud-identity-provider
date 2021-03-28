@@ -33,14 +33,13 @@ public class Delete extends ApplicationManagement implements RequestHandler<Appl
     }
 
     private Object removeApplication(String name, String id) {
-        JSONObject response = new JSONObject();
+
         try {
-            response = applicationManager.deleteApplication(name, id);
+            return applicationManager.deleteApplication(name, id);
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();
             return getErrorOutput(e.getMessage()).toString();
         }
-        return response.toString();
     }
 }
