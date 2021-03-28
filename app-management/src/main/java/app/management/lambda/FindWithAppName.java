@@ -14,8 +14,8 @@ public class FindWithAppName extends ApplicationManagement implements RequestHan
     }
 
     public static void main(String[] args) {
-        getApplication("AppNew2", "1234");
-        System.out.println("checking........." + checkApplication("AppNew2", "1234456"));
+        getApplication("AppNew3", "12345");
+//        System.out.println("checking........." + checkApplication("AppNew2", "1234456"));
     }
 
     private static Object getApplication(String name, String id) {
