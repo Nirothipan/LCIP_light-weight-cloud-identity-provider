@@ -38,11 +38,11 @@ public class PrivateKeyReader {
      *                                       invalid key spec user.management.exception
      */
     public static PrivateKey getPrivateKey() throws Exception {
-        retrieveCredentials();
-        RSAPublicKey publicKey = null;
-        JSONObject credentials = retrieveCredentials();
-        String alias = credentials.get("lcip-jks-alias").toString();
-        String password = credentials.get("lcip-jks-password").toString();
+        //retrieveCredentials();
+        //RSAPublicKey publicKey = null;
+        //JSONObject credentials = retrieveCredentials();
+        String alias = "wso2carbon"; //= credentials.get("lcip-jks-alias").toString();
+        String password  = "wso2carbon"; //= credentials.get("lcip-jks-password").toString();
 
 
         String bucket_name = "cloud-idp-bucket";
