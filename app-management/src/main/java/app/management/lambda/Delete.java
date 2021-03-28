@@ -24,7 +24,7 @@ public class Delete extends ApplicationManagement implements RequestHandler<Appl
         userData.setAppName("AppNew3");
         JsonObject response = new JsonObject();
         try {
-            response = applicationManager.deleteApplication(userData.getAppName(), "1234");
+            response = applicationManager.deleteApplication(userData.getAppName(), "12345");
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();

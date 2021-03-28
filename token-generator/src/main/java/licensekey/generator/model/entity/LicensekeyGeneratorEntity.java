@@ -27,7 +27,6 @@ public class LicensekeyGeneratorEntity implements Serializable {
 
     private static final long serialVersionUID = -4997964964871690908L;
 
-    @Id
     @Column(name = "token")
     private String token;
 
@@ -35,7 +34,6 @@ public class LicensekeyGeneratorEntity implements Serializable {
     @Column(name = "tenant_id")
     private String tenantId;
 
-    @Id
     @Column(name = "created_date")
     private long createdDate;
 
@@ -43,6 +41,7 @@ public class LicensekeyGeneratorEntity implements Serializable {
     @Column(name = "user_name")
     private String userName;
 
+    @Id
     @Column(name = "app_id")
     private String appId;
 

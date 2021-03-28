@@ -1,8 +1,5 @@
 package licensekey.generator.lambda.dao;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 public class LicenseKeyGenerator {
 
     private String token;
@@ -13,11 +10,21 @@ public class LicenseKeyGenerator {
 
     private String userName;
 
-    private String appId;
+    private String appName;
 
     private String expiryDate;
 
     private String password;
+
+    public String[] getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String[] scopes) {
+        this.scopes = scopes;
+    }
+
+    private String[] scopes;
 
     public String getToken() {
         return token;
@@ -51,12 +58,12 @@ public class LicenseKeyGenerator {
         this.userName = userName;
     }
 
-    public String getAppId() {
-        return appId;
+    public String getAppName() {
+        return appName;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getExpiryDate() {
