@@ -84,9 +84,11 @@ public class LicenseValidator {
     private static RSAPublicKey getRSAPublicKey() throws Exception {
 
         RSAPublicKey publicKey = null;
-        JSONObject credentials = retrieveCredentials();
-        String alias = credentials.get("lcip-jks-alias").toString();
-        String password = credentials.get("lcip-jks-password").toString();
+//        JSONObject credentials = retrieveCredentials();
+//        String alias = credentials.get("lcip-jks-alias").toString();
+//        String password = credentials.get("lcip-jks-password").toString();
+        String alias = "wso2carbon";
+        String password = "wso2carbon";
 
         InputStream file = LicenseValidator.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
         KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
