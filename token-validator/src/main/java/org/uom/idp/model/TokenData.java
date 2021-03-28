@@ -7,7 +7,7 @@ public class TokenData {
         return token;
     }
 
-    public void setToken (String token) {
+    public void setToken(String token) {
         this.token = token;
     }
 }

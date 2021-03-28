@@ -1,6 +1,5 @@
 package org.uom.idp.exceptions;
 
-
 /**
  * Thrown if JWT verification fails.
  *
