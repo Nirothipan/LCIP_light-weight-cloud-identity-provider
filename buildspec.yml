@@ -16,6 +16,10 @@ phases:
       - aws lambda update-function-code --function-name appRegistration --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/app-management-1.0-SNAPSHOT.jar
       - aws lambda update-function-code --function-name applicationDeletion --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/app-management-1.0-SNAPSHOT.jar
       - aws lambda update-function-code --function-name getApplicationDetails --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/app-management-1.0-SNAPSHOT.jar
+      - aws lambda update-function-code --function-name listAllTenants --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
+      - aws lambda update-function-code --function-name getTenantDetails --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
+      - aws lambda update-function-code --function-name deleteTenant --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
+      - aws lambda update-function-code --function-name tenantRegistration --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
       - echo Lambda deployment completed successfully
 artifacts:
   files:
