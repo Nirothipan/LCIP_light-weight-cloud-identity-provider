@@ -89,7 +89,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         if (scopes == null) {
             scopes = new String[] {};
         }
-        return createKey(licensekeyGeneratorEntity, token.getPassword(), scopes).toString();
+        return createKey(licensekeyGeneratorEntity, token.getPassword(), scopes);
     }
 
     public static Object createKey(LicensekeyGeneratorEntity token, String pwd, String[] scopes) {
