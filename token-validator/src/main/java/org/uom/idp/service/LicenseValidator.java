@@ -12,6 +12,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.uom.idp.exceptions.DecodeLicenseKeyException;
 import org.uom.idp.exceptions.PublicKeyException;
 import org.uom.idp.exceptions.VerifyLicenseKeyException;
@@ -19,19 +21,9 @@ import org.uom.idp.utils.Constants;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-import java.security.interfaces.RSAPublicKey;
 
 import static org.uom.idp.utils.Constants.API_CODES_CLAIM;
 
