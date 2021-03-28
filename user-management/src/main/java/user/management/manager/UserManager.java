@@ -48,16 +48,22 @@ public class UserManager {
         return createOutput(true, null);
     }
 
-    public JsonObject getUser(String name, String id) throws DBException, Exception {
+    public UserDataEntity getUser(String name, String id) throws DBException, Exception {
 
         UserDataEntity userDataEntity = getFromDB(name, id);
 
-        JsonObject user = new JsonObject();
-        user.addProperty("Tenant Name", userDataEntity.getTenantId());
-        user.addProperty("User Name", userDataEntity.getUserName());
-        user.addProperty("Email", userDataEntity.getUserEmail());
+        if (userDataEntity == null) {
+            return null;
+        }
 
-        return user;
+        return  userDataEntity;
+
+//        JsonObject user = new JsonObject();
+//        user.addProperty("Tenant Name", userDataEntity.getTenantId());
+//        user.addProperty("User Name", userDataEntity.getUserName());
+//        user.addProperty("Email", userDataEntity.getUserEmail());
+//
+//        return user;
 
     }
 
