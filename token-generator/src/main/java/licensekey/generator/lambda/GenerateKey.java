@@ -86,7 +86,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         licensekeyGeneratorEntity.setTenantId(token.getTenantId());
         licensekeyGeneratorEntity.setExpiryDate(getDate(token.getExpiryDate()));
 
-        return createKey(licensekeyGeneratorEntity, token.getPassword());
+        return createKey(licensekeyGeneratorEntity, token.getPassword()).toString();
     }
 
     public static Object createKey(LicensekeyGeneratorEntity token, String pwd) {
