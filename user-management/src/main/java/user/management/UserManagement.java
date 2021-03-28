@@ -1,8 +1,6 @@
 package user.management;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import user.management.dao.UpdateDB;
 import user.management.manager.UserManager;
 import user.management.utils.Constants;
@@ -44,16 +42,11 @@ public class UserManagement {
 
     protected static UserManager userManager = new UserManager(updateDB);
 
-    protected static JsonObject getErrorOutput(String message) {
-        JsonObject output = new JsonObject();
-        output.addProperty("Status", "Internal Server Error");
-        output.addProperty("Message", message);
+    protected static JSONObject getErrorOutput(String message) {
+        JSONObject output = new JSONObject();
+        output.put("Status", "Internal Server Error");
+        output.put("Message", message);
         return output;
-    }
-
-    protected static String toJson(Object json) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(json);
     }
 
 }

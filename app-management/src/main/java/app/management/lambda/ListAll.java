@@ -36,20 +36,24 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
         return response.toString();
     }
 
-    private static JsonArray createOutput(List<ApplicationDataEntity> userDataEntityList, String tenantId) {
+    private static JsonArray createOutput(List<ApplicationDataEntity> appDataEntityList, String tenantId) {
 
         JsonArray allApps = new JsonArray();
 
-        for (ApplicationDataEntity userDataEntity : userDataEntityList) {
+        for (ApplicationDataEntity appDataEntity : appDataEntityList) {
 
             JsonObject app = new JsonObject();
 
-            app.addProperty("tenantName", userDataEntity.getTenantId());
-            app.addProperty("clientID", userDataEntity.getClientId());
-            app.addProperty("applicationName", userDataEntity.getAppName());
-            app.addProperty("callbackURL", userDataEntity.getCallBackUrl());
+            app.addProperty("tenantName", appDataEntity.getTenantId());
+            app.addProperty("clientID", appDataEntity.getClientId());
+            app.addProperty("applicationName", appDataEntity.getAppName());
+            app.addProperty("callbackURL", appDataEntity.getCallBackUrl());
 
-            if (!tenantId.isEmpty() && tenantId.equals(userDataEntity.getTenantId())) {
+            if (tenantId != null && !tenantId.isEmpty()) {
+                if (tenantId.equals(appDataEntity.getTenantId())) {
+                    allApps.add(app);
+                }
+            } else {
                 allApps.add(app);
             }
         }

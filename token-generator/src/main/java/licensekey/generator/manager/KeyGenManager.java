@@ -2,8 +2,6 @@ package licensekey.generator.manager;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import licensekey.generator.dao.UpdateDB;
 import licensekey.generator.exception.DBException;
@@ -12,6 +10,7 @@ import licensekey.generator.model.UserData;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
 import licensekey.generator.service.PrivateKeyReader;
 import org.hibernate.exception.JDBCConnectionException;
+import org.json.simple.JSONObject;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.sql.Date;
@@ -46,12 +45,12 @@ public class KeyGenManager {
      * @param message   Message to the client side if any
      * @return JsonObject
      */
-    public JsonObject createOutput(String jwt, int errorCode, String message) {
+    public JSONObject createOutput(String jwt, int errorCode, String message) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("key", jwt);
-        output.addProperty("errorCode", errorCode);
-        output.addProperty("message", message);
+        JSONObject output = new JSONObject();
+        output.put("key", jwt);
+        output.put("errorCode", errorCode);
+        output.put("message", message);
         return output;
     }
 
@@ -64,7 +63,7 @@ public class KeyGenManager {
      * @throws PrivateKeyGenerationException If the Private Key cannot be generated
      * @throws DBException                   If the Database connection causes an error
      */
-    public JsonObject generateKeyAndUpdateDB(UserData userData, String[] scopes) throws DBException, Exception {
+    public JSONObject generateKeyAndUpdateDB(UserData userData, String[] scopes) throws DBException, Exception {
         // Avoid creating duplicate keys
         String username = userData.getUsername();
         String jwt = null;

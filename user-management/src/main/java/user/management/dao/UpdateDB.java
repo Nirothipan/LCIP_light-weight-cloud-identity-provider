@@ -180,8 +180,7 @@ public class UpdateDB {
                 Session session = (Session) entityManager.getDelegate();
                 session.setDefaultReadOnly(true);
                 TypedQuery<UserDataEntity> query = entityManager.createNamedQuery(
-                        Constants.Database.Queries.GET_ALL_USER,
-                        UserDataEntity.class);
+                        Constants.Database.Queries.GET_ALL_USER, UserDataEntity.class);
                 if (query.getResultList().size() > 0) {
                     return query.getResultList();
                 }

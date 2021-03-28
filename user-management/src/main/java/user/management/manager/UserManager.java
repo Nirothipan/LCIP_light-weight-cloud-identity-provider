@@ -1,8 +1,8 @@
 package user.management.manager;
 
-import com.google.gson.JsonObject;
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import org.hibernate.exception.JDBCConnectionException;
+import org.json.simple.JSONObject;
 import user.management.dao.UpdateDB;
 import user.management.exception.DBException;
 import user.management.model.entity.UserDataEntity;
@@ -24,14 +24,14 @@ public class UserManager {
 
     }
 
-    private JsonObject createOutput(boolean isSuccess, String message) {
+    private JSONObject createOutput(boolean isSuccess, String message) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("Status", isSuccess ? "success" : "failure");
+        JSONObject output = new JSONObject();
+        output.put("Status", isSuccess ? "success" : "failure");
         return output;
     }
 
-    public JsonObject addUser(UserDataEntity userData) throws DBException, Exception {
+    public JSONObject addUser(UserDataEntity userData) throws DBException, Exception {
         // Avoid creating duplicate keys
         String username = userData.getUserName();
 
@@ -42,7 +42,7 @@ public class UserManager {
         return createOutput(true, null);
     }
 
-    public JsonObject deletUser(String name, String id) throws DBException, Exception {
+    public JSONObject deletUser(String name, String id) throws DBException, Exception {
 
         removeFromDB(name, id);
         return createOutput(true, null);
@@ -56,14 +56,14 @@ public class UserManager {
             return null;
         }
 
-        return  userDataEntity;
+        return userDataEntity;
 
-//        JsonObject user = new JsonObject();
-//        user.addProperty("Tenant Name", userDataEntity.getTenantId());
-//        user.addProperty("User Name", userDataEntity.getUserName());
-//        user.addProperty("Email", userDataEntity.getUserEmail());
-//
-//        return user;
+        //        JSONObject user = new JSONObject();
+        //        user.addProperty("Tenant Name", userDataEntity.getTenantId());
+        //        user.addProperty("User Name", userDataEntity.getUserName());
+        //        user.addProperty("Email", userDataEntity.getUserEmail());
+        //
+        //        return user;
 
     }
 
