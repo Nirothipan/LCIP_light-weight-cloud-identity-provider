@@ -1,8 +1,8 @@
 package tenant.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import tenant.management.TenantManagement;
 import tenant.management.model.entity.TenantDataEntity;
 
@@ -11,7 +11,8 @@ import java.util.List;
 public class ListAllTenants extends TenantManagement implements RequestHandler<TenantDataEntity, Object> {
 
     @Override
-    public Object handleRequest(TenantDataEntity tenantDataEntity, com.amazonaws.services.lambda.runtime.Context context) {
+    public Object handleRequest(TenantDataEntity tenantDataEntity,
+                                com.amazonaws.services.lambda.runtime.Context context) {
         return getTenant();
     }
 
@@ -23,23 +24,23 @@ public class ListAllTenants extends TenantManagement implements RequestHandler<T
 
         try {
             List<TenantDataEntity> tenantDataEntityList = tenantManager.getAllTenants();
-            JsonArray response = createOutput(tenantDataEntityList);
+            JSONArray response = createOutput(tenantDataEntityList);
             System.out.println(response.toString());
-            return toJson(response);
+            return (response);
         } catch (Exception e) {
             e.printStackTrace();
-            return toJson(getErrorOutput(e.getMessage()));
+            return (getErrorOutput(e.getMessage()));
         }
     }
 
-    private static JsonArray createOutput(List<TenantDataEntity> tenantDataEntityList) {
+    private static JSONArray createOutput(List<TenantDataEntity> tenantDataEntityList) {
 
-        JsonArray allTenants = new JsonArray();
+        JSONArray allTenants = new JSONArray();
         for (TenantDataEntity tenantDataEntity : tenantDataEntityList) {
 
-            JsonObject tenant = new JsonObject();
-            tenant.addProperty("Tenant Id", tenantDataEntity.getTenantId());
-            tenant.addProperty("Tenant Admin", tenantDataEntity.getAdminName());
+            JSONObject tenant = new JSONObject();
+            tenant.put("Tenant Id", tenantDataEntity.getTenantId());
+            tenant.put("Tenant Admin", tenantDataEntity.getAdminName());
             allTenants.add(tenant);
         }
         return allTenants;

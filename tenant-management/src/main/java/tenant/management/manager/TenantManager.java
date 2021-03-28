@@ -1,8 +1,8 @@
 package tenant.management.manager;
 
-import com.google.gson.JsonObject;
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import org.hibernate.exception.JDBCConnectionException;
+import org.json.simple.JSONObject;
 import tenant.management.dao.UpdateDB;
 import tenant.management.exception.DBException;
 import tenant.management.model.entity.TenantDataEntity;
@@ -24,14 +24,14 @@ public class TenantManager {
 
     }
 
-    private JsonObject createOutput(boolean isSuccess, String message) {
+    private JSONObject createOutput(boolean isSuccess, String message) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("Status", isSuccess ? "success" : "failure");
+        JSONObject output = new JSONObject();
+        output.put("Status", isSuccess ? "success" : "failure");
         return output;
     }
 
-    public JsonObject addTenant(TenantDataEntity tenantData) throws DBException, Exception {
+    public JSONObject addTenant(TenantDataEntity tenantData) throws DBException, Exception {
         // Avoid creating duplicate keys
         String tenantId = tenantData.getTenantId();
 
@@ -42,19 +42,19 @@ public class TenantManager {
         return createOutput(true, null);
     }
 
-    public JsonObject deleteTenant(String id) throws DBException, Exception {
+    public JSONObject deleteTenant(String id) throws DBException, Exception {
 
         removeFromDB(id);
         return createOutput(true, null);
     }
 
-    public JsonObject getTenant(String id) throws DBException, Exception {
+    public JSONObject getTenant(String id) throws DBException, Exception {
 
         TenantDataEntity tenantDataEntity = getFromDB(id);
 
-        JsonObject tenant = new JsonObject();
-        tenant.addProperty("Tenant Id", tenantDataEntity.getTenantId());
-        tenant.addProperty("Tenant admin", tenantDataEntity.getAdminName());
+        JSONObject tenant = new JSONObject();
+        tenant.put("Tenant Id", tenantDataEntity.getTenantId());
+        tenant.put("Tenant admin", tenantDataEntity.getAdminName());
         return tenant;
 
     }

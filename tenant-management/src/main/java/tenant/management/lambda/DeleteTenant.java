@@ -2,7 +2,7 @@ package tenant.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import tenant.management.TenantManagement;
 import tenant.management.model.entity.TenantDataEntity;
 
@@ -20,11 +20,11 @@ public class DeleteTenant extends TenantManagement implements RequestHandler<Ten
     private static Object removeTenant(String id) {
 
         try {
-            JsonObject response = tenantManager.deleteTenant(id);
-            return toJson(response);
+            JSONObject response = tenantManager.deleteTenant(id);
+            return (response);
         } catch (Exception e) {
             e.printStackTrace();
-            return toJson(getErrorOutput(e.getMessage()));
+            return (getErrorOutput(e.getMessage()));
         }
     }
 

@@ -1,11 +1,11 @@
 package app.management.dao;
 
+import app.management.exception.DBException;
+import app.management.model.entity.ApplicationDataEntity;
 import app.management.model.entity.ApplicationIdDataEntity;
 import app.management.utils.Constants;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
-import app.management.exception.DBException;
-import app.management.model.entity.ApplicationDataEntity;
 
 import java.util.List;
 import java.util.Random;
@@ -84,9 +84,9 @@ public class UpdateDB {
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
-//                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
-//                        continue;
-//                    }
+                    //                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+                    //                        continue;
+                    //                    }
                     Throwable nestedCause = cause.getCause();
                     if (nestedCause instanceof ConstraintViolationException) {
                         return;
@@ -111,7 +111,7 @@ public class UpdateDB {
                 ApplicationDataEntity applicationDataEntity = new ApplicationDataEntity();
                 applicationDataEntity.setTenantId(id);
                 applicationDataEntity.setAppName(name);
-                ApplicationDataEntity data =  entityManager.find(ApplicationDataEntity.class, applicationDataEntity);
+                ApplicationDataEntity data = entityManager.find(ApplicationDataEntity.class, applicationDataEntity);
                 entityManager.remove(data);
                 entityManager.getTransaction().commit();
                 entityManager.close();
@@ -119,9 +119,9 @@ public class UpdateDB {
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
-//                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
-//                        continue;
-//                    }
+                    //                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+                    //                        continue;
+                    //                    }
                     Throwable nestedCause = cause.getCause();
                     if (nestedCause instanceof ConstraintViolationException) {
                         return;
@@ -152,9 +152,9 @@ public class UpdateDB {
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
-//                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
-//                        continue;
-//                    }
+                    //                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+                    //                        continue;
+                    //                    }
                     Throwable nestedCause = cause.getCause();
                     if (nestedCause instanceof ConstraintViolationException) {
                         return null;
@@ -186,9 +186,9 @@ public class UpdateDB {
             } catch (PersistenceException e) {
                 Throwable cause = e.getCause();
                 if (cause != null) {
-//                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
-//                        continue;
-//                    }
+                    //                    if (cause instanceof CommunicationsException || cause instanceof JDBCConnectionException) {
+                    //                        continue;
+                    //                    }
                     Throwable nestedCause = cause.getCause();
                     if (nestedCause instanceof ConstraintViolationException) {
                         return null;
@@ -204,7 +204,6 @@ public class UpdateDB {
         throw new DBException("Connection failed. QueryTimeoutException occurred.");
     }
 
-
     public List<ApplicationDataEntity> getAllApplication() throws DBException {
 
         int numAttempts = 0;
@@ -215,8 +214,8 @@ public class UpdateDB {
             try {
                 Session session = (Session) entityManager.getDelegate();
                 session.setDefaultReadOnly(true);
-                TypedQuery<ApplicationDataEntity> query = entityManager
-                        .createNamedQuery(Constants.Database.Queries.LIST_ALL_APPLICATION, ApplicationDataEntity.class);
+                TypedQuery<ApplicationDataEntity> query = entityManager.createNamedQuery(
+                        Constants.Database.Queries.LIST_ALL_APPLICATION, ApplicationDataEntity.class);
                 if (query.getResultList().size() > 0) {
                     return query.getResultList();
                 }
@@ -233,9 +232,9 @@ public class UpdateDB {
     private void validatePersistenceException(PersistenceException e) throws DBException {
 
         Throwable cause = e.getCause();
-//        if (!(cause instanceof com.mysql.jdbc.CommunicationsException) && !(cause instanceof JDBCConnectionException)) {
-//            throw new DBException("Exception occurred while connecting to the database", e);
-//        }
+        //        if (!(cause instanceof com.mysql.jdbc.CommunicationsException) && !(cause instanceof JDBCConnectionException)) {
+        //            throw new DBException("Exception occurred while connecting to the database", e);
+        //        }
         try {
             Thread.sleep(retryInterval + (new Random()).nextInt(1000));
         } catch (InterruptedException interruptedException) {

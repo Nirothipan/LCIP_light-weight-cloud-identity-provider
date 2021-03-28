@@ -4,7 +4,7 @@ import app.management.dao.UpdateDB;
 import app.management.manager.ApplicationManager;
 import app.management.model.entity.ApplicationDataEntity;
 import app.management.utils.Constants;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,35 +27,35 @@ public class ApplicationManagement {
 
         String jdbcUrl = System.getenv("jdbcUrl");
         if (jdbcUrl == null || jdbcUrl.isEmpty()) {
-           jdbcUrl = "jdbc:mysql://localhost:3306/cloud?useSSL=false";
+            jdbcUrl = "jdbc:mysql://localhost:3306/cloud?useSSL=false";
         }
         jdbcConfig.put(Constants.Database.JDBC_URL, jdbcUrl);
 
         String userName = System.getenv("userName");
         if (userName == null || userName.isEmpty()) {
-//            userName = "root";
+            //            userName = "root";
             userName = "admin";
         }
         jdbcConfig.put(Constants.Database.JDBC_USER, userName);
 
         String secret = System.getenv("password");
         if (secret == null || secret.isEmpty()) {
-//            secret = "root";
+            //            secret = "root";
             secret = "admin123";
         }
         jdbcConfig.put(Constants.Database.JDBC_PASSWORD, secret);
         jdbcConfig.put(Constants.Database.C3P0_MAX_CONNECTION_POOL_SIZE, 30);
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.Database.PERSISTENCE_UNIT_NAME,
-                jdbcConfig);
+                                                                          jdbcConfig);
         updateDB = new UpdateDB(emf, 3, 5000);
     }
 
     protected static ApplicationManager applicationManager = new ApplicationManager(updateDB);
 
-    protected static JsonObject getErrorOutput(String message) {
-        JsonObject output = new JsonObject();
-        output.addProperty("Status", "Internal Server Error");
-        output.addProperty("Message", message);
+    protected static JSONObject getErrorOutput(String message) {
+        JSONObject output = new JSONObject();
+        output.put("Status", "Internal Server Error");
+        output.put("Message", message);
         return output;
     }
 
