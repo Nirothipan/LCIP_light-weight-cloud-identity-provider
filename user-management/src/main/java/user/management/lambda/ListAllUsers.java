@@ -1,8 +1,8 @@
 package user.management.lambda;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import user.management.UserManagement;
 import user.management.model.entity.UserDataEntity;
 
@@ -23,24 +23,24 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
 
         try {
             List<UserDataEntity> userDataEntityList = userManager.getTenantUser();
-            JsonArray response = createOutput(userDataEntityList, tenantId);
+            JSONArray response = createOutput(userDataEntityList, tenantId);
             System.out.println(response.toString());
-            return toJson(response);
+            return (response);
         } catch (Exception e) {
             e.printStackTrace();
-            return toJson(getErrorOutput(e.getMessage()));
+            return (getErrorOutput(e.getMessage()));
         }
     }
 
-    private static JsonArray createOutput(List<UserDataEntity> userDataEntityList, String tenantId) {
+    private static JSONArray createOutput(List<UserDataEntity> userDataEntityList, String tenantId) {
 
-        JsonArray allUsers = new JsonArray();
+        JSONArray allUsers = new JSONArray();
         for (UserDataEntity userDataEntity : userDataEntityList) {
 
-            JsonObject user = new JsonObject();
-            user.addProperty("Tenant Name", userDataEntity.getTenantId());
-            user.addProperty("User Name", userDataEntity.getUserName());
-            user.addProperty("Email", userDataEntity.getUserEmail());
+            JSONObject user = new JSONObject();
+            user.put("Tenant Name", userDataEntity.getTenantId());
+            user.put("User Name", userDataEntity.getUserName());
+            user.put("Email", userDataEntity.getUserEmail());
             if (tenantId != null && !tenantId.isEmpty()) {
                 if (tenantId.equals(userDataEntity.getTenantId())) {
                     allUsers.add(user);

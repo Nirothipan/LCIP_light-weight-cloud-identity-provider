@@ -3,22 +3,21 @@ package user.management.model.entity;
 import user.management.utils.Constants;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.Table;
 
 /**
  * Database Entity.
  *
  * @since 1.0.0
  */
-@NamedNativeQueries({
-        @NamedNativeQuery(name = Constants.Database.Queries.GET_ALL_USER,
-                query = Constants.Database.Queries.GET_ALL_USERS_QUERY,
-                resultClass = UserDataEntity.class) })
+@NamedNativeQueries({ @NamedNativeQuery(name = Constants.Database.Queries.GET_ALL_USER,
+        query = Constants.Database.Queries.GET_ALL_USERS_QUERY,
+        resultClass = UserDataEntity.class) })
 
 @Entity
 @Table(name = "USER_INFO")

@@ -1,6 +1,6 @@
 package user.management;
 
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import user.management.exception.DBException;
 import user.management.model.entity.UserDataEntity;
 
@@ -17,11 +17,11 @@ public class UserApi extends UserManagement {
 
     public Object addUser(UserDataEntity userData) {
         try {
-            JsonObject response = userManager.addUser(userData);
-            return toJson(response);
+            JSONObject response = userManager.addUser(userData);
+            return (response);
         } catch (Exception e) {
             e.printStackTrace();
-            return toJson(getErrorOutput(e.getMessage()));
+            return (getErrorOutput(e.getMessage()));
         }
     }
 }
