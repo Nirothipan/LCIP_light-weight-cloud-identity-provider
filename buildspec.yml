@@ -8,6 +8,12 @@ phases:
   post_build:
     commands:
       - echo Build completed successfully
+      - aws s3 cp tenant-management/target/tenant-management-1.0-SNAPSHOT.jar s3://cloud-idp-bucket/lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
+      - aws s3 cp token-generator/target/token-generator-1.0-SNAPSHOT.jar s3://cloud-idp-bucket/lcip-lambdas/token-generator-1.0-SNAPSHOT.jar
+      - aws s3 cp token-validator/target/token-validator-1.0-SNAPSHOT.jar s3://cloud-idp-bucket/lcip-lambdas/token-validator-1.0-SNAPSHOT.jar
+      - aws s3 cp app-management/target/app-management-1.0-SNAPSHOT.jar s3://cloud-idp-bucket/lcip-lambdas/app-management-1.0-SNAPSHOT.jar
+      - aws s3 cp user-management/target/user-management-1.0-SNAPSHOT.jar s3://cloud-idp-bucket/lcip-lambdas/user-management-1.0-SNAPSHOT.jar
+      - echo Uploaded Jar to S3 location successfully
       - aws lambda update-function-code --function-name getUserDetails --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/user-management-1.0-SNAPSHOT.jar
       - aws lambda update-function-code --function-name userRegistration --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/user-management-1.0-SNAPSHOT.jar
       - aws lambda update-function-code --function-name listAllUsers --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/user-management-1.0-SNAPSHOT.jar
@@ -21,11 +27,5 @@ phases:
       - aws lambda update-function-code --function-name deleteTenant --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
       - aws lambda update-function-code --function-name tenantRegistration --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/tenant-management-1.0-SNAPSHOT.jar
       - aws lambda update-function-code --function-name tokenGeneration --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/token-generator-1.0-SNAPSHOT.jar
+      - aws lambda update-function-code --function-name ValidatorLambda --region us-east-1 --s3-bucket cloud-idp-bucket --s3-key lcip-lambdas/token-validator-1.0-SNAPSHOT.jar
       - echo Lambda deployment completed successfully
-artifacts:
-  files:
-    - user-management/target/user-management-1.0-SNAPSHOT.jar
-    - app-management/target/app-management-1.0-SNAPSHOT.jar
-    - tenant-management/target/tenant-management-1.0-SNAPSHOT.jar
-    - token-generator/target/token-generator-1.0-SNAPSHOT.jar
-  discard-paths: yes
