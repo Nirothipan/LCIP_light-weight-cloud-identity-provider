@@ -12,6 +12,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import org.uom.idp.exceptions.DecodeLicenseKeyException;
 import org.uom.idp.exceptions.PrivateKeyGenerationException;
 import org.uom.idp.exceptions.PublicKeyException;
@@ -60,7 +61,7 @@ public class LicenseValidator {
      *
      * @param agentArgument Argument passed for the Java agent
      */
-    public JsonObject premain(final String agentArgument) throws Exception {
+    public JSONObject premain(final String agentArgument) throws Exception {
         DecodedJWT decodedJWT = decodeLicenseKey(agentArgument);
         return createOutput(verifyLicenseKey(decodedJWT));
     }
@@ -71,10 +72,10 @@ public class LicenseValidator {
      * @param statusMsg       Status Message
      * @return JsonObject
      */
-    private JsonObject createOutput(String statusMsg) {
+    private JSONObject createOutput(String statusMsg) {
 
-        JsonObject output = new JsonObject();
-        output.addProperty("status", statusMsg);
+        JSONObject output = new JSONObject();
+        output.put("status", statusMsg);
         return output;
     }
 

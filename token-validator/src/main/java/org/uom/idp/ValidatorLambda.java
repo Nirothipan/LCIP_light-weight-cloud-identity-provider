@@ -1,18 +1,10 @@
 package org.uom.idp;
 
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.secretsmanager.AWSSecretsManager;
-import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
-import com.amazonaws.services.secretsmanager.model.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import org.json.simple.JSONObject;
 import org.uom.idp.model.TokenData;
 import org.uom.idp.service.LicenseValidator;
-
-import java.nio.ByteBuffer;
 
 /**
  * Hello world!
@@ -25,18 +17,17 @@ public class ValidatorLambda implements RequestHandler<TokenData, Object>
     public static void main(String[] args) {
         LicenseValidator licenseValidator1 = new LicenseValidator();
 
-        JsonObject response = null;
+        JSONObject response = null;
         try {
-            response = licenseValidator1.premain("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhcGlDb2RlcyI6WyJhcGkxIiwiYXBpMiJdLCJpc3MiOiJ1b20ubGsiLCJleHAiOjE2MDUwMzMwMDAsImlhdCI6MTYxMzg4ODE5MH0.TndbmCS6YKSbTlanwKr1PwweIu4Sl9SY_bmbKM2UwZ679i_2WWkMbYrmK5ICaxDAy00p10nYHVbxspGb0DGib6CyNEiCkr4d3dbplZFDeuJFiDoC5GRg9cqpQjPXuC5-nC9gX1rkGIIrMWDsWaowXSXWSO0o4lTKqtrnh8cYamUuedoRB92AgbsWizjoaZy_mF-aEc6baqlF0bBpGiKD95zfC4QShI-5DIDLABBVXv_eDkg6tO3T6Ddnr_UU5ZDIikLgXx7wHz_Y3cq9tIIuyDfddCwqqxtvRmgdIR4FMOhRRGLnvoRMczDlgcSyQMVLsbKkiML_G2kKrkhDDb_AZaA9uNaobXn4J-Yxy_-tPanGeDbnb7GV717Nqqc4EYQiUbzNlGcXxsGtDSOKFuJL7m9dsH6e4nYUDucB-iURHLKtxW-gF7wFtgXEy5q6WXUy2E8fDbQ9QCJvpVuMgb64cqPeAZJRCJaWfNE4jbXZaYOEe5FIx3Ep020M5pa5vjzN");
+            response = licenseValidator1.premain("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzM4NCJ9.eyJPcmdhbml6YXRpb24gTmFtZSI6IjEyMXF3IiwiaXNzIjoibGNpcCIsInNjb3BlcyI6WyJbJ3Jvb2tpZTIzJywgJ2NvbnN1bWVyMTInXSJdLCJleHAiOjE2MzU3MDUwMDAsImlhdCI6MTYxNjkzODcxNSwiQXBwbGljYXRpb24gTmFtZSI6ImlkLTEyIn0.q7I4St7lXfba3q5bUh-zTn9oJCwokZWxppHdSeNTM3E-LT97ur7AFnoaHqLTFJkwc44e82e9bB-mh4bFv1RoF__bzC_VPKeYD3kEA7IY_jrAPlUOkDAsa9xcEvsnq5Jos8mi1v8nFrgnXhH6XdJSx5j1uQ3M_vsFa__E3PhTUv9GNAulM9JTpwEQXpiq3qdU9QHr9pIHrW4JoUuHQnvEYZd8Mr6a06Q0efQ8H1SReZtleQrpHayFhdv9YJoJtKLgSV5B-eMgB6F2tmfhlFVU14621HLDJvfhxO1MlD4X6ppijYFoDLxUfAxUIynKpMo3v0yDc-Sn_WtGMhyGEvrayg");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(response.toString());
+        System.out.println(response);
     }
 
     @Override
     public Object handleRequest(TokenData token, Context context) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println("Invoking Validator Lambda function");
         System.out.println("Printing token : " + token.getToken());
 
@@ -44,7 +35,7 @@ public class ValidatorLambda implements RequestHandler<TokenData, Object>
             licenseValidator = new LicenseValidator();
         }
 
-        JsonObject response = null;
+        JSONObject response = null;
         try {
             response = licenseValidator.premain(token.getToken());
         } catch (Exception e) {
