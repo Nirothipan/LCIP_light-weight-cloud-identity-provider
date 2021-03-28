@@ -27,19 +27,22 @@ public class ApplicationManagement {
 
         String jdbcUrl = System.getenv("jdbcUrl");
         if (jdbcUrl == null || jdbcUrl.isEmpty()) {
-            jdbcUrl = "jdbc:mysql://localhost:3306/cloud?useSSL=false";
+//            jdbcUrl = "jdbc:mysql://localhost:3306/cloud?useSSL=false";
+            jdbcUrl = "jdbc:mysql://cloud-idp-db.cnskvibrxpcd.us-east-1.rds.amazonaws.com:3306/lcip?useSSL=false";
         }
         jdbcConfig.put(Constants.Database.JDBC_URL, jdbcUrl);
 
         String userName = System.getenv("userName");
         if (userName == null || userName.isEmpty()) {
-            userName = "root";
+//            userName = "root";
+            userName = "admin";
         }
         jdbcConfig.put(Constants.Database.JDBC_USER, userName);
 
         String secret = System.getenv("password");
         if (secret == null || secret.isEmpty()) {
-            secret = "root";
+//            secret = "root";
+            secret = "admin123";
         }
         jdbcConfig.put(Constants.Database.JDBC_PASSWORD, secret);
         jdbcConfig.put(Constants.Database.C3P0_MAX_CONNECTION_POOL_SIZE, 30);

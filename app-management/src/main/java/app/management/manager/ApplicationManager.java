@@ -80,27 +80,31 @@ public class ApplicationManager {
 
     public JsonObject getApplication(String name, String id) throws DBException, Exception {
 
-        ApplicationDataEntity userDataEntity = findApplication(name, id);
+        ApplicationDataEntity appDataEntity = findApplication(name, id);
 
         JsonObject output = new JsonObject();
-        output.addProperty("tenantName", userDataEntity.getTenantId());
-        output.addProperty("clientID", userDataEntity.getClientId());
-        output.addProperty("applicationName", userDataEntity.getAppName());
-        output.addProperty("callbackURL", userDataEntity.getCallBackUrl());
+        if (appDataEntity != null) {
+            output.addProperty("tenantName", appDataEntity.getTenantId());
+            output.addProperty("clientID", appDataEntity.getClientId());
+            output.addProperty("applicationName", appDataEntity.getAppName());
+            output.addProperty("callbackURL", appDataEntity.getCallBackUrl());
+            return output;
+        }
+        output.addProperty("Error", "Could not get Application with given name: " + name);
         return output;
 
     }
 
     public JsonObject getApplicationWithID(String appID) throws DBException, Exception {
 
-        ApplicationIdDataEntity userDataEntity = findApplicationWithID(appID);
+        ApplicationIdDataEntity appDataEntity = findApplicationWithID(appID);
 
         JsonObject output = new JsonObject();
-        if (userDataEntity != null) {
-            output.addProperty("tenantName", userDataEntity.getId());
-            output.addProperty("clientID", userDataEntity.getClientId());
-            output.addProperty("applicationName", userDataEntity.getAppName());
-            output.addProperty("callbackURL", userDataEntity.getCallBackUrl());
+        if (appDataEntity != null) {
+            output.addProperty("tenantName", appDataEntity.getId());
+            output.addProperty("clientID", appDataEntity.getClientId());
+            output.addProperty("applicationName", appDataEntity.getAppName());
+            output.addProperty("callbackURL", appDataEntity.getCallBackUrl());
             return output;
         }
         output.addProperty("Error", "Could not get Application with given ID: " + appID);
