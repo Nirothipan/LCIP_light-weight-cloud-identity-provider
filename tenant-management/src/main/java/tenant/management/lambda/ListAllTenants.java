@@ -39,6 +39,7 @@ public class ListAllTenants extends TenantManagement implements RequestHandler<T
             JsonObject tenant = new JsonObject();
             tenant.addProperty("Tenant Id", tenantDataEntity.getTenantId());
             tenant.addProperty("Tenant Name", tenantDataEntity.getTenantName());
+            tenant.addProperty("Tenant Admin", tenantDataEntity.getAdminName());
             allTenants.add(tenant);
         }
         return allTenants;

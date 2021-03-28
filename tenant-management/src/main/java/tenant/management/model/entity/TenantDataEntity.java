@@ -31,6 +31,9 @@ public class TenantDataEntity implements Serializable {
     @Column(name = "tenant_name")
     private String tenantName;
 
+    @Column(name = "admin_username")
+    private String adminName;
+
     public TenantDataEntity() {
     }
 
@@ -50,4 +53,11 @@ public class TenantDataEntity implements Serializable {
         this.tenantId = id;
     }
 
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
 }
