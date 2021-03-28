@@ -66,6 +66,11 @@ public class LicenseValidator {
         return createOutput(verifyLicenseKey(decodedJWT));
     }
 
+    public boolean validateToken(final String agentArgument) throws Exception {
+        DecodedJWT decodedJWT = decodeLicenseKey(agentArgument);
+        return "success".equals(verifyLicenseKey(decodedJWT));
+    }
+
     /**
      * This method create the output Object
      *
