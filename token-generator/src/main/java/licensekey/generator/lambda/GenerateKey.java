@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import licensekey.generator.dao.UpdateDB;
+import licensekey.generator.lambda.dao.LicenseKeyGenerator;
 import licensekey.generator.manager.KeyGenManager;
 import licensekey.generator.model.UserData;
 import licensekey.generator.model.entity.LicensekeyGeneratorEntity;
@@ -22,7 +23,7 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Object> {
+public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> {
 
     private static UpdateDB updateDB;
 
@@ -77,8 +78,15 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
     }
 
     @Override
-    public Object handleRequest(LicensekeyGeneratorEntity token, Context context) {
-        return createKey(token);
+    public Object handleRequest(LicenseKeyGenerator token, Context context) {
+
+        LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
+        licensekeyGeneratorEntity.setUserName(token.getUserName());
+        licensekeyGeneratorEntity.setAppId(token.getAppId());
+        licensekeyGeneratorEntity.setTenantId(token.getTenantId());
+        licensekeyGeneratorEntity.setExpiryDate(getDate(token.getExpiryDate()));
+
+        return createKey(licensekeyGeneratorEntity);
     }
 
     public static Object createKey(LicensekeyGeneratorEntity token) {
