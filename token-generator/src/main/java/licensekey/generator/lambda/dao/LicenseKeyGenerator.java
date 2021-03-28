@@ -17,6 +17,8 @@ public class LicenseKeyGenerator {
 
     private String expiryDate;
 
+    private String password;
+
     public String getToken() {
         return token;
     }
@@ -63,5 +65,13 @@ public class LicenseKeyGenerator {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -1,6 +1,5 @@
 package licensekey.generator.lambda;
 
-import app.management.ApplicationManagement;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
@@ -65,7 +64,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         token.setAppId("1212");
         token.setTenantId("212121");
         token.setExpiryDate(getDate("2021-11-01 00:00:00+0530"));
-        createKey(token);
+        createKey(token , "xxxxx");
     }
 
     private static long getDate(String date) {
@@ -87,10 +86,10 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         licensekeyGeneratorEntity.setTenantId(token.getTenantId());
         licensekeyGeneratorEntity.setExpiryDate(getDate(token.getExpiryDate()));
 
-        return createKey(licensekeyGeneratorEntity);
+        return createKey(licensekeyGeneratorEntity, token.getPassword());
     }
 
-    public static Object createKey(LicensekeyGeneratorEntity token) {
+    public static Object createKey(LicensekeyGeneratorEntity token, String pwd) {
 
         // validate expiry date
         Date expiryDate = new Date(token.getExpiryDate());
@@ -102,15 +101,18 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         }
 
         UserDataEntity userDataEntity = new UserDataEntity();
+        userDataEntity.setTenantId(token.getTenantId());
+        userDataEntity.setUserName(token.getUserName());
+        userDataEntity.setPassword(pwd);
 
         UserApi userApi = new UserApi();
         boolean isUserValid = userApi.validate(userDataEntity);
 
         if (isUserValid) {
-//            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
-//                System.out.println(getErrorOutput("Application Not Valid"));
-//                return getErrorOutput("Application Not Valid");
-//            }
+            //            if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
+            //                System.out.println(getErrorOutput("Application Not Valid"));
+            //                return getErrorOutput("Application Not Valid");
+            //            }
         } else {
             System.out.println(getErrorOutput("Invalid User"));
             return getErrorOutput("Invalid User");
