@@ -48,9 +48,9 @@ public class PrivateKeyReader {
         String bucket_name = "cloud-idp-bucket";
         String key_name = "wso2carbon.jks";
 
-        AmazonS3 s3Client = new AmazonS3Client(new ProfileCredentialsProvider());
-        S3Object object = s3Client.getObject(new GetObjectRequest(bucket_name, key_name));
-        //InputStream file = object.getObjectContent();
+//        AmazonS3 s3Client = new AmazonS3Client(new ProfileCredentialsProvider());
+//        S3Object object = s3Client.getObject(new GetObjectRequest(bucket_name, key_name));
+//        //InputStream file = object.getObjectContent();
         // Process the objectData stream.
 
 
