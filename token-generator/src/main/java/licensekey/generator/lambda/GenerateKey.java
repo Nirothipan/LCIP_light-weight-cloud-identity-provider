@@ -6,6 +6,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.mchange.v1.util.ArrayUtils;
+import com.mchange.v1.util.CollectionUtils;
 import licensekey.generator.dao.UpdateDB;
 import licensekey.generator.lambda.dao.LicenseKeyGenerator;
 import licensekey.generator.manager.KeyGenManager;
@@ -61,11 +63,11 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
     public static void main(String[] args) {
 
         LicensekeyGeneratorEntity token = new LicensekeyGeneratorEntity();
-        token.setUserName("tokenExisting");
-        token.setAppId("1212");
-        token.setTenantId("212121");
+        token.setUserName("ram2");
+        token.setAppId("id-2");
+        token.setTenantId("121qw");
         token.setExpiryDate(getDate("2021-11-01 00:00:00+0530"));
-        createKey(token, "xxxxx");
+        createKey(token, "1234", new String[]{} );
     }
 
     private static long getDate(String date) {
@@ -83,14 +85,18 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
 
         LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
         licensekeyGeneratorEntity.setUserName(token.getUserName());
-        licensekeyGeneratorEntity.setAppId(token.getAppId());
+        licensekeyGeneratorEntity.setAppId(token.getAppName());
         licensekeyGeneratorEntity.setTenantId(token.getTenantId());
         licensekeyGeneratorEntity.setExpiryDate(getDate(token.getExpiryDate()));
 
-        return createKey(licensekeyGeneratorEntity, token.getPassword()).toString();
+        String[] scopes = token.getScopes();
+        if (scopes == null) {
+            scopes = new String[]{};
+        }
+        return createKey(licensekeyGeneratorEntity, token.getPassword(),scopes).toString();
     }
 
-    public static Object createKey(LicensekeyGeneratorEntity token, String pwd) {
+    public static Object createKey(LicensekeyGeneratorEntity token, String pwd, String[] scopes) {
 
         // validate expiry date
         Date expiryDate = new Date(token.getExpiryDate());
@@ -138,7 +144,7 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
         userData.setAppId(token.getAppId());
         userData.setExpiryDate(token.getExpiryDate());
         try {
-            JsonObject response = keyGenManager.generateKeyAndUpdateDB(userData);
+            JsonObject response = keyGenManager.generateKeyAndUpdateDB(userData, scopes);
             return response.toString();
         } catch (Exception ex) {
             ex.printStackTrace();

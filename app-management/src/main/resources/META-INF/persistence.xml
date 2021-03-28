@@ -3,9 +3,9 @@
 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="user.management.model.UserData">
+    <persistence-unit name="app.management.model.ApplicationData">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>user.management.model.entity.UserDataEntity</class>
+        <class>app.management.model.entity.ApplicationDataEntity</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value=""/>

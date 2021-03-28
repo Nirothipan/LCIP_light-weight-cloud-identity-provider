@@ -31,12 +31,13 @@ public class Registration extends ApplicationManagement implements RequestHandle
 
     private static void addApplication(){
 
-        ApplicationDataEntity userData = new ApplicationDataEntity();
-        userData.setAppName("AppNew3");
-        userData.setCallBackUrl("https://google.com");
+        ApplicationDataEntity appData = new ApplicationDataEntity();
+        appData.setAppName("AppNew3");
+        appData.setCallBackUrl("https://google.com");
+        appData.setTenantId("12345");
         JsonObject response = new JsonObject();
         try {
-            response = applicationManager.addApplication(userData);
+            response = applicationManager.addApplication(appData);
         } catch (Exception e) {
             System.out.println("Exception :: " + e);
             e.printStackTrace();

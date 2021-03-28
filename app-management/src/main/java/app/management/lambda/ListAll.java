@@ -18,7 +18,7 @@ public class ListAll extends ApplicationManagement implements RequestHandler<App
 
     public static void main(String[] args) {
 
-        getApplicationList("1234");
+        getApplicationList("12345");
     }
 
     private static Object getApplicationList(String tenantId) {
