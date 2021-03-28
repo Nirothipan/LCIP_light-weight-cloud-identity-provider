@@ -4,7 +4,6 @@
 CREATE TABLE `TENANT_INFO`
 (
     `tenant_id`     varchar(50) NOT NULL,
-    `tenant_name`   varchar(50) NOT NULL,
     `admin_username`   varchar(50) NOT NULL,
     PRIMARY KEY (`tenant_id`)
 ) ENGINE = InnoDB

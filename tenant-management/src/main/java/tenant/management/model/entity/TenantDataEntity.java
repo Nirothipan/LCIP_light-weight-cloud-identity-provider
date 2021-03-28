@@ -28,21 +28,10 @@ public class TenantDataEntity implements Serializable {
     @Column(name = "tenant_id")
     private String tenantId;
 
-    @Column(name = "tenant_name")
-    private String tenantName;
-
     @Column(name = "admin_username")
     private String adminName;
 
     public TenantDataEntity() {
-    }
-
-    public String getTenantName() {
-        return tenantName;
-    }
-
-    public void setTenantName(String tenantName) {
-        this.tenantName = tenantName;
     }
 
     public String getTenantId() {
