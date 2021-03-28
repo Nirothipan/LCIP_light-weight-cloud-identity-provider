@@ -1,32 +1,26 @@
 package licensekey.generator.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 import com.amazonaws.services.secretsmanager.model.*;
 import licensekey.generator.exception.PrivateKeyGenerationException;
-import licensekey.generator.utils.Constants;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
-import java.io.FileInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class loads the private key from a file and returns.
@@ -34,6 +28,8 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class PrivateKeyReader {
+
+    private static boolean fileDownloaded = false;
 
     /**
      * @return Private key
@@ -46,6 +42,11 @@ public class PrivateKeyReader {
         JSONObject credentials = retrieveCredentials();
         String alias = credentials.get("lcip-jks-alias").toString();
         String password = credentials.get("lcip-jks-password").toString();
+
+        if (!fileDownloaded) {
+            downloadFileFromS3();
+            fileDownloaded = true;
+        }
 
         // point your keystore here
         InputStream file = PrivateKeyReader.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
@@ -100,5 +101,31 @@ public class PrivateKeyReader {
             System.out.println(binarySecretData.toString());
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        downloadFileFromS3();
+    }
+
+    private static void downloadFileFromS3() {
+        String bucket_name = "cloud-idp-bucket";
+        String key_name = "wso2carbon.jks";
+        System.out.format("Downloading %s from S3 bucket %s...\n", key_name, bucket_name);
+        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
+        try {
+            S3Object o = s3.getObject(bucket_name, key_name);
+            S3ObjectInputStream s3is = o.getObjectContent();
+            File downloadedFile = new File(key_name);
+            FileOutputStream fos = new FileOutputStream(downloadedFile);
+            byte[] read_buf = new byte[1024];
+            int read_len = 0;
+            while ((read_len = s3is.read(read_buf)) > 0) {
+                fos.write(read_buf, 0, read_len);
+            }
+            s3is.close();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

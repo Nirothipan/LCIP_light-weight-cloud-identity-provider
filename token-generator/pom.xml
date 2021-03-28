@@ -110,6 +110,12 @@
             <artifactId>aws-java-sdk-secretsmanager</artifactId>
             <version>1.11.982</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.11.986</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>
