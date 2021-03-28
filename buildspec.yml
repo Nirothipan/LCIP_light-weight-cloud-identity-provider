@@ -13,4 +13,5 @@ artifacts:
     - user-management/target/user-management-1.0-SNAPSHOT.jar
     - app-management/target/app-management-1.0-SNAPSHOT.jar
     - tenant-management/target/tenant-management-1.0-SNAPSHOT.jar
+    - token-generator/target/token-generator-1.0-SNAPSHOT.jar
   discard-paths: yes
