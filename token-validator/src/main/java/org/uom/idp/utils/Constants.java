@@ -23,17 +23,9 @@ package org.uom.idp.utils;
  * @since 1.0.0
  */
 public final class Constants {
-    public static final String PUBLIC_KEY = "certs/public_key.der";
-    public static final String ALGORITHM_RSA = "RSA";
+    
     public static final String ISSUER = "lcip";
     public static final String API_CODES_CLAIM = "scopes";
     public static final String LICENSE_KEY_PATH = "/license.key";
 
-    /**
-     * Configuration constants.
-     */
-    public static class Configurations {
-
-        public static final String CONFIGURATION_YAML = "keyvalidator.yaml";
-    }
 }
