@@ -69,9 +69,9 @@ public class KeyGenManager {
         String jwt = null;
 
         if (jwt == null) {
-            Timestamp timestamp = Timestamp.valueOf(userData.getExpiryDate());
+//            Timestamp timestamp = Timestamp.valueOf(new Date(userData.getExpiryDate()).toLocalDate()String());
             Calendar currentTime = Calendar.getInstance();
-            Date expiryDate = new Date(timestamp.getTime());
+            Date expiryDate =new Date(userData.getExpiryDate());
            /* List<String> productCodesList = userData.getApis();
             String[] apiCodesArray = new String[productCodesList.size()];
             apiCodesArray = productCodesList.toArray(apiCodesArray);*/
@@ -84,9 +84,9 @@ public class KeyGenManager {
 
             LicensekeyGeneratorEntity licensekeyGeneratorEntity = new LicensekeyGeneratorEntity();
 
-            licensekeyGeneratorEntity.setCreatedDate(String.valueOf(today.getTime()));
+            licensekeyGeneratorEntity.setCreatedDate(today.getTime());
             licensekeyGeneratorEntity.setUserName(userData.getUsername());
-            licensekeyGeneratorEntity.setExpiryTime(String.valueOf(expiryDate.getTime()));
+            licensekeyGeneratorEntity.setExpiryDate(expiryDate.getTime());
             licensekeyGeneratorEntity.setToken(jwt);
             licensekeyGeneratorEntity.setAppId(userData.getAppId());
             licensekeyGeneratorEntity.setTenantId(userData.getTenantId());

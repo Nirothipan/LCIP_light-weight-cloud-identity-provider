@@ -13,7 +13,7 @@ public class UserData {
 
     private String username;
 
-    private String expiryDate;
+    private long expiryDate;
 
     private String appId;
 
@@ -27,11 +27,11 @@ public class UserData {
         this.username = username;
     }
 
-    public String getExpiryDate() {
+    public long getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(long expiryDate) {
         this.expiryDate = expiryDate;
     }
 

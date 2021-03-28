@@ -3,6 +3,7 @@ package licensekey.generator.model.entity;
 import licensekey.generator.utils.Constants;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class LicensekeyGeneratorEntity implements Serializable {
 
     @Id
     @Column(name = "created_date")
-    private String createdDate;
+    private long createdDate;
 
     @Id
     @Column(name = "user_name")
@@ -45,8 +46,8 @@ public class LicensekeyGeneratorEntity implements Serializable {
     @Column(name = "app_id")
     private String appId;
 
-    @Column(name = "expiry_time")
-    private String expiryTime;
+    @Column(name = "expiry_Date")
+    private long expiryDate;
 
     public String getToken() {
         return token;
@@ -80,19 +81,19 @@ public class LicensekeyGeneratorEntity implements Serializable {
         this.appId = appId;
     }
 
-    public String getExpiryTime() {
-        return expiryTime;
+    public long getExpiryDate() {
+        return expiryDate;
     }
 
-    public void setExpiryTime(String expiryTime) {
-        this.expiryTime = expiryTime;
+    public void setExpiryDate(long expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
-    public String getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 }

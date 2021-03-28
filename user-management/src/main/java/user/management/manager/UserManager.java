@@ -61,6 +61,7 @@ public class UserManager {
 
     }
 
+    // P.S do not judge me by this code
     public boolean validateUser(UserDataEntity userDataEntity) throws DBException {
         UserDataEntity entity = getFromDB(userDataEntity.getUserName(), userDataEntity.getTenantId());
         if (entity == null) {

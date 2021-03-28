@@ -1,6 +1,5 @@
 package licensekey.generator.lambda;
 
-import app.management.ApplicationManagement;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
@@ -14,6 +13,10 @@ import licensekey.generator.utils.Constants;
 import user.management.UserApi;
 import user.management.model.entity.UserDataEntity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
@@ -54,27 +57,47 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
     private static KeyGenManager keyGenManager = new KeyGenManager(updateDB);
 
     public static void main(String[] args) {
+
         LicensekeyGeneratorEntity token = new LicensekeyGeneratorEntity();
-        token.setUserName("ram");
+        token.setUserName("ram1");
         token.setAppId("1212");
         token.setTenantId("212121");
-        token.setExpiryTime("2020-11-01 00:00:00");
+        token.setExpiryDate(getDate("2021-11-01 00:00:00+0530"));
         createKey(token);
+    }
+
+    private static long getDate(String date) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
+        try {
+            Date d = f.parse(date);
+            return d.getTime();
+        } catch (ParseException e) {
+            return 0L;
+        }
     }
 
     @Override
     public Object handleRequest(LicensekeyGeneratorEntity token, Context context) {
-        return null;
+        return createKey(token);
     }
 
     public static Object createKey(LicensekeyGeneratorEntity token) {
+
+        // validate expiry date
+        Date expiryDate = new Date(token.getExpiryDate());
+        Date currentDate = new Date((Calendar.getInstance().getTime()).getTime());
+        if (currentDate.after(expiryDate)) {
+            String msg = "Expiry date is invalid";
+            System.out.println(msg);
+            return toJson(getErrorOutput(msg));
+        }
 
         UserDataEntity userDataEntity = new UserDataEntity();
 
         UserApi userApi = new UserApi();
         boolean isUserValid = userApi.validate(userDataEntity);
 
-        if (isUserValid) {
+        /*if (isUserValid) {
             if (!ApplicationManagement.checkApplication(token.getAppId(), token.getTenantId())) {
                 System.out.println(getErrorOutput("Application Not Valid"));
                 return getErrorOutput("Application Not Valid");
@@ -82,12 +105,12 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
         } else {
             System.out.println(getErrorOutput("Invalid User"));
             return getErrorOutput("Invalid User");
-        }
+        }*/
 
         try {
             LicensekeyGeneratorEntity existingToken = getToken(token);
             if (existingToken != null) {
-                Object response =  keyGenManager.createOutput(existingToken.getToken(), 0, null);
+                Object response = keyGenManager.createOutput(existingToken.getToken(), 0, null);
                 System.out.println(response);
                 return response;
             }
@@ -101,7 +124,7 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
         userData.setUsername(token.getUserName());
         userData.setTenantId(token.getTenantId());
         userData.setAppId(token.getAppId());
-        userData.setExpiryDate(token.getExpiryTime());
+        userData.setExpiryDate(token.getExpiryDate());
         try {
             JsonObject response = keyGenManager.generateKeyAndUpdateDB(userData);
             return response.toString();
@@ -123,7 +146,6 @@ public class GenerateKey implements RequestHandler<LicensekeyGeneratorEntity, Ob
         return gson.toJson(json);
     }
 
-    // todo - get Existing token from the db
     private static LicensekeyGeneratorEntity getToken(LicensekeyGeneratorEntity token) throws Exception {
         return keyGenManager.fetchToken(token);
     }

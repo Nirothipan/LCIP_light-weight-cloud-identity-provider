@@ -7,10 +7,9 @@ CREATE TABLE `TOKEN_INFO`
     `tenant_id`    varchar(50)   NOT NULL,
     `user_name`    varchar(50)   NOT NULL,
     `app_id`       varchar(50)   NOT NULL,
-    `created_date` varchar(50)   NOT NULL,
-    `expiry_time`  varchar(50)   NOT NULL,
+    `created_date` bigint(20) NOT NULL,
+    `expiry_date`  bigint(20) NOT NULL,
     PRIMARY KEY (`token`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 32
   DEFAULT CHARSET = latin1;
 
