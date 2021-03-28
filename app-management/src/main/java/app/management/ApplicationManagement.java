@@ -27,8 +27,7 @@ public class ApplicationManagement {
 
         String jdbcUrl = System.getenv("jdbcUrl");
         if (jdbcUrl == null || jdbcUrl.isEmpty()) {
-//            jdbcUrl = "jdbc:mysql://localhost:3306/cloud?useSSL=false";
-            jdbcUrl = "jdbc:mysql://cloud-idp-db.cnskvibrxpcd.us-east-1.rds.amazonaws.com:3306/lcip?useSSL=false";
+           jdbcUrl = "jdbc:mysql://localhost:3306/cloud?useSSL=false";
         }
         jdbcConfig.put(Constants.Database.JDBC_URL, jdbcUrl);
 
