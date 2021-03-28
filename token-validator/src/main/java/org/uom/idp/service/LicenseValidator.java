@@ -11,12 +11,8 @@ import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.gson.JsonObject;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.uom.idp.exceptions.DecodeLicenseKeyException;
-import org.uom.idp.exceptions.PrivateKeyGenerationException;
 import org.uom.idp.exceptions.PublicKeyException;
 import org.uom.idp.exceptions.VerifyLicenseKeyException;
 import org.uom.idp.utils.Constants;
@@ -35,8 +31,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
+import java.security.interfaces.RSAPublicKey;
 
-import static org.uom.idp.utils.Constants.*;
+import static org.uom.idp.utils.Constants.API_CODES_CLAIM;
 
 /**
  * This class validates the license key.
@@ -51,8 +48,6 @@ import static org.uom.idp.utils.Constants.*;
  * @since 1.0.0
  */
 public class LicenseValidator {
-
-    private static final Logger logger = Logger.getLogger(LicenseValidator.class.getName());
 
     /**
      * After the Java Virtual Machine (JVM) has initialized,  premain method will be called. This method will load
@@ -78,7 +73,7 @@ public class LicenseValidator {
     /**
      * This method create the output Object
      *
-     * @param statusMsg       Status Message
+     * @param statusMsg Status Message
      * @return JsonObject
      */
     private JSONObject createOutput(String statusMsg) {
@@ -86,18 +81,6 @@ public class LicenseValidator {
         JSONObject output = new JSONObject();
         output.put("status", statusMsg);
         return output;
-    }
-
-
-
-    /**
-     * Returns an Input stream for the Public cert file in the resources/{@link Constants#PUBLIC_KEY}.
-     *
-     * @return {@link InputStream}
-     */
-    private static InputStream getPublicKeyFileStream() {
-        return LicenseValidator.class.getClassLoader().getResourceAsStream(PUBLIC_KEY);
-
     }
 
     /**
@@ -173,6 +156,7 @@ public class LicenseValidator {
      * 1. Issuer
      * 2. Expire date
      * 3. {@link Constants#API_CODES_CLAIM}
+     *
      * @param licenseKey license key
      * @return Decoded JWT token {@link DecodedJWT}
      * @throws DecodeLicenseKeyException If the JWT is not valid
@@ -188,11 +172,11 @@ public class LicenseValidator {
         }
         String[] jwtProductCodes = decodedJWT.getClaim(API_CODES_CLAIM).asArray(String.class);
         if (jwtProductCodes == null || jwtProductCodes.length == 0) {
-            throw new DecodeLicenseKeyException(String.format("%s claim is not configured or empty",
-                    API_CODES_CLAIM));
+            throw new DecodeLicenseKeyException(String.format("%s claim is not configured or empty", API_CODES_CLAIM));
         }
         return decodedJWT;
     }
+
     /**
      * Verifies following JWT claims.
      * <p>
@@ -208,13 +192,10 @@ public class LicenseValidator {
      * @throws PublicKeyException        If cannot construct the public certificate
      * @throws VerifyLicenseKeyException If the token is invalid
      */
-    private static String verifyLicenseKey(final DecodedJWT decodedJWT)
-            throws Exception, VerifyLicenseKeyException {
+    private static String verifyLicenseKey(final DecodedJWT decodedJWT) throws Exception, VerifyLicenseKeyException {
         String status = "failed";
         Algorithm algorithm = Algorithm.RSA384(getRSAPublicKey(), null);
-        JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(Constants.ISSUER)
-                .build();
+        JWTVerifier verifier = JWT.require(algorithm).withIssuer(Constants.ISSUER).build();
         // Verify Expire date + signature
         try {
             verifier.verify(decodedJWT);
