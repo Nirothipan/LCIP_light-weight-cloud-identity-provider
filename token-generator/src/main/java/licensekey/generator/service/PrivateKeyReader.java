@@ -50,12 +50,12 @@ public class PrivateKeyReader {
 
         AmazonS3 s3Client = new AmazonS3Client(new ProfileCredentialsProvider());
         S3Object object = s3Client.getObject(new GetObjectRequest(bucket_name, key_name));
-        InputStream file = object.getObjectContent();
+        //InputStream file = object.getObjectContent();
         // Process the objectData stream.
 
 
         // point your keystore here
-       // InputStream file = PrivateKeyReader.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
+        InputStream file = PrivateKeyReader.class.getClassLoader().getResourceAsStream("wso2carbon.jks");
         KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
         keystore.load(file, password.toCharArray());
 
