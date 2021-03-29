@@ -123,11 +123,13 @@ public class GenerateKey implements RequestHandler<LicenseKeyGenerator, Object> 
 
         try {
             LicensekeyGeneratorEntity existingToken = getToken(token);
-            Date existingTokenExpiringDate = new Date(existingToken.getExpiryDate());
-            if (existingToken != null && existingTokenExpiringDate.before(currentDate)) {
-                Object response = keyGenManager.createOutput(existingToken.getToken(), 0, null);
-                System.out.println(response);
-                return response;
+            if (existingToken != null) {
+                Date existingTokenExpiringDate = new Date(existingToken.getExpiryDate());
+                if (existingTokenExpiringDate.after(currentDate)) {
+                    Object response = keyGenManager.createOutput(existingToken.getToken(), 0, null);
+                    System.out.println(response);
+                    return response;
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
