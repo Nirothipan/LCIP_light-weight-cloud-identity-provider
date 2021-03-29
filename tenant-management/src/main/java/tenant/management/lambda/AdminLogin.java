@@ -20,14 +20,25 @@ public class AdminLogin implements RequestHandler<AdminLoginData, Object> {
     public static void main(String[] args) {
         AdminLoginData adminLoginData = new AdminLoginData();
         adminLoginData.setUserName("lcipadmin");
-//        adminLoginData.setPassword("admin123");
-        retrieveItem(adminLoginData);
+        adminLoginData.setPassword("adminlcip");
+        JSONObject status = new JSONObject();
+        if ("lcipadmin".equals(adminLoginData.getUserName()) && "adminlcip".equals(adminLoginData.getPassword())) {
+            status.put("status", true);
+        } else {
+            status.put("status", false);
+        }
+        System.out.println(status.toString());
     }
 
     @Override
     public Object handleRequest(AdminLoginData adminLoginData, Context context) {
         JSONObject status = new JSONObject();
-        status.put("status", true);
+        if ("lcipadmin".equals(adminLoginData.getUserName()) && "adminlcip".equals(adminLoginData.getPassword())) {
+            status.put("status", true);
+        } else {
+            status.put("status", false);
+        }
+        System.out.println(status.toString());
         return status;
     }
 
