@@ -12,8 +12,8 @@ import tenant.management.lambda.dao.AdminLoginData;
 
 public class AdminLogin implements RequestHandler<AdminLoginData, Object> {
 
-    static AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
-    static DynamoDB dynamoDB = new DynamoDB(client);
+//    static AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+//    static DynamoDB dynamoDB = new DynamoDB(client);
 
     static String tableName = "cloud-idp-admin-cred";
 
@@ -43,19 +43,19 @@ public class AdminLogin implements RequestHandler<AdminLoginData, Object> {
     }
 
     private static void retrieveItem(AdminLoginData adminLoginData) {
-        Table table = dynamoDB.getTable(tableName);
+//        Table table = dynamoDB.getTable(tableName);
 
-        try {
-            Item item = table.getItem("username", adminLoginData.getUserName());
-
-            System.out.println("Printing item after retrieving it....");
-            System.out.println(item.toJSONPretty());
-
-        }
-        catch (Exception e) {
-            System.err.println("GetItem failed.");
-            System.err.println(e.getMessage());
-        }
+//        try {
+//            Item item = table.getItem("username", adminLoginData.getUserName());
+//
+//            System.out.println("Printing item after retrieving it....");
+//            System.out.println(item.toJSONPretty());
+//
+//        }
+//        catch (Exception e) {
+//            System.err.println("GetItem failed.");
+//            System.err.println(e.getMessage());
+//        }
 
     }
 }
