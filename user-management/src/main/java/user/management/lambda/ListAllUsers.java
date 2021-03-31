@@ -21,10 +21,13 @@ public class ListAllUsers extends UserManagement implements RequestHandler<UserD
 
     private static Object getUser(String tenantId) {
 
+        /*
+        Sample comment to delete
+         */
+
         try {
             List<UserDataEntity> userDataEntityList = userManager.getTenantUser();
             JSONArray response = createOutput(userDataEntityList, tenantId);
-            System.out.println(response.toString());
             return (response);
         } catch (Exception e) {
             e.printStackTrace();
