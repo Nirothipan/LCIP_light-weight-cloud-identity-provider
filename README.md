@@ -1,15 +1,22 @@
-# key-generator
+# Introduction
 
-CS5242 group project
+Identity management has become an inevitable component of any application. Application
+developers spend a considerable amount of their development time to fulfill the tasks related to
+user authentication and authorization. Such tasks include; User Authentication, User
+Authorization, Application Management, Tenant Management.
+The main objective of this project is to develop an application which provides Identity and
+Access Management targeting the application developers to ease the development process.
+Also the solution is implemented as a cloud native application leveraging the existing cloud
+technologies.
 
-#### cURL for custom License key
+## High Level Architecture
 
-```shell script
-curl POST http://localhost:9090/keygenerator/key -H 'authorization: Basic YWJjOmFiYw=='  -H 'content-type: application/json' \
-      --data '{
-                "userName" : "user@gmail.com", 
-                "creator_username" : "user@gmail.com", 
-                "apis" : ["api1", "api2"], 
-                "expiry-date" : "2020-11-11 00:00:00"}' \
-      -v
-```
+## Solution Approach
+
+## Components
+
+### LCIP BackEnd Lambdas
+
+### LCIP UIs
+
+## CICD Pipeline
