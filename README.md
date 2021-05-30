@@ -57,6 +57,6 @@ We have added Observability capabilities for our product using below AWS service
 
 [<img alt="Nirothipan" src="https://avatars.githubusercontent.com/u/24619763?v=4" width="100px;">](https://github.com/Nirothipan) |[<img alt="arunans23" src="https://avatars.githubusercontent.com/u/17047910?v=4" width="100px;">](https://github.com/arunans23) |[<img alt="inthirakumaaran" src="https://avatars.githubusercontent.com/u/17597685?v=4" width="100px;">](https://github.com/inthirakumaaran) | [<img alt="kasthuriraajan" src="https://avatars.githubusercontent.com/u/26266914?v=4" width="100px;">](https://github.com/kasthuriraajan)
 :---:|:---:|:---:|:---:|
-[Nirothipan](https://github.com/Nirothipan)|[arunans23](https://github.com/arunans23)|[inthirakumaaran](https://github.com/inthirakumaaran)|[kasthuriraajan](https://github.com/kasthuriraajan)
+[Nirothipan M](https://github.com/Nirothipan)|[Arunan S](https://github.com/arunans23)|[Inthirakumaaran T](https://github.com/inthirakumaaran)|[Kasthuriraajan R](https://github.com/kasthuriraajan)
 
 
