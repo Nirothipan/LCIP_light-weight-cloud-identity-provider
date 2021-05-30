@@ -52,7 +52,12 @@ certificate. The keys of these certificates are stored in AWS Secret Manager and
 
 ## :bricks: Components
 
-### LCIP BackEnd Lambdas
+### Lambdas
+
+<p align="justify">
+All the backed functionalities were written using **Amazon Lambda** functions. The whole project, involves several 
+Lambdas to process various functionalities. These Lambdas were written in JAVA.
+</p>
 
 ### LCIP UIs
 
