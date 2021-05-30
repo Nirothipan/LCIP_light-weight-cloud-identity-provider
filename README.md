@@ -7,10 +7,15 @@
 Identity and Access Management has become an inevitable component in any application. Application developers spend 
 a considerable amount of their development time to fulfill the tasks related to user authentication and authorization. 
 Such tasks include: 
+</p>
+
+<ul>
     <li>User Authentication</li>
     <li>User Authorization</li>
     <li>Application Management</li>
     <li>Tenant Management</li>
+</ul>
+<p align="justify">
 The main objective of this project is to develop an application which provides Identity and Access Management targeting 
 the application developers to ease the development process. Also the solution is implemented as a cloud native 
 application leveraging the existing cloud technologies mainly from Amazon.
