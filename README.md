@@ -6,6 +6,8 @@ technologies mainly from Amazon.
 
 ## High Level Architecture
 
+![Architecture](images/architecture.png)
+
 ## Solution Approach
 
 Lightweight Cloud Identity Provider (LCIP) is developed using a 3-Tier architecture. The solution
