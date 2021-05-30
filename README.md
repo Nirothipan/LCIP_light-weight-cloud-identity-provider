@@ -55,7 +55,7 @@ certificate. The keys of these certificates are stored in AWS Secret Manager and
 ### Lambdas
 
 <p align="justify">
-All the backed functionalities were written using **Amazon Lambda** functions. The whole project, involves several 
+All the backed functionalities were written using <b>Amazon Lambda</b> functions. The whole project, involves several 
 Lambdas to process various functionalities. These Lambdas were written in JAVA.
 </p>
 
