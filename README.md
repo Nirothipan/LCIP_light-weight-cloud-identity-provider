@@ -28,13 +28,27 @@ application leveraging the existing cloud technologies mainly from Amazon.
 ## :hammer_and_wrench: Solution Approach
 
 Lightweight Cloud Identity Provider (LCIP) is developed using a 3-Tier architecture. The solution
-consists of 3 main components:
+consists of 3 main layers:
 1. Presentation Layer
 2. Application Layer
 3. Persistence Layer
 
 ![layered archtiecture](images/solution-approach.png)
 
+Following are the main components in the application layer which serves the core functionalities.
+
+1. User Management
+2. Token Management
+3. Application Management
+4. Tenant Management
+
+<p align="justify">
+These components are developed as microservices in Java and using the maven framework. These micro services are deployed 
+in AWS Lambda and fronted via the AWS API Gateway. The user presentation is done via the react application which in 
+turn calls the APIs in the gateway. The data related to user, tenant and application are persisted in Amazon RDS. 
+The token is signed with private certificates where the user can validate the token from signature with a public 
+certificate. The keys of these certificates are stored in AWS Secret Manager and retrieved in the runtime.
+</p>
 
 ## :bricks: Components
 
