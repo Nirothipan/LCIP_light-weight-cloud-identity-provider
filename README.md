@@ -1,4 +1,4 @@
-# Light Weight Cloud Identity Provider
+# :cloud: Light Weight Cloud Identity Provider
 
 
 ## :bulb: Introduction
