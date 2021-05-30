@@ -25,4 +25,4 @@ consists of 3 main components:
 
 ## CICD Pipeline
 
-
+![CI/CD Diagram](images/cicd-diagram.png)
