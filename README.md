@@ -61,11 +61,11 @@ Lambdas to process various functionalities. These Lambdas were written in JAVA.
 
 ### :desktop_computer: User Interfaces
 
-| Interface | Description | Link | 
+| Interface | Description | Source Code | 
 | --- | --- | --- |
 | :medal_military: Admin portal | A portal for super admin to manage all the tenants and users created in the system | [lcip-admin](https://github.com/kasthuriraajan/lcip-admin)
-| :medal_military: Tenant portal | A portal for tenant admin to manage the users created in the their respective organization | [lcip-web](https://github.com/kasthuriraajan/lcip-web)
-| :medal_military: User portal | A client portal to validate the functionalities of the system | [lcip-playground](https://github.com/kasthuriraajan/lcip-playground)
+| :file_folder: Tenant portal | A portal for tenant admin to manage the users created in the their respective organization | [lcip-web](https://github.com/kasthuriraajan/lcip-web)
+| :file_folder: User portal | A client portal to validate the functionalities of the system | [lcip-playground](https://github.com/kasthuriraajan/lcip-playground)
 
 ## :gear: CICD Pipeline
 
